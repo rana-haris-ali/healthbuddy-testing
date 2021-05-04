@@ -3,6 +3,8 @@ import { Row, Col } from 'react-bootstrap';
 import Product from '../../components/pharmacy/Product';
 import products from '../../products';
 
+// ePharmacy homescreen
+
 const HomeScreen = () => {
   return (
     <>

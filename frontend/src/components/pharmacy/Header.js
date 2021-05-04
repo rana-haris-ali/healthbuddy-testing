@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 
+// Header for ePharmacy with navbar
+
 const Header = () => {
   return (
     <header>

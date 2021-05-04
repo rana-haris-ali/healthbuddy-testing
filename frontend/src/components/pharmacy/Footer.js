@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
+// footer for ePharmacy
+
 const Footer = () => {
   return (
     <footer>

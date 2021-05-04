@@ -1,3 +1,20 @@
 main {
   min-height: 80vh;
 }
+
+/* padding for product price */
+#product-price-padding {
+  padding: 1rem 0;
+}
+
+/* margin for rating stars */
+.rating span {
+  margin: 0.1rem;
+}
+
+/* for product image */
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+}
