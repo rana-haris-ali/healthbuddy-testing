@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Image, Button, ListGroup, Card } from 'react-bootstrap';
+import { Row, Col, Image, Button, ListGroup } from 'react-bootstrap';
 
 import Rating from '../../components/pharmacy/Rating';
 import products from '../../products';
@@ -8,7 +8,7 @@ import products from '../../products';
 // product screen
 
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id == match.params.id);
+  const product = products.find((p) => p._id === match.params.id);
   return (
     <>
       <Link to='/' className='btn btn-dark my-3'>
@@ -54,7 +54,7 @@ const ProductScreen = ({ match }) => {
             <ListGroup.Item>
               <Button
                 className='btn-block'
-                disabled={product.countInStock == 0}
+                disabled={product.countInStock === 0}
               >
                 Order Now
               </Button>

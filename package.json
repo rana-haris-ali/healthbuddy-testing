@@ -1,0 +1,22 @@
+{
+  "name": "health-buddy",
+  "version": "1.0.0",
+  "description": "healthBuddy fyp app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rana-haris-ali/healthBuddy.git"
+  },
+  "author": "Rana Haris Ali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rana-haris-ali/healthBuddy/issues"
+  },
+  "homepage": "https://github.com/rana-haris-ali/healthBuddy#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import products from '../../products';
 
 // Display Rating Stars and num of Reviews
 
