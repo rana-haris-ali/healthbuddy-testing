@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'Panadol Tablets',
     image: '/images/panadol.png',
     description:
@@ -13,7 +12,6 @@ const products = [
     numReviews: 4,
   },
   {
-    _id: '2',
     name: 'Strepsils Tablets',
     image: '/images/strepsils.jpg',
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 11,
   },
   {
-    _id: '3',
     name: 'N95 Mask',
     image: '/images/n95.jpg',
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 7,
   },
   {
-    _id: '4',
     name: 'Surgical Mask',
     image: '/images/Mask.jpg',
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 4,
   },
   {
-    _id: '5',
     name: 'Ryzodeg Insulin',
     image: '/images/ryzodeg.jpg',
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 5,
   },
   {
-    _id: '6',
     name: 'Ventek Tablets',
     image: '/images/ventek.png',
     description:
