@@ -1,31 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Product from '../../components/pharmacy/Product';
+import { productList } from '../../actions/pharmacy/productActions';
 
 // ePharmacy homescreen
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
-
+  const dispatch = useDispatch();
+  const { loading, products, error } = useSelector(
+    (state) => state.productList
+  );
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get('/api/products');
-      setProducts(data);
-    };
-    fetchProducts();
-  }, []);
+    dispatch(productList());
+  }, [dispatch]);
   return (
     <>
       <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => (
-          <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
+
+      {loading ? (
+        <h1>Loading</h1>
+      ) : error ? (
+        <h1>{error}</h1>
+      ) : (
+        <Row>
+          {products.map((product) => (
+            <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
+              <Product product={product} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </>
   );
 };
