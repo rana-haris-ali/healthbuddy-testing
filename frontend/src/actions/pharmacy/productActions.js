@@ -6,6 +6,7 @@ import {
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
+// action creator to get all products
 const productList = () => async (dispatch) => {
   try {
     dispatch({

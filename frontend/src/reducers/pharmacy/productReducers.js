@@ -4,6 +4,7 @@ import {
   PRODUCT_LIST_FAILURE,
 } from '../../constants/productConstants';
 
+// reducer to get full list of products
 const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
