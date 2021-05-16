@@ -6,7 +6,6 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAILURE,
 } from '../../constants/productConstants';
-import thunk from 'redux-thunk';
 import axios from 'axios';
 
 // action creator to get all products
