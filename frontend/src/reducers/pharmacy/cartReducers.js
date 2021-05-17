@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM } from '../../constants/cartConstants';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../../constants/cartConstants';
 
 // cart reduecr checks if item already exists in the cart
 // and if it does then replaces it with new order specs
@@ -26,6 +26,14 @@ const cartReducer = (state = { cartItems: [] }, action) => {
 					cartItems: [...state.cartItems, item],
 				};
 			}
+
+		case CART_REMOVE_ITEM:
+			return {
+				...state,
+				cartItems: state.cartItems.filter(
+					(cartItem) => cartItem.productId !== action.payload
+				),
+			};
 
 		default:
 			return state;

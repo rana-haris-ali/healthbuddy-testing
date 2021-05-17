@@ -5,7 +5,11 @@ import { Alert } from 'react-bootstrap';
 // variant prop to set message type i.e. danger etc.
 
 const Message = ({ variant, children }) => {
-  return <Alert variant={variant}>{children}</Alert>;
+	return <Alert variant={variant}>{children}</Alert>;
+};
+
+Message.defaultProps = {
+	variant: 'info',
 };
 
 export default Message;

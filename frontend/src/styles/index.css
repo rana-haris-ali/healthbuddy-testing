@@ -1,20 +1,36 @@
 main {
-  min-height: 80vh;
+	min-height: 80vh;
+}
+
+h1 {
+	font-size: 1.8rem;
+	padding: 1rem 0;
+}
+
+h2 {
+	font-size: 1.4rem;
+	padding: 0.5rem 0;
 }
 
 /* padding for product price */
 #product-price-padding {
-  padding: 1rem 0;
+	padding: 1rem 0;
 }
 
 /* margin for rating stars */
 .rating span {
-  margin: 0.1rem;
+	margin: 0.1rem;
 }
 
 /* for product image */
 .card-img-top {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
+	width: 100%;
+	height: 200px;
+	object-fit: contain;
+}
+
+.cart-screen-image {
+	max-width: 100px !important;
+	max-height: 100px !important;
+	object-fit: contain;
 }
