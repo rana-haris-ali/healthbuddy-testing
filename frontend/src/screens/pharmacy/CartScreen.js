@@ -15,6 +15,9 @@ import '../../styles/index.css';
 import Message from '../../components/Message';
 import { addToCart, removeFromCart } from '../../actions/pharmacy/cartActions';
 
+// Cart Screen with add item and remove item functionalitites
+//  and checkout handler
+
 const CartScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();
 	const { cartItems } = useSelector((state) => state.cart);
