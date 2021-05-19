@@ -1,5 +1,4 @@
 import axios from 'axios';
-import axios from 'axios';
 import {
 	USER_LOGIN_REQUEST,
 	USER_LOGIN_SUCCESS,
@@ -41,3 +40,5 @@ const login = (email, password) => async (dispatch) => {
 		});
 	}
 };
+
+export { login };
