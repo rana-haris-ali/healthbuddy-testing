@@ -33,7 +33,9 @@ const RegisterScreen = ({ location, history }) => {
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
-		if (password !== confirmPassword) {
+		if (name === '' || email === '' || password === '') {
+			setMessage('Please fill all fields');
+		} else if (password !== confirmPassword) {
 			setMessage("Passwords don't match");
 		} else {
 			dispatch(register(name, email, password));
@@ -43,8 +45,14 @@ const RegisterScreen = ({ location, history }) => {
 	return (
 		<FormContainer>
 			<h1>Sign Up</h1>
-			{message && <Message variant='danger'>{message}</Message>}
-			{error && <Message variant='danger'>{error}</Message>}
+
+			{/* if error from backend, then show error
+			   else if message from frontend, show message */}
+			{error ? (
+				<Message variant='danger'>{error}</Message>
+			) : message ? (
+				<Message variant='danger'>{message}</Message>
+			) : null}
 			{loading ? (
 				<Loader />
 			) : (
