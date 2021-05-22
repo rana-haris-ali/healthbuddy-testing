@@ -10,6 +10,9 @@ import {
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
 	USER_DETAILS_FAILURE,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_PROFILE_FAILURE,
 } from '../../constants/userConstants';
 
 const login = (email, password) => async (dispatch) => {
@@ -96,6 +99,9 @@ const register = (name, email, password) => async (dispatch) => {
 };
 
 const getUserDetails = (endpoint) => async (dispatch, getState) => {
+	// endpoint argument enables this action creator to be reused across
+	// different endpoints
+
 	try {
 		dispatch({
 			type: USER_DETAILS_REQUEST,
@@ -132,4 +138,42 @@ const getUserDetails = (endpoint) => async (dispatch, getState) => {
 	}
 };
 
-export { login, logout, register, getUserDetails };
+const updateUserDetails = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_UPDATE_PROFILE_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/profile`, user, config);
+
+		console.log(data);
+		dispatch({
+			type: USER_UPDATE_PROFILE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: USER_UPDATE_PROFILE_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export { login, logout, register, getUserDetails, updateUserDetails };

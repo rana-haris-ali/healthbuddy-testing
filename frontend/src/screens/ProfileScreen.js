@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getUserDetails } from '../actions/pharmacy/userActions';
+import {
+	getUserDetails,
+	updateUserDetails,
+} from '../actions/pharmacy/userActions';
 // import { register } from '../actions/pharmacy/userActions';
 
 const ProfileScreen = ({ location, history }) => {
@@ -19,6 +22,10 @@ const ProfileScreen = ({ location, history }) => {
 
 	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
+
+	const { error: errorFromUserUpdate, success } = useSelector(
+		(state) => state.userUpdateProfile
+	);
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -38,10 +45,12 @@ const ProfileScreen = ({ location, history }) => {
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
-		if (password !== confirmPassword) {
+		if (password !== '' && password !== confirmPassword) {
 			setMessage("Passwords don't match");
 		} else {
-			// dispatch(register(name, email, password));
+			// empty the message if previously filled with error
+			setMessage('');
+			dispatch(updateUserDetails({ name, email, password }));
 		}
 	};
 
@@ -52,10 +61,13 @@ const ProfileScreen = ({ location, history }) => {
 
 				{/* if error from backend, then show error
 	 else if message from frontend, show message */}
-				{error ? (
-					<Message variant='danger'>{error}</Message>
+				{error || errorFromUserUpdate ? (
+					<Message variant='danger'>{error || errorFromUserUpdate}</Message>
 				) : message ? (
 					<Message variant='danger'>{message}</Message>
+				) : null}
+				{success ? (
+					<Message variant='success'>Profile Update Successfully</Message>
 				) : null}
 				{loading ? (
 					<Loader />
