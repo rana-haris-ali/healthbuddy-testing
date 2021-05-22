@@ -28,7 +28,7 @@ const RegisterScreen = ({ location, history }) => {
 		if (userRegister.userInfo || userLogin.userInfo) {
 			history.push(redirect);
 		}
-	}, [userInfo, history, redirect]);
+	}, [userInfo, history, redirect, userRegister.userInfo, userLogin.userInfo]);
 
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
@@ -57,7 +57,7 @@ const RegisterScreen = ({ location, history }) => {
 				<Loader />
 			) : (
 				<>
-					<Form onSubmit={formSubmitHandler} className='my-4'>
+					<Form onSubmit={formSubmitHandler} className='my-2'>
 						<Form.Group>
 							<Form.Label>Name</Form.Label>
 							<Form.Control
