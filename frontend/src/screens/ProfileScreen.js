@@ -44,8 +44,9 @@ const ProfileScreen = ({ location, history }) => {
 
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
-
-		if (password !== '' && password !== confirmPassword) {
+		if (name === '' && email === '' && password === '') {
+			setMessage("Can't Submit Empty Form, Please Make The Changes");
+		} else if (password !== '' && password !== confirmPassword) {
 			setMessage("Passwords don't match");
 		} else {
 			// empty the message if previously filled with error
