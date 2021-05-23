@@ -165,6 +165,26 @@ const updateUserDetails = (user) => async (dispatch, getState) => {
 			type: USER_UPDATE_PROFILE_SUCCESS,
 			payload: data,
 		});
+
+		// login the user with the updated details
+
+		dispatch({
+			type: USER_LOGIN_SUCCESS,
+			payload: data,
+		});
+
+		// get the user details again so that the updated info
+		// can be shown on the profile. Send hand-picked properties excluding token.
+
+		dispatch({
+			type: USER_DETAILS_SUCCESS,
+			payload: {
+				_id: data._id,
+				name: data.name,
+				email: data.email,
+				isAdmin: data.isAdmin,
+			},
+		});
 	} catch (error) {
 		dispatch({
 			type: USER_UPDATE_PROFILE_FAILURE,
