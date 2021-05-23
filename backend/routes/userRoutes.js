@@ -7,6 +7,10 @@ import {
 	getUserProfile,
 	updateUserProfile,
 } from '../controllers/userController.js';
+import {
+	getShippingAddress,
+	updateShippingAddress,
+} from '../controllers/shippingController.js';
 
 const router = express.Router();
 
@@ -16,5 +20,10 @@ router
 	.route('/profile')
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile);
+
+router
+	.route('/shipping')
+	.get(protect, getShippingAddress)
+	.put(protect, updateShippingAddress);
 
 export default router;
