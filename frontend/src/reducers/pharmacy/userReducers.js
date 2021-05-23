@@ -38,7 +38,7 @@ const userRegisterReducer = (state = {}, action) => {
 		case USER_REGISTER_FAILURE:
 			return { loading: false, error: action.payload };
 		case USER_LOGOUT:
-			// on logout, empty the userRegisteration.userInfo too
+			// empty userInfo at user_logout
 			return {};
 		default:
 			return state;
