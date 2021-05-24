@@ -5,13 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { getShippingAddress } from '../../actions/pharmacy/cartActions';
+import {
+	getShippingAddress,
+	updateShippingAddress,
+} from '../../actions/pharmacy/cartActions';
 
 const ShippingScreen = ({ history }) => {
 	const [address, setAddress] = useState('');
 	const [city, setCity] = useState('');
 	const [postalCode, setPostalCode] = useState('');
 	const [country, setCountry] = useState('');
+
+	const [message, setMessage] = useState('');
 
 	const dispatch = useDispatch();
 
@@ -36,13 +41,24 @@ const ShippingScreen = ({ history }) => {
 			}
 		}
 	}, [userInfo, history, dispatch, shippingAddress]);
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+
+		if (address === '' || city === '' || postalCode === '' || country === '') {
+			setMessage('Please Enter All Details');
+		} else {
+			dispatch(updateShippingAddress({ address, city, postalCode, country }));
+		}
+	};
 	return (
 		<FormContainer>
 			{error && <Message variant='danger'>{error}</Message>}
+			{message && <Message variant='warning'>{message}</Message>}
 			{loading ? (
 				<Loader />
 			) : (
-				<Form>
+				<Form onSubmit={submitHandler}>
 					<Form.Group>
 						<Form.Label>Address</Form.Label>
 						<Form.Control
@@ -64,7 +80,7 @@ const ShippingScreen = ({ history }) => {
 					<Form.Group>
 						<Form.Label>Postal Code</Form.Label>
 						<Form.Control
-							type='text'
+							type='number'
 							placeholder='Enter Postal Code'
 							value={postalCode}
 							onChange={(e) => setPostalCode(e.target.value)}
