@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import CheckoutSteps from '../../components/pharmacy/CheckoutSteps';
+import CheckoutSteps from '../../components/NavigationSteps';
 import {
 	getShippingAddress,
 	updateShippingAddress,
@@ -55,7 +55,15 @@ const ShippingScreen = ({ history }) => {
 	};
 	return (
 		<FormContainer>
-			<CheckoutSteps step1 step2 />
+			<CheckoutSteps
+				steps={[
+					{ name: 'Login', link: '/login' },
+					{ name: 'Shipping', link: '/shipping' },
+					{ name: 'Payment', link: '/payment' },
+					{ name: 'Place Order', link: '/placeorder' },
+				]}
+				disabledSteps={['Payment', 'Place Order']}
+			/>
 			{error && <Message variant='danger'>{error}</Message>}
 			{message && <Message variant='warning'>{message}</Message>}
 			{loading ? (
