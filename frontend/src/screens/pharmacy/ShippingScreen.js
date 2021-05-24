@@ -49,6 +49,7 @@ const ShippingScreen = ({ history }) => {
 			setMessage('Please Enter All Details');
 		} else {
 			dispatch(updateShippingAddress({ address, city, postalCode, country }));
+			history.push('/payment');
 		}
 	};
 	return (
