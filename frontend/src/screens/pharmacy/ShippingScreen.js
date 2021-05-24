@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
+import CheckoutSteps from '../../components/pharmacy/CheckoutSteps';
 import {
 	getShippingAddress,
 	updateShippingAddress,
@@ -54,6 +55,7 @@ const ShippingScreen = ({ history }) => {
 	};
 	return (
 		<FormContainer>
+			<CheckoutSteps step1 step2 />
 			{error && <Message variant='danger'>{error}</Message>}
 			{message && <Message variant='warning'>{message}</Message>}
 			{loading ? (
