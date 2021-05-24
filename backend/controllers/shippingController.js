@@ -15,7 +15,7 @@ const getShippingAddress = asyncHandler(async (req, res) => {
 		});
 	} else {
 		res.status(404);
-		throw new Error('Address Not Found');
+		throw new Error('User Not Found');
 	}
 });
 
