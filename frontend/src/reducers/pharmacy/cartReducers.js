@@ -4,6 +4,9 @@ import {
 	CART_GET_SHIPPING_ADDRESS_REQUEST,
 	CART_GET_SHIPPING_ADDRESS_SUCCESS,
 	CART_REMOVE_ITEM,
+	CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
+	CART_UPDATE_SHIPPING_ADDRESS_REQUEST,
+	CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
 } from '../../constants/cartConstants';
 
 // cart reduecr checks if item already exists in the cart
@@ -56,6 +59,23 @@ const cartReducer = (
 				shippingAddress: action.payload,
 			};
 		case CART_GET_SHIPPING_ADDRESS_FAILURE:
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
+			};
+		case CART_UPDATE_SHIPPING_ADDRESS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
+		case CART_UPDATE_SHIPPING_ADDRESS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				shippingAddress: action.payload,
+			};
+		case CART_UPDATE_SHIPPING_ADDRESS_FAILURE:
 			return {
 				...state,
 				loading: false,
