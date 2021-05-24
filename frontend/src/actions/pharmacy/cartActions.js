@@ -5,6 +5,9 @@ import {
 	CART_GET_SHIPPING_ADDRESS_REQUEST,
 	CART_GET_SHIPPING_ADDRESS_SUCCESS,
 	CART_GET_SHIPPING_ADDRESS_FAILURE,
+	CART_UPDATE_SHIPPING_ADDRESS_REQUEST,
+	CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
+	CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
 } from '../../constants/cartConstants';
 
 const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -67,4 +70,45 @@ const getShippingAddress = () => async (dispatch, getState) => {
 	}
 };
 
-export { addToCart, removeFromCart, getShippingAddress };
+const updateShippingAddress =
+	(shippingAddress) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: CART_UPDATE_SHIPPING_ADDRESS_REQUEST,
+			});
+
+			const {
+				userLogin: {
+					userInfo: { token },
+				},
+			} = getState();
+
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			};
+
+			const { data } = await axios.put(
+				`/api/users/shipping`,
+				shippingAddress,
+				config
+			);
+
+			dispatch({
+				type: CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			});
+		}
+	};
+
+export { addToCart, removeFromCart, getShippingAddress, updateShippingAddress };
