@@ -8,6 +8,7 @@ import {
 	CART_UPDATE_SHIPPING_ADDRESS_REQUEST,
 	CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
 	CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
+	CART_SAVE_PAYMENT_METHOD,
 } from '../../constants/cartConstants';
 
 const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -111,4 +112,17 @@ const updateShippingAddress =
 		}
 	};
 
-export { addToCart, removeFromCart, getShippingAddress, updateShippingAddress };
+const savePaymentMethod = (paymentMethod) => async (dispatch) => {
+	dispatch({
+		type: CART_SAVE_PAYMENT_METHOD,
+		payload: paymentMethod,
+	});
+};
+
+export {
+	addToCart,
+	removeFromCart,
+	getShippingAddress,
+	updateShippingAddress,
+	savePaymentMethod,
+};
