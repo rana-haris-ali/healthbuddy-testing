@@ -4,6 +4,7 @@ import {
 	CART_GET_SHIPPING_ADDRESS_REQUEST,
 	CART_GET_SHIPPING_ADDRESS_SUCCESS,
 	CART_REMOVE_ITEM,
+	CART_SAVE_PAYMENT_METHOD,
 	CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
 	CART_UPDATE_SHIPPING_ADDRESS_REQUEST,
 	CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
@@ -80,6 +81,11 @@ const cartReducer = (
 				...state,
 				loading: false,
 				error: action.payload,
+			};
+		case CART_SAVE_PAYMENT_METHOD:
+			return {
+				...state,
+				paymentMethod: action.payload,
 			};
 		default:
 			return state;
