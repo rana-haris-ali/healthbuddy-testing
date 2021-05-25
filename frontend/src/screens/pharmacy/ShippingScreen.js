@@ -64,6 +64,8 @@ const ShippingScreen = ({ history }) => {
 				]}
 				disabledSteps={['Payment', 'Place Order']}
 			/>
+			<h1 className='text-center'>Shipping Address</h1>
+
 			{error && <Message variant='danger'>{error}</Message>}
 			{message && <Message variant='warning'>{message}</Message>}
 			{loading ? (
