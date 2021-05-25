@@ -8,7 +8,7 @@ const CheckoutSteps = ({ steps, disabledSteps }) => {
 		<Nav className='justify-content-center mb-4'>
 			{steps.map((step) => {
 				return (
-					<Nav.Item>
+					<Nav.Item key={step.name}>
 						<LinkContainer to={step.link}>
 							{/* disable step if included in disabled steps array */}
 							<Nav.Link disabled={disabledSteps.includes(step.name)}>
