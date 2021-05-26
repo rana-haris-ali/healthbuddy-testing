@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import CheckoutSteps from '../../components/NavigationSteps';
+import NavigationSteps from '../../components/NavigationSteps';
 import {
 	getShippingAddress,
 	updateShippingAddress,
@@ -31,14 +31,17 @@ const ShippingScreen = ({ history }) => {
 			// redirect to login if not logged in
 			history.push('/login?redirect=shipping');
 		} else {
-			if (shippingAddress === undefined) {
+			if (shippingAddress === null) {
 				// if shippingAddress is empty then fetch get request
 				dispatch(getShippingAddress());
 			} else {
-				setAddress(shippingAddress.address);
-				setCity(shippingAddress.city);
-				setPostalCode(shippingAddress.postalCode);
-				setCountry(shippingAddress.country);
+				const shippingAddressFromStorage = JSON.parse(
+					localStorage.getItem('shippingAddress')
+				);
+				setAddress(shippingAddressFromStorage.address);
+				setCity(shippingAddressFromStorage.city);
+				setPostalCode(shippingAddressFromStorage.postalCode);
+				setCountry(shippingAddressFromStorage.country);
 			}
 		}
 	}, [userInfo, history, dispatch, shippingAddress]);
@@ -55,7 +58,7 @@ const ShippingScreen = ({ history }) => {
 	};
 	return (
 		<FormContainer>
-			<CheckoutSteps
+			<NavigationSteps
 				steps={[
 					{ name: 'Login', link: '/login' },
 					{ name: 'Shipping', link: '/shipping' },
