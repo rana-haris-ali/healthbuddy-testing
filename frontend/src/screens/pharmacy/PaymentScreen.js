@@ -3,7 +3,7 @@ import { Form, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import FormContainer from '../../components/FormContainer';
-import CheckoutSteps from '../../components/NavigationSteps';
+import NavigationSteps from '../../components/NavigationSteps';
 import { savePaymentMethod } from '../../actions/pharmacy/cartActions';
 
 const PaymentScreen = ({ history }) => {
@@ -31,7 +31,7 @@ const PaymentScreen = ({ history }) => {
 	};
 	return (
 		<FormContainer>
-			<CheckoutSteps
+			<NavigationSteps
 				steps={[
 					{ name: 'Login', link: '/login' },
 					{ name: 'Shipping', link: '/shipping' },
