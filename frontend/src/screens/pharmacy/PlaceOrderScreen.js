@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
-import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap';
+import {
+	Row,
+	Col,
+	Form,
+	ListGroup,
+	Image,
+	Button,
+	Card,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import NavigationSteps from '../../components/NavigationSteps';
+import { addToCart, removeFromCart } from '../../actions/pharmacy/cartActions';
 
 const PlaceOrderScreen = () => {
+	const dispatch = useDispatch();
+
 	const cart = useSelector((state) => state.cart);
 	const { shippingAddress, paymentMethod, cartItems } = cart;
 
@@ -19,7 +30,7 @@ const PlaceOrderScreen = () => {
 
 	cart.shippingAmount = cart.netAmount > 1000 ? 100 : 200;
 	cart.taxAmount = 0.05 * cart.netAmount;
-
+	cart.totalAmount = cart.netAmount + cart.shippingAmount + cart.taxAmount;
 	return (
 		<>
 			<NavigationSteps
@@ -71,9 +82,44 @@ const PlaceOrderScreen = () => {
 														{item.name}
 													</Link>
 												</Col>
+
 												<Col md={4}>
 													{item.qty} x Rs. {item.price} = Rs.{' '}
 													{item.qty * item.price}
+												</Col>
+												<Col md={2}>
+													<Form.Control
+														as='select'
+														value={item.qty}
+														onChange={(e) =>
+															dispatch(
+																addToCart(
+																	item.productId,
+																	Number(e.target.value)
+																)
+															)
+														}
+													>
+														{/* render dropdown list of available quantity options */}
+														{[...Array(item.countInStock).keys()].map(
+															(option) => (
+																<option key={option + 1} value={option + 1}>
+																	{option + 1}
+																</option>
+															)
+														)}
+													</Form.Control>
+												</Col>
+												<Col md={1}>
+													<Button
+														type='button'
+														variant='light'
+														onClick={() =>
+															dispatch(removeFromCart(item.productId))
+														}
+													>
+														<i className='fas fa-trash'></i>
+													</Button>
 												</Col>
 											</Row>
 										</ListGroup.Item>
@@ -111,10 +157,7 @@ const PlaceOrderScreen = () => {
 								<strong>
 									<Row>
 										<Col>Total Amount:</Col>
-										<Col>
-											Rs.{' '}
-											{cart.netAmount + cart.shippingAmount + cart.taxAmount}
-										</Col>
+										<Col>Rs. {cart.totalAmount}</Col>
 									</Row>
 								</strong>
 							</ListGroup.Item>
