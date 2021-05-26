@@ -34,3 +34,9 @@ h2 {
 	max-height: 100px !important;
 	object-fit: contain;
 }
+
+.place-order-screen-image {
+	max-width: 50px !important;
+	max-height: 50px !important;
+	object-fit: contain;
+}
