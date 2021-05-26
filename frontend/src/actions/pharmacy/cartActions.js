@@ -60,6 +60,8 @@ const getShippingAddress = () => async (dispatch, getState) => {
 			type: CART_GET_SHIPPING_ADDRESS_SUCCESS,
 			payload: data,
 		});
+
+		localStorage.setItem('shippingAddress', JSON.stringify(data));
 	} catch (error) {
 		dispatch({
 			type: CART_GET_SHIPPING_ADDRESS_FAILURE,
@@ -101,6 +103,8 @@ const updateShippingAddress =
 				type: CART_UPDATE_SHIPPING_ADDRESS_SUCCESS,
 				payload: data,
 			});
+
+			localStorage.setItem('shippingAddress', JSON.stringify(data));
 		} catch (error) {
 			dispatch({
 				type: CART_UPDATE_SHIPPING_ADDRESS_FAILURE,
@@ -117,6 +121,7 @@ const savePaymentMethod = (paymentMethod) => async (dispatch) => {
 		type: CART_SAVE_PAYMENT_METHOD,
 		payload: paymentMethod,
 	});
+	localStorage.setItem('paymentMethod', JSON.stringify(paymentMethod));
 };
 
 export {
