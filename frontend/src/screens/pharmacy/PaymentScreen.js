@@ -39,6 +39,7 @@ const PaymentScreen = ({ history }) => {
 					{ name: 'Place Order', link: '/placeorder' },
 				]}
 				disabledSteps={['Place Order']}
+				currentStep='Payment'
 			/>
 			<h1 className='text-center'>Payment Method</h1>
 			<Form onSubmit={submitHandler}>
