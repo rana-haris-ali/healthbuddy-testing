@@ -66,6 +66,7 @@ const ShippingScreen = ({ history }) => {
 					{ name: 'Place Order', link: '/placeorder' },
 				]}
 				disabledSteps={['Payment', 'Place Order']}
+				currentStep='Shipping'
 			/>
 			<h1 className='text-center'>Shipping Address</h1>
 
