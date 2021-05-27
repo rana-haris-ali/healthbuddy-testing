@@ -53,7 +53,7 @@ const PaymentScreen = ({ history }) => {
 							label='Paypal or Credit Card'
 							id='payPal'
 							name='paymentMethod'
-							value='payPal'
+							value='PayPal or Credit Card'
 							className='mt-2 mb-2'
 							onChange={(e) => setPaymentMethod(e.target.value)}
 						></Form.Check>
@@ -62,7 +62,7 @@ const PaymentScreen = ({ history }) => {
 							label='Cash on Delivery'
 							id='cashOnDelivery'
 							name='paymentMethod'
-							value='cashOnDelivery'
+							value='Cash On Delivery'
 							className='mt-2 mb-2'
 							onChange={(e) => setPaymentMethod(e.target.value)}
 						></Form.Check>
