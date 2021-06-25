@@ -7,7 +7,7 @@ import NavigationSteps from '../../components/NavigationSteps';
 import { savePaymentMethod } from '../../actions/pharmacy/cartActions';
 
 const PaymentScreen = ({ history }) => {
-	const [paymentMethod, setPaymentMethod] = useState('PayPal');
+	const [paymentMethod, setPaymentMethod] = useState('PayPal or Credit Card');
 
 	const dispatch = useDispatch();
 
