@@ -6,7 +6,7 @@ import FormContainer from '../../components/FormContainer';
 import NavigationSteps from '../../components/NavigationSteps';
 import { savePaymentMethod } from '../../actions/pharmacy/cartActions';
 
-const PaymentScreen = ({ history }) => {
+const PaymentMethodScreen = ({ history }) => {
 	const [paymentMethod, setPaymentMethod] = useState('PayPal or Credit Card');
 
 	const dispatch = useDispatch();
@@ -76,4 +76,4 @@ const PaymentScreen = ({ history }) => {
 	);
 };
 
-export default PaymentScreen;
+export default PaymentMethodScreen;
