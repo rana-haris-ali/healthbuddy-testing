@@ -10,6 +10,8 @@ import Loader from '../../components/Loader';
 import { ORDER_PAY_RESET } from '../../constants/orderConstants';
 import { getSingleOrder, payOrder } from '../../actions/pharmacy/orderActions';
 
+// Order details screen shown after order is placed
+
 const OrderScreen = ({ match }) => {
 	const orderId = match.params.id;
 

@@ -16,6 +16,8 @@ import NavigationSteps from '../../components/NavigationSteps';
 import { addToCart, removeFromCart } from '../../actions/pharmacy/cartActions';
 import { createOrder } from '../../actions/pharmacy/orderActions';
 
+// The final checkout screen for placing order
+
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
