@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Row,
-	Col,
-	Form,
-	ListGroup,
-	Image,
-	Button,
-	Card,
-} from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { PayPalButton } from 'react-paypal-button-v2';
@@ -15,10 +7,7 @@ import axios from 'axios';
 
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import {
-	ORDER_PAY_REQUEST,
-	ORDER_PAY_RESET,
-} from '../../constants/orderConstants';
+import { ORDER_PAY_RESET } from '../../constants/orderConstants';
 import { getSingleOrder, payOrder } from '../../actions/pharmacy/orderActions';
 
 const OrderScreen = ({ match }) => {
@@ -176,6 +165,7 @@ const OrderScreen = ({ match }) => {
 									</Row>
 								</strong>
 							</ListGroup.Item>
+							{errorPay && <Message variant='danger'>{errorPay}</Message>}
 							{order.paymentMethod === 'PayPal or Credit Card'
 								? !order.isPaid && (
 										<ListGroup.Item>
