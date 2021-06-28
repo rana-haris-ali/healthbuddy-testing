@@ -15,6 +15,7 @@ import {
 import {
 	orderCreateReducer,
 	orderDetailsReducer,
+	myOrdersListReducer,
 	orderPayReducer,
 } from './reducers/pharmacy/orderReducers';
 
@@ -28,6 +29,7 @@ const reducers = combineReducers({
 	userUpdateProfile: userUpdateProfileReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
+	myOrdersList: myOrdersListReducer,
 	orderPay: orderPayReducer,
 });
 
