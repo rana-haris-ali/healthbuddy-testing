@@ -31,14 +31,14 @@ const PlaceOrderScreen = ({ history }) => {
 	);
 
 	cart.shippingAmount = cart.netAmount > 1000 ? 100 : 200;
-	cart.taxAmount = 0.05 * cart.netAmount;
+	cart.taxAmount = Math.floor(0.05 * cart.netAmount);
 	cart.totalAmount = cart.netAmount + cart.shippingAmount + cart.taxAmount;
 
 	useEffect(() => {
 		if (success) {
 			history.push(`/orders/${order._id}`);
 		}
-	}, [history, success]);
+	}, [history, success, order]);
 
 	const placeOrderHandler = () => {
 		dispatch(
