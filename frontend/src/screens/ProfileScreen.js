@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import { Table, Row, Col, Form, Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Message from '../components/Message';
@@ -8,6 +9,7 @@ import {
 	getUserDetails,
 	updateUserDetails,
 } from '../actions/pharmacy/userActions';
+import { getMyOrdersList } from '../actions/pharmacy/orderActions';
 // import { register } from '../actions/pharmacy/userActions';
 
 const ProfileScreen = ({ location, history }) => {
@@ -27,7 +29,14 @@ const ProfileScreen = ({ location, history }) => {
 		(state) => state.userUpdateProfile
 	);
 
+	const {
+		loading: loadingOrders,
+		orders,
+		error: errorOrders,
+	} = useSelector((state) => state.myOrdersList);
+
 	useEffect(() => {
+		dispatch(getMyOrdersList());
 		if (!userInfo) {
 			// if user isn't logged in, redirect to login
 			history.push('/login');
@@ -116,7 +125,63 @@ const ProfileScreen = ({ location, history }) => {
 					</Form>
 				)}
 			</Col>
-			<Col md={9}></Col>
+			<Col md={9}>
+				<h1>Orders</h1>
+				{loadingOrders ? (
+					<Loader />
+				) : errorOrders ? (
+					<Message variant='danger'>{errorOrders}</Message>
+				) : (
+					<Table striped bordered hover responsive className='table-sm'>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Date</th>
+								<th>Total</th>
+								<th>Paid</th>
+								<th>Delivered</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{orders.map((order) => {
+								return (
+									<tr key={order._id}>
+										<td>{order._id}</td>
+										<td>{order.createdAt.substring(0, 10)}</td>
+										<td>{order.totalAmount}</td>
+										<td>
+											{order.isPaid ? (
+												order.paidOn.substring(0, 10)
+											) : (
+												<i
+													className='fas fa-times'
+													style={{ color: 'red' }}
+												></i>
+											)}
+										</td>
+										<td>
+											{order.isDelivered ? (
+												order.deliveredOn.substring(0, 10)
+											) : (
+												<i
+													className='fas fa-times'
+													style={{ color: 'red' }}
+												></i>
+											)}
+										</td>
+										<td>
+											<LinkContainer to={`/orders/${order._id}`}>
+												<Button variant='light'>Details</Button>
+											</LinkContainer>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</Table>
+				)}
+			</Col>
 		</Row>
 	);
 };
