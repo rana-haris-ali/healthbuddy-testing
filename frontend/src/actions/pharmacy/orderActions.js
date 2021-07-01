@@ -48,9 +48,7 @@ const createOrder = (order) => async (dispatch, getState) => {
 
 const getSingleOrder = (id) => async (dispatch, getState) => {
 	try {
-		dispatch({
-			type: ORDER_DETAILS_REQUEST,
-		});
+		dispatch({ type: ORDER_DETAILS_REQUEST });
 
 		const { token } = getState().userLogin.userInfo;
 
