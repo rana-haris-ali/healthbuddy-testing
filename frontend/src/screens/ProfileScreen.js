@@ -36,7 +36,10 @@ const ProfileScreen = ({ location, history }) => {
 	} = useSelector((state) => state.myOrdersList);
 
 	useEffect(() => {
-		dispatch(getMyOrdersList());
+		if (orders.length === 0) {
+			// fetch orders on page load when orders array is empty
+			dispatch(getMyOrdersList());
+		}
 		if (!userInfo) {
 			// if user isn't logged in, redirect to login
 			history.push('/login');
@@ -49,6 +52,7 @@ const ProfileScreen = ({ location, history }) => {
 				setEmail(user.email);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user, userInfo, history, dispatch]);
 
 	const formSubmitHandler = (event) => {
@@ -149,7 +153,7 @@ const ProfileScreen = ({ location, history }) => {
 									<tr key={order._id}>
 										<td>{order._id}</td>
 										<td>{order.createdAt.substring(0, 10)}</td>
-										<td>{order.totalAmount}</td>
+										<td>Rs. {order.totalAmount}</td>
 										<td>
 											{order.isPaid ? (
 												order.paidOn.substring(0, 10)
@@ -172,7 +176,9 @@ const ProfileScreen = ({ location, history }) => {
 										</td>
 										<td>
 											<LinkContainer to={`/orders/${order._id}`}>
-												<Button variant='light'>Details</Button>
+												<Button className='btn-sm' variant='light'>
+													Details
+												</Button>
 											</LinkContainer>
 										</td>
 									</tr>
