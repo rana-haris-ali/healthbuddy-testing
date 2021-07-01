@@ -12,6 +12,7 @@ import {
 	MY_ORDERS_LIST_REQUEST,
 	MY_ORDERS_LIST_SUCCESS,
 	MY_ORDERS_LIST_FAILURE,
+	MY_ORDERS_LIST_RESET,
 } from '../../constants/orderConstants';
 
 const orderCreateReducer = (state = {}, action) => {
@@ -51,6 +52,9 @@ const myOrdersListReducer = (state = { orders: [] }, action) => {
 			return { loading: false, orders: action.payload };
 		case MY_ORDERS_LIST_FAILURE:
 			return { loading: false, error: action.payload };
+		case MY_ORDERS_LIST_RESET:
+			// empty myOrdersList at user_logout
+			return { orders: [] };
 		default:
 			return state;
 	}
