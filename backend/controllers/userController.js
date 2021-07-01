@@ -101,4 +101,22 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile };
+// ADMIN ROUTES
+
+// @desc Get all users
+//  @route GET /api/users
+// @access PRIVATE
+// @privilege ADMIN
+const getAllUsers = asyncHandler(async (req, res) => {
+	// return all accounts except the one that the admin is logged in with
+	const users = await User.find({ _id: { $ne: req.user._id } });
+	res.json(users);
+});
+
+export {
+	authUser,
+	getUserProfile,
+	registerUser,
+	updateUserProfile,
+	getAllUsers,
+};
