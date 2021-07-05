@@ -10,7 +10,6 @@ import {
 	updateUserDetails,
 } from '../actions/pharmacy/userActions';
 import { getMyOrdersList } from '../actions/pharmacy/orderActions';
-// import { register } from '../actions/pharmacy/userActions';
 
 const ProfileScreen = ({ location, history }) => {
 	const [name, setName] = useState('');
@@ -175,7 +174,7 @@ const ProfileScreen = ({ location, history }) => {
 											)}
 										</td>
 										<td>
-											<LinkContainer to={`/orders/${order._id}`}>
+											<LinkContainer to={`/order/${order._id}`}>
 												<Button className='btn-sm' variant='light'>
 													Details
 												</Button>
