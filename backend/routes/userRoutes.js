@@ -6,7 +6,10 @@ import {
 	registerUser,
 	getUserProfile,
 	updateUserProfile,
+	getSingleUser,
 	getAllUsers,
+	updateSingleUser,
+	deleteUser,
 } from '../controllers/userController.js';
 import {
 	getShippingAddress,
@@ -28,5 +31,11 @@ router
 	.route('/shipping')
 	.get(protect, getShippingAddress)
 	.put(protect, updateShippingAddress);
+
+router
+	.route('/:id')
+	.get(protect, adminAuth, getSingleUser)
+	.put(protect, adminAuth, updateSingleUser)
+	.delete(protect, adminAuth, deleteUser);
 
 export default router;
