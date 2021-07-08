@@ -3,10 +3,13 @@ import { Table, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-import MyModal from '../components/MyModal';
-import { getAllUserList, deleteUser } from '../actions/pharmacy/userActions';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
+import MyModal from '../../components/MyModal';
+import {
+	getAllUserListAdmin,
+	deleteUserAdmin,
+} from '../../actions/pharmacy/userActions';
 
 const UserListAdminScreen = ({ history }) => {
 	// state to control modal window
@@ -18,24 +21,24 @@ const UserListAdminScreen = ({ history }) => {
 
 	const dispatch = useDispatch();
 
-	const { loading, users, error } = useSelector((state) => state.userList);
+	const { loading, users, error } = useSelector((state) => state.userListAdmin);
 
 	const { userInfo } = useSelector((state) => state.userLogin);
 
 	const { success: successDelete, error: errorDelete } = useSelector(
-		(state) => state.userDelete
+		(state) => state.userDeleteAdmin
 	);
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
-			dispatch(getAllUserList());
+			dispatch(getAllUserListAdmin());
 		} else {
 			history.push('/login');
 		}
 	}, [dispatch, history, userInfo, successDelete]);
 
 	const deleteHandler = (id) => {
-		dispatch(deleteUser(id));
+		dispatch(deleteUserAdmin(id));
 		setModalShow(false);
 	};
 
@@ -89,7 +92,7 @@ const UserListAdminScreen = ({ history }) => {
 										)}
 									</td>
 									<td style={{ display: 'flex', justifyContent: 'center' }}>
-										<LinkContainer to={`/user/${user._id}/edit`}>
+										<LinkContainer to={`/admin/user/${user._id}/edit`}>
 											<Button variant='light' className='btn-sm'>
 												<i className='fas fa-edit'></i>
 											</Button>
