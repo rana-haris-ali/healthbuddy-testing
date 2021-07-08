@@ -15,13 +15,19 @@ import {
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAILURE,
 	USER_DETAILS_RESET,
-	ADMIN_ALL_USERS_LIST_REQUEST,
-	ADMIN_ALL_USERS_LIST_SUCCESS,
-	ADMIN_ALL_USERS_LIST_FAILURE,
-	ADMIN_ALL_USERS_LIST_RESET,
-	ADMIN_DELETE_USER_REQUEST,
-	ADMIN_DELETE_USER_SUCCESS,
-	ADMIN_DELETE_USER_FAILURE,
+	ALL_USERS_LIST_ADMIN_REQUEST,
+	ALL_USERS_LIST_ADMIN_SUCCESS,
+	ALL_USERS_LIST_ADMIN_FAILURE,
+	ALL_USERS_LIST_ADMIN_RESET,
+	DELETE_USER_ADMIN_REQUEST,
+	DELETE_USER_ADMIN_SUCCESS,
+	DELETE_USER_ADMIN_FAILURE,
+	EDIT_USER_ADMIN_REQUEST,
+	EDIT_USER_ADMIN_SUCCESS,
+	EDIT_USER_ADMIN_FAILURE,
+	GET_SINGLE_USER_ADMIN_REQUEST,
+	GET_SINGLE_USER_ADMIN_SUCCESS,
+	GET_SINGLE_USER_ADMIN_FAILURE,
 } from '../../constants/userConstants';
 
 const login = (email, password) => async (dispatch) => {
@@ -64,7 +70,7 @@ const logout = () => (dispatch) => {
 	dispatch({ type: USER_LOGOUT });
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: MY_ORDERS_LIST_RESET });
-	dispatch({ type: ADMIN_ALL_USERS_LIST_RESET });
+	dispatch({ type: ALL_USERS_LIST_ADMIN_RESET });
 };
 
 const register = (name, email, password) => async (dispatch) => {
@@ -205,11 +211,127 @@ const updateUserDetails = (user) => async (dispatch, getState) => {
 	}
 };
 
-// get all users list for admin use
-const getAllUserList = () => async (dispatch, getState) => {
+// FOR ADMIN USE
+// get particular user
+const getSingleUserAdmin = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({
-			type: ADMIN_ALL_USERS_LIST_REQUEST,
+			type: GET_SINGLE_USER_ADMIN_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.get(`/api/users/${id}`, config);
+
+		dispatch({
+			type: GET_SINGLE_USER_ADMIN_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_SINGLE_USER_ADMIN_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+// FOR ADMIN USE
+// edit particular user
+const editUserAdmin = (id, userDetails) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: EDIT_USER_ADMIN_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/${id}`, userDetails, config);
+
+		dispatch({
+			type: EDIT_USER_ADMIN_SUCCESS,
+			payload: data,
+		});
+		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+	} catch (error) {
+		dispatch({
+			type: EDIT_USER_ADMIN_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+// FOR ADMIN USE
+// delete particular user
+const deleteUserAdmin = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: DELETE_USER_ADMIN_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		await axios.delete(`/api/users/${id}`, config);
+
+		dispatch({
+			type: DELETE_USER_ADMIN_SUCCESS,
+		});
+	} catch (error) {
+		dispatch({
+			type: DELETE_USER_ADMIN_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+// ADMIN USE
+// get all users list for admin use
+const getAllUserListAdmin = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: ALL_USERS_LIST_ADMIN_REQUEST,
 		});
 
 		// get token from state
@@ -228,50 +350,12 @@ const getAllUserList = () => async (dispatch, getState) => {
 		const { data } = await axios.get(`/api/users`, config);
 
 		dispatch({
-			type: ADMIN_ALL_USERS_LIST_SUCCESS,
+			type: ALL_USERS_LIST_ADMIN_SUCCESS,
 			payload: data,
 		});
 	} catch (error) {
 		dispatch({
-			type: ADMIN_ALL_USERS_LIST_FAILURE,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message,
-		});
-	}
-};
-
-// FOR ADMIN USE
-// delete particular user
-const deleteUser = (id) => async (dispatch, getState) => {
-	try {
-		dispatch({
-			type: ADMIN_DELETE_USER_REQUEST,
-		});
-
-		// get token from state
-		const {
-			userLogin: {
-				userInfo: { token },
-			},
-		} = getState();
-
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		};
-
-		const { data } = await axios.delete(`/api/users/${id}`, config);
-
-		dispatch({
-			type: ADMIN_DELETE_USER_SUCCESS,
-			payload: data,
-		});
-	} catch (error) {
-		dispatch({
-			type: ADMIN_DELETE_USER_FAILURE,
+			type: ALL_USERS_LIST_ADMIN_FAILURE,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -286,6 +370,9 @@ export {
 	register,
 	getUserDetails,
 	updateUserDetails,
-	getAllUserList,
-	deleteUser,
+	// ADMIN
+	getSingleUserAdmin,
+	editUserAdmin,
+	deleteUserAdmin,
+	getAllUserListAdmin,
 };
