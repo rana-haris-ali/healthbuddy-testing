@@ -13,13 +13,20 @@ import {
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAILURE,
 	USER_DETAILS_RESET,
-	ADMIN_ALL_USERS_LIST_REQUEST,
-	ADMIN_ALL_USERS_LIST_SUCCESS,
-	ADMIN_ALL_USERS_LIST_FAILURE,
-	ADMIN_ALL_USERS_LIST_RESET,
-	ADMIN_DELETE_USER_REQUEST,
-	ADMIN_DELETE_USER_SUCCESS,
-	ADMIN_DELETE_USER_FAILURE,
+	ALL_USERS_LIST_ADMIN_REQUEST,
+	ALL_USERS_LIST_ADMIN_SUCCESS,
+	ALL_USERS_LIST_ADMIN_FAILURE,
+	ALL_USERS_LIST_ADMIN_RESET,
+	DELETE_USER_ADMIN_REQUEST,
+	DELETE_USER_ADMIN_SUCCESS,
+	DELETE_USER_ADMIN_FAILURE,
+	EDIT_USER_ADMIN_REQUEST,
+	EDIT_USER_ADMIN_SUCCESS,
+	EDIT_USER_ADMIN_FAILURE,
+	GET_SINGLE_USER_ADMIN_REQUEST,
+	GET_SINGLE_USER_ADMIN_SUCCESS,
+	GET_SINGLE_USER_ADMIN_FAILURE,
+	EDIT_USER_ADMIN_RESET,
 } from '../../constants/userConstants';
 
 const userLoginReducer = (state = {}, action) => {
@@ -85,31 +92,59 @@ const userUpdateProfileReducer = (state = {}, action) => {
 	}
 };
 
-// all users list for admin use
-const userListReducer = (state = { users: [] }, action) => {
+const userDetailsAdminReducer = (state = { user: {} }, action) => {
 	switch (action.type) {
-		case ADMIN_ALL_USERS_LIST_REQUEST:
-			return { loading: true };
-		case ADMIN_ALL_USERS_LIST_SUCCESS:
-			return { loading: false, users: action.payload };
-		case ADMIN_ALL_USERS_LIST_FAILURE:
-			return { loading: false, error: action.payload };
-		case ADMIN_ALL_USERS_LIST_RESET:
-			// empty userList at admin_logout
-			return { users: [] };
+		case GET_SINGLE_USER_ADMIN_REQUEST:
+			return { ...state, loading: true };
+		case GET_SINGLE_USER_ADMIN_SUCCESS:
+			return { ...state, loading: false, user: action.payload };
+		case GET_SINGLE_USER_ADMIN_FAILURE:
+			return { ...state, loading: false, error: action.payload };
 		default:
 			return state;
 	}
 };
 
-const userDeleteReducer = (state = {}, action) => {
+const userEditAdminReducer = (state = {}, action) => {
 	switch (action.type) {
-		case ADMIN_DELETE_USER_REQUEST:
+		case EDIT_USER_ADMIN_REQUEST:
 			return { loading: true };
-		case ADMIN_DELETE_USER_SUCCESS:
-			return { loading: false, success: true };
-		case ADMIN_DELETE_USER_FAILURE:
+		case EDIT_USER_ADMIN_SUCCESS:
+			return { loading: false, success: true, updatedUser: action.payload };
+		case EDIT_USER_ADMIN_FAILURE:
 			return { loading: false, error: action.payload };
+		case EDIT_USER_ADMIN_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+const userDeleteAdminReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DELETE_USER_ADMIN_REQUEST:
+			return { loading: true };
+		case DELETE_USER_ADMIN_SUCCESS:
+			return { loading: false, success: true };
+		case DELETE_USER_ADMIN_FAILURE:
+			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
+
+// all users list for admin use
+const userListAdminReducer = (state = { users: [] }, action) => {
+	switch (action.type) {
+		case ALL_USERS_LIST_ADMIN_REQUEST:
+			return { loading: true };
+		case ALL_USERS_LIST_ADMIN_SUCCESS:
+			return { loading: false, users: action.payload };
+		case ALL_USERS_LIST_ADMIN_FAILURE:
+			return { loading: false, error: action.payload };
+		case ALL_USERS_LIST_ADMIN_RESET:
+			// empty userList at admin_logout
+			return { users: [] };
 		default:
 			return state;
 	}
@@ -120,6 +155,9 @@ export {
 	userRegisterReducer,
 	userDetailsReducer,
 	userUpdateProfileReducer,
-	userListReducer,
-	userDeleteReducer,
+	// ADMIN
+	userDetailsAdminReducer,
+	userEditAdminReducer,
+	userDeleteAdminReducer,
+	userListAdminReducer,
 };
