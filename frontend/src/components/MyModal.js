@@ -2,14 +2,16 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 const MyModal = (props) => {
-	const { title, heading, body, buttonText, onHide, clickHandler } = props;
+	const { title, heading, body, buttonText, onHide, show, clickHandler } =
+		props;
 
 	// extract the userName from body prop so we can make it bold
 	const bodyText = body.split(':')[0];
 	const userName = body.split(':')[1];
 	return (
 		<Modal
-			{...props}
+			show={show}
+			onHide={onHide}
 			size='md'
 			aria-labelledby='contained-modal-title-vcenter'
 			centered
