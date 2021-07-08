@@ -35,7 +35,7 @@ const ProfileScreen = ({ location, history }) => {
 	} = useSelector((state) => state.myOrdersList);
 
 	useEffect(() => {
-		if (orders.length === 0) {
+		if (orders && orders.length === 0) {
 			// fetch orders on page load when orders array is empty
 			dispatch(getMyOrdersList());
 		}
