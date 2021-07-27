@@ -28,11 +28,9 @@ const ProfileScreen = ({ location, history }) => {
 		(state) => state.userUpdateProfile
 	);
 
-	const {
-		loading: loadingOrders,
-		orders,
-		error: errorOrders,
-	} = useSelector((state) => state.myOrdersList);
+	const { loading: loadingOrders, orders, error: errorOrders } = useSelector(
+		(state) => state.myOrdersList
+	);
 
 	useEffect(() => {
 		if (orders && orders.length === 0) {
@@ -134,6 +132,8 @@ const ProfileScreen = ({ location, history }) => {
 					<Loader />
 				) : errorOrders ? (
 					<Message variant='danger'>{errorOrders}</Message>
+				) : orders.length === 0 ? (
+					<Message variant='dark'>No Orders to Show</Message>
 				) : (
 					<Table striped bordered hover responsive className='table-sm'>
 						<thead>
