@@ -38,8 +38,7 @@ const UserEditAdminScreen = ({ match }) => {
 
 	// trigger modal on pressing enter key
 	window.addEventListener('keyup', (e) => {
-		// enter key has code 13
-		if (e.keyCode === 13) {
+		if (e.key === 'Enter') {
 			setModalShow(true);
 		}
 	});
