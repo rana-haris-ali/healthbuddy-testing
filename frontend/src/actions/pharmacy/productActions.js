@@ -8,6 +8,12 @@ import {
 	PRODUCT_DELETE_ADMIN_REQUEST,
 	PRODUCT_DELETE_ADMIN_SUCCESS,
 	PRODUCT_DELETE_ADMIN_FAILURE,
+	PRODUCT_CREATE_ADMIN_REQUEST,
+	PRODUCT_CREATE_ADMIN_SUCCESS,
+	PRODUCT_CREATE_ADMIN_FAILURE,
+	PRODUCT_EDIT_ADMIN_REQUEST,
+	PRODUCT_EDIT_ADMIN_SUCCESS,
+	PRODUCT_EDIT_ADMIN_FAILURE,
 } from '../../constants/productConstants';
 import axios from 'axios';
 
@@ -56,7 +62,85 @@ const singleProductDetails = (id) => async (dispatch) => {
 
 // ADMIN USE
 
-// delete product -- ADMIN use
+// CREATE new product -- ADMIN use
+const createProduct = (product) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PRODUCT_CREATE_ADMIN_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.post('/api/products', product, config);
+
+		dispatch({
+			type: PRODUCT_CREATE_ADMIN_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_CREATE_ADMIN_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+// EDIT product -- ADMIN use
+const editProduct = (id, productDetails) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PRODUCT_EDIT_ADMIN_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.put(
+			`/api/products/${id}`,
+			productDetails,
+			config
+		);
+
+		dispatch({
+			type: PRODUCT_EDIT_ADMIN_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_EDIT_ADMIN_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+// DELETE product -- ADMIN use
 const deleteProduct = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({
@@ -93,4 +177,10 @@ const deleteProduct = (id) => async (dispatch, getState) => {
 	}
 };
 
-export { productList, singleProductDetails, deleteProduct };
+export {
+	productList,
+	singleProductDetails,
+	createProduct,
+	editProduct,
+	deleteProduct,
+};

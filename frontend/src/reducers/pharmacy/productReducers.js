@@ -9,6 +9,15 @@ import {
 	PRODUCT_DELETE_ADMIN_SUCCESS,
 	PRODUCT_DELETE_ADMIN_FAILURE,
 	PRODUCT_DELETE_ADMIN_RESET,
+	PRODUCT_CREATE_ADMIN_REQUEST,
+	PRODUCT_CREATE_ADMIN_SUCCESS,
+	PRODUCT_CREATE_ADMIN_FAILURE,
+	PRODUCT_CREATE_ADMIN_RESET,
+	PRODUCT_DETAILS_RESET,
+	PRODUCT_EDIT_ADMIN_REQUEST,
+	PRODUCT_EDIT_ADMIN_SUCCESS,
+	PRODUCT_EDIT_ADMIN_FAILURE,
+	PRODUCT_EDIT_ADMIN_RESET,
 } from '../../constants/productConstants';
 
 // reducer to get full list of products
@@ -36,6 +45,8 @@ const productDetailsReducer = (
 			return { loading: false, product: action.payload };
 		case PRODUCT_DETAILS_FAILURE:
 			return { loading: false, error: action.payload };
+		case PRODUCT_DETAILS_RESET:
+			return {};
 		default:
 			return state;
 	}
@@ -43,7 +54,39 @@ const productDetailsReducer = (
 
 // ADMIN USE
 
-// reducer for deleting product
+// product CREATE reducer
+const productCreateAdminReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_CREATE_ADMIN_REQUEST:
+			return { loading: true };
+		case PRODUCT_CREATE_ADMIN_SUCCESS:
+			return { loading: false, success: true, product: action.payload };
+		case PRODUCT_CREATE_ADMIN_FAILURE:
+			return { loading: false, error: action.payload };
+		case PRODUCT_CREATE_ADMIN_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+// product EDIT reducer
+const productEditAdminReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_EDIT_ADMIN_REQUEST:
+			return { loading: true };
+		case PRODUCT_EDIT_ADMIN_SUCCESS:
+			return { loading: false, success: true, updatedProduct: action.payload };
+		case PRODUCT_EDIT_ADMIN_FAILURE:
+			return { loading: false, error: action.payload };
+		case PRODUCT_EDIT_ADMIN_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+// product DELETE reducer
 const productDeleteAdminReducer = (state = {}, action) => {
 	switch (action.type) {
 		case PRODUCT_DELETE_ADMIN_REQUEST:
@@ -59,4 +102,10 @@ const productDeleteAdminReducer = (state = {}, action) => {
 	}
 };
 
-export { productListReducer, productDetailsReducer, productDeleteAdminReducer };
+export {
+	productListReducer,
+	productDetailsReducer,
+	productCreateAdminReducer,
+	productEditAdminReducer,
+	productDeleteAdminReducer,
+};

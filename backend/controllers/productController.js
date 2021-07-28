@@ -26,6 +26,56 @@ const getSingleProduct = asyncHandler(async (req, res) => {
 
 // ADMIN ROUTES
 
+// @desc CREATE single product
+//  @route POST /api/products
+// @access Private
+// @privilige ADMIN
+
+const createProduct = asyncHandler(async (req, res) => {
+	try {
+		const createdProduct = await Product.create({
+			...req.body,
+			user: req.user._id,
+		});
+		res.status(201).json(createdProduct);
+	} catch (error) {
+		res.status(500);
+		throw new Error('Product could not be created. Try again later');
+	}
+});
+
+// @desc EDIT single product
+//  @route PUT /api/products/:id
+// @access Private
+// @privilige ADMIN
+
+const editProduct = asyncHandler(async (req, res) => {
+	const product = await Product.findById(req.params.id);
+
+	if (product) {
+		try {
+			product.name = req.body.name || product.name;
+			product.image = req.body.image || product.image;
+			product.brand = req.body.brand || product.brand;
+			product.category = req.body.category || product.category;
+			product.description = req.body.description || product.description;
+			product.price = req.body.price || product.price;
+			product.countInStock = req.body.countInStock || product.countInStock;
+
+			const updatedProduct = await product.save();
+			res.status(200).json(updatedProduct);
+		} catch (error) {
+			res.status(500);
+			throw new Error(
+				'An error occured while updating the product. Please try again later'
+			);
+		}
+	} else {
+		res.status(404);
+		throw new Error('Product not found');
+	}
+});
+
 // @desc DELETE single product
 //  @route DELETE /api/products/:id
 // @access Private
@@ -51,4 +101,10 @@ const deleteProduct = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getAllProducts, getSingleProduct, deleteProduct };
+export {
+	getAllProducts,
+	getSingleProduct,
+	createProduct,
+	editProduct,
+	deleteProduct,
+};
