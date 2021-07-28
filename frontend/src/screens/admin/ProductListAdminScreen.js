@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import MyModal from '../../components/MyModal';
-import { productList } from '../../actions/pharmacy/productActions';
+import { PRODUCT_DELETE_ADMIN_RESET } from '..//../constants/productConstants';
+import {
+	productList,
+	deleteProduct,
+} from '../../actions/pharmacy/productActions';
 
 const ProductListAdminScreen = ({ history, match }) => {
 	// state to control modal window
@@ -18,11 +22,22 @@ const ProductListAdminScreen = ({ history, match }) => {
 
 	const dispatch = useDispatch();
 
+	const { userInfo } = useSelector((state) => state.userLogin);
+
 	const { loading, products, error } = useSelector(
 		(state) => state.productList
 	);
 
-	const { userInfo } = useSelector((state) => state.userLogin);
+	const {
+		loading: loadingDelete,
+		success: successDelete,
+		error: errorDelete,
+	} = useSelector((state) => state.productDeleteAdmin);
+
+	useEffect(() => {
+		// reset the state
+		dispatch({ type: PRODUCT_DELETE_ADMIN_RESET });
+	}, []);
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
@@ -30,14 +45,14 @@ const ProductListAdminScreen = ({ history, match }) => {
 		} else {
 			history.push('/login');
 		}
-	}, [dispatch, history, userInfo]);
+	}, [dispatch, history, userInfo, successDelete]);
 
 	const createProductHandler = () => {
 		// CREATE PRODUCT
 	};
 
 	const deleteHandler = (id) => {
-		// dispatch(deleteUserAdmin(id));
+		dispatch(deleteProduct(id));
 		setModalShow(false);
 	};
 
@@ -53,6 +68,13 @@ const ProductListAdminScreen = ({ history, match }) => {
 					</Button>
 				</Col>
 			</Row>
+			{loadingDelete ? (
+				<Loader />
+			) : errorDelete ? (
+				<Message variant='danger'>{errorDelete}</Message>
+			) : successDelete ? (
+				<Message variant='success'>Product Deleted Successfully</Message>
+			) : null}
 			{loading ? (
 				<Loader />
 			) : error ? (
