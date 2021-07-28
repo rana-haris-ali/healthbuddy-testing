@@ -2,12 +2,20 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 const MyModal = (props) => {
-	const { title, heading, body, buttonText, onHide, show, clickHandler } =
-		props;
+	const {
+		title,
+		heading,
+		body,
+		buttonText,
+		onHide,
+		show,
+		clickHandler,
+	} = props;
 
-	// extract the userName from body prop so we can make it bold
+	// extract the resourceName from body prop so we can make it bold
 	const bodyText = body.split(':')[0];
-	const userName = body.split(':')[1];
+	const resourceName = body.split(':')[1];
+
 	return (
 		<Modal
 			show={show}
@@ -22,7 +30,7 @@ const MyModal = (props) => {
 			<Modal.Body>
 				<h4>{heading}</h4>
 				<p>
-					{bodyText}: <strong>{userName}</strong>
+					{bodyText}: <strong>{resourceName}</strong>
 				</p>
 			</Modal.Body>
 			<Modal.Footer>
