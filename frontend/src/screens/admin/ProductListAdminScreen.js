@@ -37,7 +37,7 @@ const ProductListAdminScreen = ({ history, match }) => {
 	useEffect(() => {
 		// reset the state
 		dispatch({ type: PRODUCT_DELETE_ADMIN_RESET });
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
@@ -47,13 +47,9 @@ const ProductListAdminScreen = ({ history, match }) => {
 		}
 	}, [dispatch, history, userInfo, successDelete]);
 
-	const createProductHandler = () => {
-		// CREATE PRODUCT
-	};
-
 	const deleteHandler = (id) => {
-		dispatch(deleteProduct(id));
 		setModalShow(false);
+		dispatch(deleteProduct(id));
 	};
 
 	return (
@@ -63,7 +59,10 @@ const ProductListAdminScreen = ({ history, match }) => {
 					<h1>Products</h1>
 				</Col>
 				<Col className='text-right'>
-					<Button className='my-3' onClick={createProductHandler}>
+					<Button
+						className='my-3'
+						onClick={() => history.push('/admin/createProduct')}
+					>
 						<i className='fas fa-plus'></i> Create Product
 					</Button>
 				</Col>
@@ -111,7 +110,13 @@ const ProductListAdminScreen = ({ history, match }) => {
 									<td>{product.countInStock}</td>
 									<td style={{ display: 'flex', justifyContent: 'center' }}>
 										<LinkContainer to={`/admin/product/${product._id}/edit`}>
-											<Button variant='light' className='btn-sm'>
+											<Button
+												onClick={() =>
+													history.push(`/admin/product/${product._id}/edit`)
+												}
+												variant='light'
+												className='btn-sm'
+											>
 												<i className='fas fa-edit'></i>
 											</Button>
 										</LinkContainer>
