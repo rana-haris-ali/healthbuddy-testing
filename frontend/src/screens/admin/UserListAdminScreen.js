@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import MyModal from '../../components/MyModal';
+import { DELETE_USER_ADMIN_RESET } from '../../constants/userConstants';
 import {
 	getAllUserListAdmin,
 	deleteUserAdmin,
@@ -28,6 +29,10 @@ const UserListAdminScreen = ({ history }) => {
 	const { success: successDelete, error: errorDelete } = useSelector(
 		(state) => state.userDeleteAdmin
 	);
+
+	useEffect(() => {
+		dispatch({ type: DELETE_USER_ADMIN_RESET });
+	}, []);
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {

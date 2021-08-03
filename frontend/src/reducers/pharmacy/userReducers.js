@@ -27,6 +27,7 @@ import {
 	GET_SINGLE_USER_ADMIN_SUCCESS,
 	GET_SINGLE_USER_ADMIN_FAILURE,
 	EDIT_USER_ADMIN_RESET,
+	DELETE_USER_ADMIN_RESET,
 } from '../../constants/userConstants';
 
 const userLoginReducer = (state = {}, action) => {
@@ -128,6 +129,8 @@ const userDeleteAdminReducer = (state = {}, action) => {
 			return { loading: false, success: true };
 		case DELETE_USER_ADMIN_FAILURE:
 			return { loading: false, error: action.payload };
+		case DELETE_USER_ADMIN_RESET:
+			return {};
 		default:
 			return state;
 	}
