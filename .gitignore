@@ -6,6 +6,10 @@ node_modules/
 /.pnp
 .pnp.js
 
+# ignore uploaded files
+/uploads
+uploads/
+
 # testing
 /coverage
 
