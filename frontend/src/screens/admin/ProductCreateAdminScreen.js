@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Image, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
@@ -29,6 +30,10 @@ const ProductCreateAdminScreen = ({ history }) => {
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState(0);
 	const [countInStock, setCountInStock] = useState(0);
+	const [uploading, setUploading] = useState(false);
+
+	//  state to track errors that occur on image upload
+	const [uploadingError, setUploadingError] = useState('');
 
 	// trigger modal on pressing enter key
 	window.addEventListener('keyup', (e) => {
@@ -48,6 +53,34 @@ const ProductCreateAdminScreen = ({ history }) => {
 			history.push('/login');
 		}
 	}, [userInfo, history, success]);
+
+	const uploadImageHandler = async (e) => {
+		const file = e.target.files[0];
+		console.log(file);
+		const formData = new FormData();
+		formData.append('image', file);
+		setUploading(true);
+
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+
+			const { data } = await axios.post(
+				'/api/uploads/productImage',
+				formData,
+				config
+			);
+			console.log(data);
+			setImage(data);
+			setUploading(false);
+		} catch (error) {
+			setUploadingError(error);
+			setUploading(false);
+		}
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -79,6 +112,8 @@ const ProductCreateAdminScreen = ({ history }) => {
 					</Message>
 				) : null}
 
+				{uploadingError && <Message variant='danger'>{uploadingError}</Message>}
+
 				{loading ? (
 					<Loader />
 				) : error ? (
@@ -95,13 +130,32 @@ const ProductCreateAdminScreen = ({ history }) => {
 							></Form.Control>
 						</Form.Group>
 						<Form.Group>
-							<Form.Label>Image</Form.Label>
-							<Form.Control
-								type='text'
-								placeholder='Product Image'
-								value={image}
-								onChange={(e) => setImage(e.target.value)}
-							></Form.Control>
+							<Row>
+								<Col md='8'>
+									<Form.Group controlId='image'>
+										<Form.Label>Image</Form.Label>
+										<Form.Control
+											type='text'
+											placeholder='Enter Image URL'
+											value={image}
+											onChange={(e) => setImage(e.target.value)}
+										></Form.Control>
+										<Form.File
+											id='image-file'
+											custom
+											accept='.png, .jpg, .jpeg'
+											onChange={uploadImageHandler}
+										></Form.File>
+									</Form.Group>
+								</Col>
+								<Col>
+									{uploading ? (
+										<Loader />
+									) : image === '/' ? null : (
+										<Image src={image} className='w-75 mt-3' />
+									)}
+								</Col>
+							</Row>
 						</Form.Group>
 						<Form.Group>
 							<Form.Label>Brand</Form.Label>
