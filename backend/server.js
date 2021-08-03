@@ -1,11 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
 import colors from 'colors';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
 
@@ -16,14 +18,27 @@ const app = express();
 // allow app to accept json data in body
 app.use(express.json());
 
+// create static uploads folder
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
 app.get('/', (req, res) => {
 	res.send('healthbuddy');
 });
 
 // products endpoint
 app.use('/api/products', productRoutes);
+
+// users endpoint
 app.use('/api/users', userRoutes);
+
+// orders endpoint
 app.use('/api/orders', orderRoutes);
+
+// uploads endpoint
+app.use('/api/uploads', uploadRoutes);
+
+// endpoint to get paypal client ID
 app.get('/api/config/paypal', (req, res) => {
 	res.send(process.env.PAYPAL_CLIENT_ID);
 });
