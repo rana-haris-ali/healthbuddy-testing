@@ -102,7 +102,15 @@ const ProductEditAdminScreen = ({ history, match }) => {
 					: product.countInStock
 			);
 		}
-	}, [userInfo, history, success, product, updatedProduct]);
+	}, [
+		dispatch,
+		productId,
+		userInfo,
+		history,
+		success,
+		product,
+		updatedProduct,
+	]);
 
 	const uploadImageHandler = async (e) => {
 		const file = e.target.files[0];

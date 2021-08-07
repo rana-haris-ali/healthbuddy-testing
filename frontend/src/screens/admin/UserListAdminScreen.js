@@ -32,7 +32,7 @@ const UserListAdminScreen = ({ history }) => {
 
 	useEffect(() => {
 		dispatch({ type: DELETE_USER_ADMIN_RESET });
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
