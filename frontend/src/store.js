@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import {
 	productListReducer,
 	productDetailsReducer,
+	productCreateReviewReducer,
 	productCreateAdminReducer,
 	productEditAdminReducer,
 	productDeleteAdminReducer,
@@ -31,6 +32,7 @@ import {
 const reducers = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
+	productCreateReview: productCreateReviewReducer,
 	productCreateAdmin: productCreateAdminReducer,
 	productEditAdmin: productEditAdminReducer,
 	productDeleteAdmin: productDeleteAdminReducer,

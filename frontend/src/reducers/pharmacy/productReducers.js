@@ -18,6 +18,10 @@ import {
 	PRODUCT_EDIT_ADMIN_SUCCESS,
 	PRODUCT_EDIT_ADMIN_FAILURE,
 	PRODUCT_EDIT_ADMIN_RESET,
+	PRODUCT_CREATE_REVIEW_REQUEST,
+	PRODUCT_CREATE_REVIEW_SUCCESS,
+	PRODUCT_CREATE_REVIEW_FAILURE,
+	PRODUCT_CREATE_REVIEW_RESET,
 } from '../../constants/productConstants';
 
 // reducer to get full list of products
@@ -46,6 +50,21 @@ const productDetailsReducer = (
 		case PRODUCT_DETAILS_FAILURE:
 			return { loading: false, error: action.payload };
 		case PRODUCT_DETAILS_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+const productCreateReviewReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_CREATE_REVIEW_REQUEST:
+			return { loading: true };
+		case PRODUCT_CREATE_REVIEW_SUCCESS:
+			return { loading: false, success: true };
+		case PRODUCT_CREATE_REVIEW_FAILURE:
+			return { loading: false, error: action.payload };
+		case PRODUCT_CREATE_REVIEW_RESET:
 			return {};
 		default:
 			return state;
@@ -105,6 +124,7 @@ const productDeleteAdminReducer = (state = {}, action) => {
 export {
 	productListReducer,
 	productDetailsReducer,
+	productCreateReviewReducer,
 	productCreateAdminReducer,
 	productEditAdminReducer,
 	productDeleteAdminReducer,

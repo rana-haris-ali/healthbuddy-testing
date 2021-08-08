@@ -14,6 +14,9 @@ import {
 	PRODUCT_EDIT_ADMIN_REQUEST,
 	PRODUCT_EDIT_ADMIN_SUCCESS,
 	PRODUCT_EDIT_ADMIN_FAILURE,
+	PRODUCT_CREATE_REVIEW_REQUEST,
+	PRODUCT_CREATE_REVIEW_SUCCESS,
+	PRODUCT_CREATE_REVIEW_FAILURE,
 } from '../../constants/productConstants';
 import axios from 'axios';
 
@@ -59,6 +62,43 @@ const singleProductDetails = (id) => async (dispatch) => {
 		});
 	}
 };
+
+const createProductReview =
+	(productId, review) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: PRODUCT_CREATE_REVIEW_REQUEST,
+			});
+
+			// get token from state
+			const {
+				userLogin: {
+					userInfo: { token },
+				},
+			} = getState();
+
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			};
+
+			await axios.post(`/api/products/${productId}/reviews`, review, config);
+
+			dispatch({
+				type: PRODUCT_CREATE_REVIEW_SUCCESS,
+			});
+		} catch (error) {
+			dispatch({
+				type: PRODUCT_CREATE_REVIEW_FAILURE,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			});
+		}
+	};
 
 // ADMIN USE
 
@@ -115,6 +155,7 @@ const editProduct = (id, productDetails) => async (dispatch, getState) => {
 
 		const config = {
 			headers: {
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		};
@@ -180,6 +221,7 @@ const deleteProduct = (id) => async (dispatch, getState) => {
 export {
 	productList,
 	singleProductDetails,
+	createProductReview,
 	createProduct,
 	editProduct,
 	deleteProduct,
