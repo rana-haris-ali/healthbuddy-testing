@@ -5,6 +5,7 @@ import { protect, adminAuth } from '../middleware/authMiddleware.js';
 import {
 	getAllProducts,
 	getSingleProduct,
+	addProductReview,
 	createProduct,
 	deleteProduct,
 	editProduct,
@@ -23,5 +24,7 @@ router
 	.get(getSingleProduct)
 	.put(protect, adminAuth, editProduct)
 	.delete(protect, adminAuth, deleteProduct);
+
+router.route('/:id/reviews').post(protect, addProductReview);
 
 export default router;
