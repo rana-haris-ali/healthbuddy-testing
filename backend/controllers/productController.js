@@ -5,9 +5,33 @@ import Product from '../models/productModel.js';
 //  @route GET /api/products
 // @access Public
 const getAllProducts = asyncHandler(async (req, res) => {
-	const products = await Product.find({});
+	// number of products shown on a single page
+	const pageSize = Number(process.env.PAGE_SIZE);
+	// return results depending on which page the user is viewing currently
+	const currentPageNumber = Number(req.query.pageNumber) || 1;
 
-	res.json(products);
+	// if  a search keyword is passed then save it in this variable
+	const keyword = req.query.keyword
+		? {
+				name: {
+					$regex: req.query.keyword,
+					$options: 'i',
+				},
+		  }
+		: {};
+
+	// total number of products
+	const count = await Product.countDocuments({ ...keyword });
+
+	const products = await Product.find({ ...keyword })
+		.limit(pageSize)
+		.skip(pageSize * (currentPageNumber - 1));
+
+	res.json({
+		products,
+		currentPageNumber,
+		totalPages: Math.ceil(count / pageSize),
+	});
 });
 
 // @desc Fetch single products
