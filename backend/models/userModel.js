@@ -30,6 +30,13 @@ const userSchema = mongoose.Schema(
 			postalCode: Number,
 			country: String,
 		},
+		role: {
+			type: String,
+			required: true,
+		},
+		roleId: {
+			type: mongoose.Schema.Types.ObjectId,
+		},
 	},
 	{
 		timestamps: true,
