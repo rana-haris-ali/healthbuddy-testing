@@ -19,6 +19,8 @@ import ProductListAdminScreen from './screens/admin/ProductListAdminScreen';
 import ProductCreateAdminScreen from './screens/admin/ProductCreateAdminScreen';
 import ProductEditAdminScreen from './screens/admin/ProductEditAdminScreen';
 import OrderListAdminScreen from './screens/admin/OrderListAdminScreen';
+import Dashboard from './screens/Dashboard';
+import DoctorsListScreen from './screens/DoctorsListScreen';
 
 const App = () => {
 	return (
@@ -33,6 +35,9 @@ const App = () => {
 						component={HomeScreen}
 						exact
 					/>
+
+					<Route path='/doctorsList' component={DoctorsListScreen} exact />
+					<Route path='/dashboard' component={Dashboard} exact />
 					<Route path='/search/:keyword' component={HomeScreen} exact />
 					<Route path='/products/:id' component={ProductScreen} />
 					<Route path='/cart/:id?' component={CartScreen} />
