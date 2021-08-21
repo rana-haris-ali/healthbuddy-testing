@@ -29,7 +29,10 @@ import {
 	getOrdersAdminReducer,
 } from './reducers/pharmacy/orderReducers';
 
-import { doctorsListReducer } from './reducers/doctorReducers';
+import {
+	doctorsListReducer,
+	doctorDetailsReducer,
+} from './reducers/doctorReducers';
 
 const reducers = combineReducers({
 	productList: productListReducer,
@@ -48,6 +51,7 @@ const reducers = combineReducers({
 	userDeleteAdmin: userDeleteAdminReducer,
 	userListAdmin: userListAdminReducer,
 	doctorsList: doctorsListReducer,
+	doctorDetails: doctorDetailsReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	myOrdersList: myOrdersListReducer,

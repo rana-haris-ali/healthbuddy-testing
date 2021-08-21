@@ -52,6 +52,23 @@ const registerDoctor = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get SINGLE doctor
+//  @route GET /api/doctors/:id
+// @access PUBLIC
+const getSingleDoctor = asyncHandler(async (req, res) => {
+	try {
+		const doctor = await Doctor.findById(req.params.id).populate(
+			'user',
+			'name email'
+		);
+		res.status(200).json(doctor);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
 // @desc Get all doctors
 //  @route GET /api/doctors
 // @access PUBLIC
@@ -66,4 +83,4 @@ const getAllDoctors = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getAllDoctors, registerDoctor };
+export { getSingleDoctor, getAllDoctors, registerDoctor };
