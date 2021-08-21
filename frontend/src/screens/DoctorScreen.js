@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-// import { Table } from 'react-bootstrap';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-
 import { getSingleDoctor } from '../actions/doctorActions';
 
 const DoctorScreen = ({ match }) => {

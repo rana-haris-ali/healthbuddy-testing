@@ -14,13 +14,6 @@ const getDoctorsList = () => async (dispatch, getState) => {
 			type: DOCTORS_LIST_REQUEST,
 		});
 
-		// get token from state
-		const {
-			userLogin: {
-				userInfo: { token },
-			},
-		} = getState();
-
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
