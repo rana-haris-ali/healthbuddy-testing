@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDoctorsList } from '../actions/doctorActions';
 
 const DoctorsListScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
-	const { userInfo } = useSelector((state) => state.userLogin);
-
 	const { loading, doctors, error } = useSelector((state) => state.doctorsList);
 
 	useEffect(() => {
-		if (!userInfo) {
-			history.push('/login');
-		} else {
-			dispatch(getDoctorsList());
-		}
-	}, [userInfo, dispatch]);
+		dispatch(getDoctorsList());
+	}, [dispatch]);
 
 	return (
 		<>
-			<h1>Doctors</h1>
+			<h1>DOCTORS</h1>
 			<Table
 				striped
 				bordered
@@ -47,6 +41,13 @@ const DoctorsListScreen = ({ history }) => {
 									<a href={`mailto:${doctor.user.email}`}>
 										{doctor.user.email}
 									</a>
+								</td>
+								<td>
+									<Button
+										onClick={() => history.push(`/doctors/${doctor._id}`)}
+									>
+										Details
+									</Button>
 								</td>
 							</tr>
 						);
