@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 import { getDoctorsList } from '../actions/doctorActions';
 
 const DoctorsListScreen = ({ history }) => {
@@ -14,46 +17,55 @@ const DoctorsListScreen = ({ history }) => {
 
 	return (
 		<>
-			<h1>DOCTORS</h1>
-			<Table
-				striped
-				bordered
-				hover
-				responsive
-				className='table-sm'
-				style={{ textAlign: 'center' }}
-			>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>ID</th>
-						<th>Email</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{doctors.map((doctor) => {
-						return (
-							<tr key={doctor._id}>
-								<td>{doctor.user.name}</td>
-								<td>{doctor._id}</td>
-								<td>
-									<a href={`mailto:${doctor.user.email}`}>
-										{doctor.user.email}
-									</a>
-								</td>
-								<td>
-									<Button
-										onClick={() => history.push(`/doctors/${doctor._id}`)}
-									>
-										Details
-									</Button>
-								</td>
+			{loading ? (
+				<Loader />
+			) : error ? (
+				<Message variant='danger'>{error}</Message>
+			) : null}
+			{doctors && (
+				<>
+					<h1>DOCTORS</h1>
+					<Table
+						striped
+						bordered
+						hover
+						responsive
+						className='table-sm'
+						style={{ textAlign: 'center' }}
+					>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>ID</th>
+								<th>Email</th>
+								<th></th>
 							</tr>
-						);
-					})}
-				</tbody>
-			</Table>
+						</thead>
+						<tbody>
+							{doctors.map((doctor) => {
+								return (
+									<tr key={doctor._id}>
+										<td>{doctor.user.name}</td>
+										<td>{doctor._id}</td>
+										<td>
+											<a href={`mailto:${doctor.user.email}`}>
+												{doctor.user.email}
+											</a>
+										</td>
+										<td>
+											<Button
+												onClick={() => history.push(`/doctors/${doctor._id}`)}
+											>
+												Details
+											</Button>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</Table>
+				</>
+			)}
 		</>
 	);
 	// return (
