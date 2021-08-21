@@ -33,6 +33,7 @@ const userSchema = mongoose.Schema(
 		role: {
 			type: String,
 			required: true,
+			enum: ['Patient', 'Doctor'],
 		},
 		roleId: {
 			type: mongoose.Schema.Types.ObjectId,
