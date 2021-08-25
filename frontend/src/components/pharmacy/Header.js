@@ -31,6 +31,11 @@ const Header = () => {
 							<LinkContainer to='/doctors'>
 								<Nav.Link>Doctors</Nav.Link>
 							</LinkContainer>
+							{userInfo && userInfo.role === 'Doctor' && (
+								<LinkContainer to='/patients'>
+									<Nav.Link>Patients</Nav.Link>
+								</LinkContainer>
+							)}
 
 							<LinkContainer to='/cart'>
 								<Nav.Link>

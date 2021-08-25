@@ -32,7 +32,11 @@ import {
 import {
 	doctorsListReducer,
 	doctorDetailsReducer,
+	patientsListReducer,
+	acceptPatientRequestReducer,
 } from './reducers/doctorReducers';
+
+import { requestDoctorContactReducer } from './reducers/patientReducers';
 
 const reducers = combineReducers({
 	productList: productListReducer,
@@ -50,8 +54,11 @@ const reducers = combineReducers({
 	userEditAdmin: userEditAdminReducer,
 	userDeleteAdmin: userDeleteAdminReducer,
 	userListAdmin: userListAdminReducer,
+	requestDoctorContact: requestDoctorContactReducer,
 	doctorsList: doctorsListReducer,
 	doctorDetails: doctorDetailsReducer,
+	patientsList: patientsListReducer,
+	acceptPatientRequest: acceptPatientRequestReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	myOrdersList: myOrdersListReducer,
