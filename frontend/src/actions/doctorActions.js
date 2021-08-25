@@ -6,6 +6,12 @@ import {
 	GET_SINGLE_DOCTOR_FAILURE,
 	GET_SINGLE_DOCTOR_REQUEST,
 	GET_SINGLE_DOCTOR_SUCCESS,
+	PATIENTS_LIST_FAILURE,
+	PATIENTS_LIST_REQUEST,
+	PATIENTS_LIST_SUCCESS,
+	PATIENT_REQUEST_ACCEPTANCE_FAILURE,
+	PATIENT_REQUEST_ACCEPTANCE_REQUEST,
+	PATIENT_REQUEST_ACCEPTANCE_SUCCESS,
 } from '../constants/doctorConstants';
 
 const getDoctorsList = () => async (dispatch, getState) => {
@@ -66,4 +72,83 @@ const getSingleDoctor = (doctorId) => async (dispatch, getState) => {
 	}
 };
 
-export { getDoctorsList, getSingleDoctor };
+const getPatientsList = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PATIENTS_LIST_REQUEST,
+		});
+
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.get('/api/doctors/all-patients', config);
+
+		dispatch({
+			type: PATIENTS_LIST_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: PATIENTS_LIST_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+const acceptPatientRequest = (patientId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: PATIENT_REQUEST_ACCEPTANCE_REQUEST,
+		});
+
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.get(
+			`/api/patients/${patientId}/approve`,
+			config
+		);
+
+		dispatch({
+			type: PATIENT_REQUEST_ACCEPTANCE_SUCCESS,
+		});
+	} catch (error) {
+		dispatch({
+			type: PATIENT_REQUEST_ACCEPTANCE_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export {
+	getDoctorsList,
+	getSingleDoctor,
+	getPatientsList,
+	acceptPatientRequest,
+};

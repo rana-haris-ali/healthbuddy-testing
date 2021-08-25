@@ -1,30 +1,69 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getDoctorsList } from '../actions/doctorActions';
+import { requestDoctorContact } from '../actions/patientActions';
+import { REQUEST_DOCTOR_CONTACT_RESET } from '../constants/patientConstants';
 
 const DoctorsListScreen = ({ history }) => {
+	const [showLoginPrompt, setsSowLoginPrompt] = useState(false);
+
 	const dispatch = useDispatch();
 
+	const { userInfo } = useSelector((state) => state.userLogin);
+
 	const { loading, doctors, error } = useSelector((state) => state.doctorsList);
+
+	const {
+		loading: loadingContactRequest,
+		success: successContactRequest,
+		error: errorContactRequest,
+	} = useSelector((state) => state.requestDoctorContact);
+
+	useEffect(() => {
+		dispatch({ type: REQUEST_DOCTOR_CONTACT_RESET });
+	}, [userInfo]);
 
 	useEffect(() => {
 		dispatch(getDoctorsList());
 	}, [dispatch]);
 
+	const requestContactHandler = (doctorId) => {
+		if (userInfo) {
+			dispatch(requestDoctorContact(doctorId));
+		} else {
+			setsSowLoginPrompt(true);
+		}
+	};
+
 	return (
 		<>
-			{loading ? (
+			{loading || loadingContactRequest ? (
 				<Loader />
-			) : error ? (
-				<Message variant='danger'>{error}</Message>
-			) : null}
-			{doctors && (
+			) : doctors.length > 0 ? (
 				<>
 					<h1>DOCTORS</h1>
+					{showLoginPrompt && (
+						<Message>
+							Only registered users can contact doctors. Either{' '}
+							<Link to='/register?redirect=doctors'>Register</Link> a new
+							account or <Link to='/login?redirect=doctors'>Login</Link> if you
+							already have one
+						</Message>
+					)}{' '}
+					{error && <Message variant='danger'>{error}</Message>}
+					{successContactRequest ? (
+						<Message variant='success'>
+							Your request has been sent successfully.
+						</Message>
+					) : errorContactRequest ? (
+						<Message variant='danger'>{errorContactRequest}</Message>
+					) : null}
+					:
 					<Table
 						striped
 						bordered
@@ -53,6 +92,14 @@ const DoctorsListScreen = ({ history }) => {
 											</a>
 										</td>
 										<td>
+											{/* prevent doctors from contacting other doctors */}
+											{userInfo && userInfo.role === 'Doctor' ? null : (
+												<Button
+													onClick={() => requestContactHandler(doctor._id)}
+												>
+													Contact
+												</Button>
+											)}
 											<Button
 												onClick={() => history.push(`/doctors/${doctor._id}`)}
 											>
@@ -65,82 +112,11 @@ const DoctorsListScreen = ({ history }) => {
 						</tbody>
 					</Table>
 				</>
+			) : (
+				<Message>There are no doctors right now</Message>
 			)}
 		</>
 	);
-	// return (
-	// 	<>
-	// 		<h1>Doctors</h1>(
-	// 		<Table
-	// striped
-	// bordered
-	// hover
-	// responsive
-	// className='table-sm'
-	// style={{ textAlign: 'center' }}
-	// 		>
-	// <thead>
-	// 	<tr>
-	// 		<th>Name</th>
-	// 		<th>ID</th>
-	// 		<th>Email</th>
-	// 		<th>Admin</th>
-	// 		<th></th>
-	// 	</tr>
-	// </thead>;
-	// <tbody>
-	// 	{users.map((user) => {
-	// 		return (
-	// 			<tr key={user._id}>
-	// 				<td>{user.name}</td>
-	// 				<td>{user._id}</td>
-	// 				<td>
-	// 					<a href={`mailto:${user.email}`}>{user.email}</a>
-	// 				</td>
-	// 				<td>
-	// 					{user.isAdmin ? (
-	// 						<i className='fas fa-check' style={{ color: 'green' }}></i>
-	// 					) : (
-	// 						<i className='fas fa-times' style={{ color: 'red' }}></i>
-	// 					)}
-	// 				</td>
-	// 				<td style={{ display: 'flex', justifyContent: 'center' }}>
-	// 					<LinkContainer to={`/admin/user/${user._id}/edit`}>
-	// 						<Button variant='light' className='btn-sm'>
-	// 							<i className='fas fa-edit'></i>
-	// 						</Button>
-	// 					</LinkContainer>
-	// 					<Button
-	// 						style={{ margin: '0 15px' }}
-	// 						variant='danger'
-	// 						className='btn-sm'
-	// 						onClick={() => {
-	// 							setDeleteId(user._id);
-	// 							setDeleteName(user.name);
-	// 							setModalShow(true);
-	// 						}}
-	// 					>
-	// 						<i className='fas fa-trash'></i>
-	// 					</Button>
-	// 				</td>
-	// 			</tr>
-	// 		);
-	// 	})}
-	// </tbody>
-	// 			<MyModal
-	// 				show={modalShow}
-	// 				onHide={() => setModalShow(false)}
-	// 				title='Confirmation'
-	// 				heading='Delete the user'
-	// 				body={`Are you sure you want to delete the user: ${deleteName}`}
-	// 				buttonText='Delete'
-	// 				clickHandler={() => deleteHandler(deleteId)}
-	// 			/>
-	// 		</Table>
-	// 		) : (<Message variant='dark'>There are no users to show</Message>
-	// 		)}
-	// 	</>
-	// );
 };
 
 export default DoctorsListScreen;
