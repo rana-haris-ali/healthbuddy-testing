@@ -15,9 +15,8 @@ const PatientsListScreen = ({ history }) => {
 
 	const { userInfo } = useSelector((state) => state.userLogin);
 
-	const { loading, patientRequests, acceptedPatients, error } = useSelector(
-		(state) => state.patientsList
-	);
+	const { loading, pendingPatientRequests, acceptedPatientRequests, error } =
+		useSelector((state) => state.patientsList);
 
 	const {
 		loading: loadingAccept,
@@ -59,7 +58,7 @@ const PatientsListScreen = ({ history }) => {
 							) : errorAccept ? (
 								<Message variant='danger'>{errorAccept}</Message>
 							) : null}
-							{patientRequests.length > 0 ? (
+							{pendingPatientRequests.length > 0 ? (
 								<Table
 									striped
 									bordered
@@ -77,20 +76,20 @@ const PatientsListScreen = ({ history }) => {
 										</tr>
 									</thead>
 									<tbody>
-										{patientRequests.map((patientRequest) => {
+										{pendingPatientRequests.map((pendingRequest) => {
 											return (
-												<tr key={patientRequest._id}>
-													<td>{patientRequest.user.name}</td>
-													<td>{patientRequest.patient}</td>
+												<tr key={pendingRequest._id}>
+													<td>{pendingRequest.user.name}</td>
+													<td>{pendingRequest.patient}</td>
 													<td>
-														<a href={`mailto:${patientRequest.user.email}`}>
-															{patientRequest.user.email}
+														<a href={`mailto:${pendingRequest.user.email}`}>
+															{pendingRequest.user.email}
 														</a>
 													</td>
 													<td>
 														<Button
 															onClick={() =>
-																acceptRequestHandler(patientRequest._id)
+																acceptRequestHandler(pendingRequest._id)
 															}
 														>
 															Accept
@@ -107,7 +106,7 @@ const PatientsListScreen = ({ history }) => {
 						</Col>
 						<Col md={6}>
 							<h3 className='text-center  my-3'>Approved</h3>
-							{acceptedPatients.length > 0 ? (
+							{acceptedPatientRequests.length > 0 ? (
 								<Table
 									striped
 									bordered
@@ -125,14 +124,14 @@ const PatientsListScreen = ({ history }) => {
 										</tr>
 									</thead>
 									<tbody>
-										{acceptedPatients.map((acceptedPatient) => {
+										{acceptedPatientRequests.map((acceptedRequest) => {
 											return (
-												<tr key={acceptedPatient._id}>
-													<td>{acceptedPatient.user.name}</td>
-													<td>{acceptedPatient.patient}</td>
+												<tr key={acceptedRequest._id}>
+													<td>{acceptedRequest.user.name}</td>
+													<td>{acceptedRequest.patient}</td>
 													<td>
-														<a href={`mailto:${acceptedPatient.user.email}`}>
-															{acceptedPatient.user.email}
+														<a href={`mailto:${acceptedRequest.user.email}`}>
+															{acceptedRequest.user.email}
 														</a>
 													</td>
 												</tr>

@@ -128,7 +128,7 @@ const acceptPatientRequest = (patientId) => async (dispatch, getState) => {
 		};
 
 		const { data } = await axios.get(
-			`/api/patients/${patientId}/approve`,
+			`/api/patients/requests/${patientId}/approve`,
 			config
 		);
 

@@ -17,6 +17,13 @@ const requestSchema = mongoose.Schema(
 			required: true,
 			ref: 'Doctor',
 		},
+
+		status: {
+			type: String,
+			required: true,
+			default: 'Pending',
+			enum: ['Pending', 'Accepted', 'Rejected'],
+		},
 	},
 	{
 		timestamps: true,

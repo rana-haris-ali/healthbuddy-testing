@@ -11,12 +11,6 @@ const doctorSchema = mongoose.Schema(
 			type: Array,
 			required: true,
 		},
-		patientRequests: {
-			type: Array,
-		},
-		acceptedPatients: {
-			type: Array,
-		},
 	},
 	{
 		timestamps: true,

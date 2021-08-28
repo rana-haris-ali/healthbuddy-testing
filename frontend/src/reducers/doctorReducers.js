@@ -41,7 +41,7 @@ const doctorDetailsReducer = (state = {}, action) => {
 };
 
 const patientsListReducer = (
-	state = { patientRequests: [], acceptedPatients: [] },
+	state = { pendingPatientRequests: [], acceptedPatientRequests: [] },
 	action
 ) => {
 	switch (action.type) {
@@ -51,8 +51,8 @@ const patientsListReducer = (
 			return {
 				...state,
 				loading: false,
-				patientRequests: action.payload.patientRequests,
-				acceptedPatients: action.payload.acceptedPatients,
+				pendingPatientRequests: action.payload.pendingPatientRequests,
+				acceptedPatientRequests: action.payload.acceptedPatientRequests,
 			};
 		case PATIENTS_LIST_FAILURE:
 			return { ...state, loading: false, error: action.payload };

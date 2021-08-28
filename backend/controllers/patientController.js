@@ -66,7 +66,7 @@ const requestDoctorContact = asyncHandler(async (req, res) => {
 	}
 
 	try {
-		const [patient] = await Patient.find({ user: req.user._id });
+		const patient = await Patient.findOne({ user: req.user._id });
 
 		const request = new Request({
 			patient: patient._id,
@@ -74,10 +74,6 @@ const requestDoctorContact = asyncHandler(async (req, res) => {
 			doctor: req.params.id,
 		});
 		request.save();
-
-		const doctor = await Doctor.findById(req.params.id);
-		doctor.patientRequests.push(request._id);
-		await doctor.save();
 
 		res.status(201).json({ message: 'Request Sent' });
 	} catch (error) {
