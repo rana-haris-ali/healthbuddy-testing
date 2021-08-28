@@ -40,4 +40,24 @@ const adminAuth = (req, res, next) => {
 	}
 };
 
-export { protect, adminAuth };
+// check if user is Patient
+const patientAuth = (req, res, next) => {
+	if (req.user && req.user.role === 'Patient') {
+		next();
+	} else {
+		res.status(401);
+		throw new Error('Only patients can access this resource');
+	}
+};
+
+// check if user is Doctor
+const doctorAuth = (req, res, next) => {
+	if (req.user && req.user.role === 'Doctor') {
+		next();
+	} else {
+		res.status(401);
+		throw new Error('Only doctors can access this resource');
+	}
+};
+
+export { protect, adminAuth, patientAuth, doctorAuth };
