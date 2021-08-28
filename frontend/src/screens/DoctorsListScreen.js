@@ -26,7 +26,7 @@ const DoctorsListScreen = ({ history }) => {
 
 	useEffect(() => {
 		dispatch({ type: REQUEST_DOCTOR_CONTACT_RESET });
-	}, [userInfo]);
+	}, [dispatch, userInfo]);
 
 	useEffect(() => {
 		dispatch(getDoctorsList());

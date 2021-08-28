@@ -64,10 +64,7 @@ const requestDoctorContact = (doctorId) => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.get(
-			`/api/doctors/${doctorId}/request`,
-			config
-		);
+		await axios.get(`/api/doctors/${doctorId}/request`, config);
 
 		dispatch({
 			type: REQUEST_DOCTOR_CONTACT_SUCCESS,

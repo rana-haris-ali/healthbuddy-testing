@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Table, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,7 +26,7 @@ const PatientsListScreen = ({ history }) => {
 
 	useEffect(() => {
 		dispatch({ type: PATIENT_REQUEST_ACCEPTANCE_RESET });
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (!userInfo || userInfo.role !== 'Doctor') {

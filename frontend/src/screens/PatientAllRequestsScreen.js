@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Row, Col, Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from '../components/Loader';
@@ -18,7 +18,7 @@ const PatientAllRequestsScreen = ({ history }) => {
 
 	useEffect(() => {
 		dispatch({ type: PATIENT_GET_ALL_REQUESTS_RESET });
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (!userInfo || userInfo.role !== 'Patient') {
@@ -71,7 +71,7 @@ const PatientAllRequestsScreen = ({ history }) => {
 												Accepted
 											</i>
 										) : request.status === 'Pending' ? (
-											<i class='fas fa-clock' style={{ color: 'orange' }}>
+											<i className='fas fa-clock' style={{ color: 'orange' }}>
 												{' '}
 												Pending
 											</i>
