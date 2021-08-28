@@ -54,6 +54,23 @@ const registerPatient = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get all requests (pending + accepted) made by a patient
+//  @route GET /api/patients/requests
+// @access Private
+const patientGetAllRequests = asyncHandler(async (req, res) => {
+	try {
+		const requests = await Request.find({ user: req.user._id }).populate({
+			path: 'doctor',
+			populate: { path: 'user', select: '-_id name email' },
+		});
+		res.status(200).json(requests);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
 // @desc Request for doctor contact
 //  @route GET /api/doctors/:id/request
 // @access Private
@@ -83,4 +100,4 @@ const requestDoctorContact = asyncHandler(async (req, res) => {
 	}
 });
 
-export { registerPatient, requestDoctorContact };
+export { registerPatient, requestDoctorContact, patientGetAllRequests };

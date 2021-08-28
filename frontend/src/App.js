@@ -23,6 +23,7 @@ import Dashboard from './screens/Dashboard';
 import DoctorsListScreen from './screens/DoctorsListScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import PatientsListScreen from './screens/PatientsListScreen';
+import PatientAllRequestsScreen from './screens/PatientAllRequestsScreen';
 
 const App = () => {
 	return (
@@ -41,6 +42,11 @@ const App = () => {
 					<Route path='/doctors' component={DoctorsListScreen} exact />
 					<Route path='/doctors/:id' component={DoctorScreen} exact />
 					<Route path='/patients' component={PatientsListScreen} exact />
+					<Route
+						path='/patients/requests'
+						component={PatientAllRequestsScreen}
+						exact
+					/>
 					<Route path='/dashboard' component={Dashboard} exact />
 					<Route path='/search/:keyword' component={HomeScreen} exact />
 					<Route path='/products/:id' component={ProductScreen} />

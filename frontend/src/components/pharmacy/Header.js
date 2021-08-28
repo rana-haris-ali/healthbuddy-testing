@@ -31,9 +31,16 @@ const Header = () => {
 							<LinkContainer to='/doctors'>
 								<Nav.Link>Doctors</Nav.Link>
 							</LinkContainer>
+							{/* show patients of a doctor */}
 							{userInfo && userInfo.role === 'Doctor' && (
 								<LinkContainer to='/patients'>
 									<Nav.Link>Patients</Nav.Link>
+								</LinkContainer>
+							)}
+							{/* show all requests of a patient */}
+							{userInfo && userInfo.role === 'Patient' && (
+								<LinkContainer to='/patients/requests'>
+									<Nav.Link>Requests</Nav.Link>
 								</LinkContainer>
 							)}
 

@@ -6,7 +6,10 @@ import {
 	doctorAuth,
 } from '../middleware/authMiddleware.js';
 
-import { registerPatient } from '../controllers/patientController.js';
+import {
+	registerPatient,
+	patientGetAllRequests,
+} from '../controllers/patientController.js';
 import { acceptPatientRequest } from '../controllers/doctorController.js';
 
 // import { protect, adminAuth } from '../middleware/authMiddleware.js';
@@ -16,6 +19,8 @@ import { acceptPatientRequest } from '../controllers/doctorController.js';
 const router = express.Router();
 
 router.route('/').post(registerPatient);
+
+router.route('/requests').get(protect, patientAuth, patientGetAllRequests);
 
 router
 	.route('/requests/:id/approve')
