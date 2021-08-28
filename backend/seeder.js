@@ -8,6 +8,7 @@ import Product from './models/productModel.js';
 import Order from './models/orderModel.js';
 import Patient from './models/patientModel.js';
 import Doctor from './models/doctorModel.js';
+import Request from './models/requestModel.js';
 import connectDB from './config/db.js';
 
 dotenv.config({ path: '../.env' });
@@ -46,6 +47,7 @@ const deleteData = async () => {
 		await Order.deleteMany();
 		await Patient.deleteMany();
 		await Doctor.deleteMany();
+		await Request.deleteMany();
 
 		console.log('Data deleted'.yellow);
 		process.exit();
