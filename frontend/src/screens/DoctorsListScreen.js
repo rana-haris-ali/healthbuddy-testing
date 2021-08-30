@@ -63,18 +63,17 @@ const DoctorsListScreen = ({ history }) => {
 					) : errorContactRequest ? (
 						<Message variant='danger'>{errorContactRequest}</Message>
 					) : null}
-					:
 					<Table
 						striped
 						bordered
 						hover
 						responsive
 						className='table-sm'
-						style={{ textAlign: 'center' }}
+						style={{ textAlign: 'center', fontSize: 'medium' }}
 					>
 						<thead>
 							<tr>
-								<th>Name</th>
+								<th>Doctor Name</th>
 								<th>ID</th>
 								<th>Email</th>
 								<th></th>
@@ -84,7 +83,7 @@ const DoctorsListScreen = ({ history }) => {
 							{doctors.map((doctor) => {
 								return (
 									<tr key={doctor._id}>
-										<td>{doctor.user.name}</td>
+										<td>Dr. {doctor.user.name}</td>
 										<td>{doctor._id}</td>
 										<td>
 											<a href={`mailto:${doctor.user.email}`}>
@@ -95,15 +94,16 @@ const DoctorsListScreen = ({ history }) => {
 											{/* prevent doctors from contacting other doctors */}
 											{userInfo && userInfo.role === 'Doctor' ? null : (
 												<Button
+													className='mx-1'
 													onClick={() => requestContactHandler(doctor._id)}
 												>
-													Contact
+													<i className='fas fa-phone-alt'></i> Contact
 												</Button>
 											)}
 											<Button
 												onClick={() => history.push(`/doctors/${doctor._id}`)}
 											>
-												Details
+												<i className='fas fa-info-circle'></i> Details
 											</Button>
 										</td>
 									</tr>

@@ -65,7 +65,7 @@ const PatientsListScreen = ({ history }) => {
 									hover
 									responsive
 									className='table-sm'
-									style={{ textAlign: 'center' }}
+									style={{ textAlign: 'center', fontSize: 'medium' }}
 								>
 									<thead>
 										<tr>
@@ -113,7 +113,7 @@ const PatientsListScreen = ({ history }) => {
 									hover
 									responsive
 									className='table-sm'
-									style={{ textAlign: 'center' }}
+									style={{ textAlign: 'center', fontSize: 'medium' }}
 								>
 									<thead>
 										<tr>
