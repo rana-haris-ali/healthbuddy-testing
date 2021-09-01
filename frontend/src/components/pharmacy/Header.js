@@ -44,6 +44,10 @@ const Header = () => {
 								</LinkContainer>
 							)}
 
+							<LinkContainer to='/messenger'>
+								<Nav.Link>Messenger</Nav.Link>
+							</LinkContainer>
+
 							<LinkContainer to='/cart'>
 								<Nav.Link>
 									<i className='fas fa-shopping-cart'></i> Cart

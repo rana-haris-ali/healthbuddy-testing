@@ -24,6 +24,7 @@ import DoctorsListScreen from './screens/DoctorsListScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import PatientsListScreen from './screens/PatientsListScreen';
 import PatientAllRequestsScreen from './screens/PatientAllRequestsScreen';
+import MessengerScreen from './screens/messenger/MessengerScreen';
 
 const App = () => {
 	return (
@@ -54,6 +55,7 @@ const App = () => {
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/register' component={RegisterScreen} />
 					<Route path='/profile' component={ProfileScreen} />
+					<Route path='/messenger' component={MessengerScreen} />
 					<Route path='/shipping' component={ShippingScreen} />
 					<Route path='/payment' component={PaymentMethodScreen} />
 					<Route path='/placeorder' component={PlaceOrderScreen} />

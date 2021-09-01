@@ -9,6 +9,7 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import patientRoutes from './routes/patientRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 
@@ -44,6 +45,9 @@ app.use('/api/patients', patientRoutes);
 
 // doctors endpoint
 app.use('/api/doctors', doctorRoutes);
+
+// chat endpoint
+app.use('/api/chat', chatRoutes);
 
 // orders endpoint
 app.use('/api/orders', orderRoutes);

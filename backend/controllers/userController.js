@@ -17,6 +17,7 @@ const authUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			role: user.role,
+			roleId: user.roleId,
 			token: generateToken(user._id),
 		});
 	} else {
@@ -68,8 +69,25 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
+			role: user.role,
+			roleId: user.roleId,
 			isAdmin: user.isAdmin,
 		});
+	} else {
+		res.status(404);
+		throw new Error('User not found');
+	}
+});
+
+// @desc Get user details by roleId
+//  @route GET /api/users/roleId/:roleId
+// @access PRIVATE
+const getUserByRoleId = asyncHandler(async (req, res) => {
+	const user = await User.findOne({ roleId: req.params.roleId }).select(
+		'name email role roleId'
+	);
+	if (user) {
+		res.status(200).json(user);
 	} else {
 		res.status(404);
 		throw new Error('User not found');
@@ -169,6 +187,7 @@ export {
 	getUserProfile,
 	registerUser,
 	updateUserProfile,
+	getUserByRoleId,
 	getSingleUser,
 	getAllUsers,
 	updateSingleUser,

@@ -41,6 +41,8 @@ import {
 	patientAllRequestsReducer,
 } from './reducers/patientReducers';
 
+import { conversationsListReducer } from './reducers/chatReducers';
+
 const reducers = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
@@ -63,6 +65,7 @@ const reducers = combineReducers({
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,
 	acceptPatientRequest: acceptPatientRequestReducer,
+	conversationsList: conversationsListReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	myOrdersList: myOrdersListReducer,

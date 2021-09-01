@@ -6,6 +6,7 @@ import {
 	registerUser,
 	getUserProfile,
 	updateUserProfile,
+	getUserByRoleId,
 	getSingleUser,
 	getAllUsers,
 	updateSingleUser,
@@ -37,5 +38,7 @@ router
 	.get(protect, adminAuth, getSingleUser)
 	.put(protect, adminAuth, updateSingleUser)
 	.delete(protect, adminAuth, deleteUser);
+
+router.route('/roleId/:roleId').get(protect, getUserByRoleId);
 
 export default router;
