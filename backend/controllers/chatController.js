@@ -9,8 +9,9 @@ import User from '../models/userModel.js';
 // @desc Get all conversations of a user
 //  @route GET /api/chat/conversations
 // @access PROTECTED
-const getAllConversations = asyncHandler(async (req, res) => {
-	// fetch all conversations of a user then find the receiver's details from each conversation and return
+const getAllConversationsWithMessages = asyncHandler(async (req, res) => {
+	// fetch all conversations of a user then find the receiver's details
+	// and messages from each conversation and return
 	try {
 		const allConversations = await Conversation.find({
 			members: { $in: [req.user.roleId] },
@@ -18,15 +19,23 @@ const getAllConversations = asyncHandler(async (req, res) => {
 
 		let conversationsWithReceiverNames = [];
 		for (const conversation of allConversations) {
-			let receiverObject = {};
-			receiverObject.receiverId = conversation.members.find(
+			let conversationObject = {};
+
+			conversationObject._id = conversation._id;
+
+			conversationObject.receiverId = conversation.members.find(
 				(member) => String(member) !== String(req.user.roleId)
 			);
-			receiverObject.receiverDetails = await User.findOne({
-				roleId: receiverObject.receiverId,
+
+			conversationObject.receiverDetails = await User.findOne({
+				roleId: conversationObject.receiverId,
 			}).select('name email role');
 
-			conversationsWithReceiverNames.push(receiverObject);
+			conversationObject.messages = await Message.find({
+				conversationId: conversation._id,
+			});
+
+			conversationsWithReceiverNames.push(conversationObject);
 		}
 		res.status(200).json(conversationsWithReceiverNames);
 	} catch (error) {
@@ -107,7 +116,7 @@ const postMessage = asyncHandler(async (req, res) => {
 });
 
 export {
-	getAllConversations,
+	getAllConversationsWithMessages,
 	// getSpecificConversation,
 	postConversation,
 	getAllMessages,

@@ -1,6 +1,6 @@
 import './chatMessage.css';
 
-const Message = ({ own }) => {
+const Message = ({ text, own }) => {
 	return (
 		<div className={own ? 'message own' : 'message'}>
 			<div className='messageTop'>
@@ -9,7 +9,7 @@ const Message = ({ own }) => {
 					src='/images/strepsils.jpg'
 					alt='avatar'
 				/>
-				<p className='messageText'>Hello i am haris</p>
+				<p className='messageText'>{text}</p>
 			</div>
 			<div className='messageBottom'>1 hour ago</div>
 		</div>

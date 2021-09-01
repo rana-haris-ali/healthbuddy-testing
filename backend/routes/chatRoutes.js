@@ -2,7 +2,7 @@ import express from 'express';
 
 import { protect } from '../middleware/authMiddleware.js';
 import {
-	getAllConversations,
+	getAllConversationsWithMessages,
 	// getSpecificConversation,
 	postConversation,
 	getAllMessages,
@@ -12,7 +12,7 @@ import {
 // /api/chat
 const router = express.Router();
 
-router.route('/conversations').get(protect, getAllConversations);
+router.route('/conversations').get(protect, getAllConversationsWithMessages);
 
 router
 	.route('/conversations/:receiverId')

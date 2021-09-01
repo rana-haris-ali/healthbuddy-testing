@@ -9,8 +9,8 @@
 }
 
 .message.own .messageText {
-	background-color: rgb(235, 235, 235);
-	color: black;
+	background-color: #302828;
+	color: white;
 }
 
 .messageTop {
@@ -34,7 +34,7 @@
 .messageText {
 	padding: 10px;
 	border-radius: 17px;
-	background-color: #302828;
-	color: white;
+	background-color: rgb(235, 235, 235);
+	color: black;
 	margin-bottom: 0;
 }

@@ -1,5 +1,5 @@
 import './messengerScreen.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from '../../components/Loader';
@@ -12,12 +12,14 @@ import { getAllConversationsList } from '../../actions/chatActions';
 const MessengerScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
+	const [currentChat, setCurrentChat] = useState(null);
+
 	const { userInfo } = useSelector((state) => state.userLogin);
 
 	const {
 		loading: loadingConversations,
 		conversations,
-		error,
+		error: errorConversations,
 	} = useSelector((state) => state.conversationsList);
 
 	useEffect(() => {
@@ -31,9 +33,17 @@ const MessengerScreen = ({ history }) => {
 	useEffect(() => {
 		dispatch(getAllConversationsList());
 	}, [dispatch]);
+
+	// useEffect(() => {
+	// 	if (currentChat) {
+	// 		dispatch(getConversationMessages(currentChat._id));
+	// 	}
+	// }, [currentChat]);
 	return (
 		<>
-			{error && <Message variant='danger'>{error}</Message>}
+			{errorConversations && (
+				<Message variant='danger'>{errorConversations}</Message>
+			)}
 			<div className='messenger'>
 				<div className='chatMenu'>
 					<div className='chatMenuWrapper'>
@@ -50,10 +60,15 @@ const MessengerScreen = ({ history }) => {
 							<Loader />
 						) : conversations.length > 0 ? (
 							conversations.map((conversation) => (
-								<Conversation
-									conversation={conversation}
-									key={conversation.receiverId}
-								/>
+								<div
+									onClick={() => setCurrentChat(conversation)}
+									key={conversation._id}
+								>
+									<Conversation
+										conversation={conversation}
+										key={conversation._id}
+									/>
+								</div>
 							))
 						) : (
 							<Message>You dont have any conversations</Message>
@@ -62,26 +77,30 @@ const MessengerScreen = ({ history }) => {
 				</div>
 				<div className='chatBox'>
 					<div className='chatBoxWrapper'>
-						<div className='chatBoxTop'>
-							<ChatMessage />
-							<ChatMessage own={true} />
-							<ChatMessage />
-							<ChatMessage own={true} />
-							<ChatMessage />
-							<ChatMessage />
-							<ChatMessage />
-							<ChatMessage own={true} />
-							<ChatMessage />
-							<ChatMessage />
-							<ChatMessage />
-						</div>
-						<div className='chatBoxBottom'>
-							<textarea
-								className='chatMessageInput'
-								placeholder='Type your message...'
-							></textarea>
-							<button className='chatSubmitButton'>Send</button>
-						</div>
+						{currentChat ? (
+							<>
+								<div className='chatBoxTop'>
+									{currentChat.messages.map((message) => (
+										<ChatMessage
+											text={message.text}
+											own={message.sender === userInfo?.roleId ? true : false}
+											key={message._id}
+										/>
+									))}
+								</div>
+								<div className='chatBoxBottom'>
+									<textarea
+										className='chatMessageInput'
+										placeholder='Type your message...'
+									></textarea>
+									<button className='chatSubmitButton'>Send</button>
+								</div>
+							</>
+						) : (
+							<span className='noConversationText'>
+								Please select a conversation
+							</span>
+						)}
 					</div>
 				</div>
 			</div>
