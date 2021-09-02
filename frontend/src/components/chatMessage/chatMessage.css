@@ -38,3 +38,8 @@
 	color: black;
 	margin-bottom: 0;
 }
+
+.messageSenderText {
+	font-size: smaller;
+	color: rgb(185, 184, 184);
+}

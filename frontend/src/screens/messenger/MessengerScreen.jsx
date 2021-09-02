@@ -7,12 +7,17 @@ import Message from '../../components/Message';
 import Conversation from '../../components/conversation/Conversation';
 import ChatMessage from '../../components/chatMessage/ChatMessage';
 import { GET_ALL_CONVERSATIONS_RESET } from '../../constants/chatConstants';
-import { getAllConversationsList } from '../../actions/chatActions';
+import {
+	getAllConversationsList,
+	sendMessage,
+} from '../../actions/chatActions';
 
 const MessengerScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const [currentChat, setCurrentChat] = useState(null);
+
+	const [newMessage, setNewMessage] = useState('');
 
 	const { userInfo } = useSelector((state) => state.userLogin);
 
@@ -34,11 +39,13 @@ const MessengerScreen = ({ history }) => {
 		dispatch(getAllConversationsList());
 	}, [dispatch]);
 
-	// useEffect(() => {
-	// 	if (currentChat) {
-	// 		dispatch(getConversationMessages(currentChat._id));
-	// 	}
-	// }, [currentChat]);
+	const handleMessageSubmit = (e) => {
+		e.preventDefault();
+		dispatch(
+			sendMessage({ text: newMessage, conversationId: currentChat?._id })
+		);
+		setNewMessage('');
+	};
 	return (
 		<>
 			{errorConversations && (
@@ -61,6 +68,12 @@ const MessengerScreen = ({ history }) => {
 						) : conversations.length > 0 ? (
 							conversations.map((conversation) => (
 								<div
+									// change color onClick
+									className={
+										currentChat?.receiverId === conversation.receiverId
+											? 'changeBackground'
+											: ''
+									}
 									onClick={() => setCurrentChat(conversation)}
 									key={conversation._id}
 								>
@@ -82,7 +95,9 @@ const MessengerScreen = ({ history }) => {
 								<div className='chatBoxTop'>
 									{currentChat.messages.map((message) => (
 										<ChatMessage
+											receiverName={currentChat?.receiverDetails.name}
 											text={message.text}
+											createdAt={message.createdAt}
 											own={message.sender === userInfo?.roleId ? true : false}
 											key={message._id}
 										/>
@@ -92,8 +107,15 @@ const MessengerScreen = ({ history }) => {
 									<textarea
 										className='chatMessageInput'
 										placeholder='Type your message...'
+										onChange={(e) => setNewMessage(e.target.value)}
+										value={newMessage}
 									></textarea>
-									<button className='chatSubmitButton'>Send</button>
+									<button
+										className='chatSubmitButton'
+										onClick={handleMessageSubmit}
+									>
+										Send
+									</button>
 								</div>
 							</>
 						) : (

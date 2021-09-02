@@ -1,8 +1,12 @@
 import './chatMessage.css';
+import { format } from 'timeago.js';
 
-const Message = ({ text, own }) => {
+const Message = ({ text, createdAt, own, receiverName }) => {
 	return (
 		<div className={own ? 'message own' : 'message'}>
+			<span className='messageSenderText'>
+				{own ? 'Me' : `${receiverName}`}
+			</span>
 			<div className='messageTop'>
 				<img
 					className='messageImage'
@@ -11,7 +15,7 @@ const Message = ({ text, own }) => {
 				/>
 				<p className='messageText'>{text}</p>
 			</div>
-			<div className='messageBottom'>1 hour ago</div>
+			<div className='messageBottom'>{format(createdAt)}</div>
 		</div>
 	);
 };

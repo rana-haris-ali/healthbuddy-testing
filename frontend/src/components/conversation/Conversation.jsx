@@ -1,6 +1,6 @@
 import './conversation.css';
 
-const Conversation = ({ conversation, history }) => {
+const Conversation = ({ conversation }) => {
 	return (
 		<div className='conversation'>
 			<img
