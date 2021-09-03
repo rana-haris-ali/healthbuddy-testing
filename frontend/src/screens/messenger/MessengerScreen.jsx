@@ -47,7 +47,7 @@ const MessengerScreen = ({ history }) => {
 	useEffect(() => {
 		// dispatch reset on logout
 		if (!userInfo) {
-			history.push('/login');
+			history.push('/login?redirect=messenger');
 		}
 		dispatch({ type: GET_ALL_CONVERSATIONS_RESET });
 		dispatch({ type: GET_MESSAGES_OF_CONVERSATION_RESET });
