@@ -43,6 +43,7 @@ import {
 
 import {
 	conversationsListReducer,
+	chatMessagesReducer,
 	sendMessageReducer,
 } from './reducers/chatReducers';
 
@@ -69,6 +70,7 @@ const reducers = combineReducers({
 	patientAllRequests: patientAllRequestsReducer,
 	acceptPatientRequest: acceptPatientRequestReducer,
 	conversationsList: conversationsListReducer,
+	chatMessages: chatMessagesReducer,
 	sendMessage: sendMessageReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,

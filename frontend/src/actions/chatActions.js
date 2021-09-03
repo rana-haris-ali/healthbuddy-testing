@@ -7,6 +7,9 @@ import {
 	SEND_MESSAGE_REQUEST,
 	SEND_MESSAGE_SUCCESS,
 	SEND_MESSAGE_FAILURE,
+	GET_MESSAGES_OF_CONVERSATION_REQUEST,
+	GET_MESSAGES_OF_CONVERSATION_SUCCESS,
+	GET_MESSAGES_OF_CONVERSATION_FAILURE,
 } from '../constants/chatConstants';
 
 const getAllConversationsList = () => async (dispatch, getState) => {
@@ -44,6 +47,46 @@ const getAllConversationsList = () => async (dispatch, getState) => {
 		});
 	}
 };
+
+const getMessagesOfConversation =
+	(conversationId) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: GET_MESSAGES_OF_CONVERSATION_REQUEST,
+			});
+
+			const {
+				userLogin: {
+					userInfo: { token },
+				},
+			} = getState();
+
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			};
+
+			const { data } = await axios.get(
+				`/api/chat/messages/${conversationId}`,
+				config
+			);
+
+			dispatch({
+				type: GET_MESSAGES_OF_CONVERSATION_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: GET_MESSAGES_OF_CONVERSATION_FAILURE,
+				payload:
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message,
+			});
+		}
+	};
 
 const sendMessage = (messageObject) => async (dispatch, getState) => {
 	try {
@@ -85,4 +128,4 @@ const sendMessage = (messageObject) => async (dispatch, getState) => {
 	}
 };
 
-export { getAllConversationsList, sendMessage };
+export { getAllConversationsList, getMessagesOfConversation, sendMessage };

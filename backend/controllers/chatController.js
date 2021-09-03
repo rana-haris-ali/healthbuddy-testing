@@ -29,11 +29,12 @@ const getAllConversationsWithMessages = asyncHandler(async (req, res) => {
 
 			conversationObject.receiverDetails = await User.findOne({
 				roleId: conversationObject.receiverId,
-			}).select('name email role');
+			}).select('-_id name email role');
 
-			conversationObject.messages = await Message.find({
-				conversationId: conversation._id,
-			});
+			// attach all messges of every conversations as well
+			// conversationObject.messages = await Message.find({
+			// 	conversationId: conversation._id,
+			// });
 
 			conversationsWithReceiverNames.push(conversationObject);
 		}

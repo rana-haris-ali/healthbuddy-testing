@@ -3,6 +3,10 @@ import {
 	GET_ALL_CONVERSATIONS_REQUEST,
 	GET_ALL_CONVERSATIONS_RESET,
 	GET_ALL_CONVERSATIONS_SUCCESS,
+	GET_MESSAGES_OF_CONVERSATION_FAILURE,
+	GET_MESSAGES_OF_CONVERSATION_REQUEST,
+	GET_MESSAGES_OF_CONVERSATION_RESET,
+	GET_MESSAGES_OF_CONVERSATION_SUCCESS,
 	SEND_MESSAGE_FAILURE,
 	SEND_MESSAGE_REQUEST,
 	SEND_MESSAGE_SUCCESS,
@@ -23,6 +27,21 @@ const conversationsListReducer = (state = { conversations: [] }, action) => {
 	}
 };
 
+const chatMessagesReducer = (state = { messages: [] }, action) => {
+	switch (action.type) {
+		case GET_MESSAGES_OF_CONVERSATION_REQUEST:
+			return { ...state, loading: true };
+		case GET_MESSAGES_OF_CONVERSATION_SUCCESS:
+			return { ...state, loading: false, messages: action.payload };
+		case GET_MESSAGES_OF_CONVERSATION_FAILURE:
+			return { ...state, loading: false, error: action.payload };
+		case GET_MESSAGES_OF_CONVERSATION_RESET:
+			return { messages: [] };
+		default:
+			return state;
+	}
+};
+
 const sendMessageReducer = (state = {}, action) => {
 	switch (action.type) {
 		case SEND_MESSAGE_REQUEST:
@@ -36,4 +55,4 @@ const sendMessageReducer = (state = {}, action) => {
 	}
 };
 
-export { conversationsListReducer, sendMessageReducer };
+export { conversationsListReducer, chatMessagesReducer, sendMessageReducer };
