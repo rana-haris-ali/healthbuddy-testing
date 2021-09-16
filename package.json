@@ -1,38 +1,39 @@
 {
-  "name": "health-buddy",
-  "version": "1.0.0",
-  "description": "healthBuddy fyp app",
-  "main": "server.js",
-  "type": "module",
-  "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rana-haris-ali/healthBuddy.git"
-  },
-  "author": "Rana Haris Ali",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rana-haris-ali/healthBuddy/issues"
-  },
-  "homepage": "https://github.com/rana-haris-ali/healthBuddy#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "colors": "^1.4.0",
-    "dotenv": "^8.6.0",
-    "express": "^4.17.1",
-    "express-async-handler": "^1.1.4",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.7",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.2"
-  },
-  "devDependencies": {
-    "concurrently": "^6.0.2",
-    "nodemon": "^2.0.7"
-  }
+	"name": "health-buddy",
+	"version": "1.0.0",
+	"description": "healthBuddy fyp app",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"start": "node backend/server.js",
+		"server": "nodemon backend/server",
+		"client": "npm start --prefix frontend",
+		"chat": "nodemon socket/index",
+		"dev": "concurrently \"npm run server\" \"npm run client\" \"npm run chat\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rana-haris-ali/healthBuddy.git"
+	},
+	"author": "Rana Haris Ali",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/rana-haris-ali/healthBuddy/issues"
+	},
+	"homepage": "https://github.com/rana-haris-ali/healthBuddy#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"colors": "^1.4.0",
+		"dotenv": "^8.6.0",
+		"express": "^4.17.1",
+		"express-async-handler": "^1.1.4",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.12.7",
+		"morgan": "^1.10.0",
+		"multer": "^1.4.2"
+	},
+	"devDependencies": {
+		"concurrently": "^6.0.2",
+		"nodemon": "^2.0.7"
+	}
 }

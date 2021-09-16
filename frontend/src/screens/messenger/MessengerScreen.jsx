@@ -2,6 +2,7 @@ import './messengerScreen.css';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import io from 'socket.io-client';
 
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
@@ -29,8 +30,14 @@ const MessengerScreen = ({ history }) => {
 	// state for storing newMessage
 	const [newMessage, setNewMessage] = useState('');
 
+	// state for received message
+	const [receivedMessage, setReceivedMessage] = useState({});
+
 	// errorValidation to be shown for validation and other errors etc.
 	const [errorValidation, setErrorValidation] = useState('');
+
+	// ref for socket
+	const socket = useRef();
 
 	const { userInfo } = useSelector((state) => state.userLogin);
 
@@ -53,6 +60,17 @@ const MessengerScreen = ({ history }) => {
 		dispatch({ type: GET_MESSAGES_OF_CONVERSATION_RESET });
 	}, [dispatch, history, userInfo]);
 
+	useEffect(() => {
+		socket.current = io('ws://localhost:8900');
+	}, []);
+
+	useEffect(() => {
+		socket.current?.emit('addUser', userInfo?.roleId);
+		socket.current?.on('getUsers', (users) => {
+			// console.log(users);
+		});
+	}, [userInfo, socket]);
+
 	// fetch all conversations list on page load
 	useEffect(() => {
 		dispatch(getAllConversationsList());
@@ -70,10 +88,39 @@ const MessengerScreen = ({ history }) => {
 		scrollRef.current?.scrollIntoView();
 	}, [messages]);
 
+	// useEffect for received message
+	useEffect(() => {
+		socket.current?.on('getMessage', (data) => {
+			setReceivedMessage({
+				sender: data.senderId,
+				text: data.messageText,
+				createdAt: Date.now(),
+			});
+		});
+	}, [socket]);
+
+	// if message is received from currentChat sender, then update messages state
+	useEffect(() => {
+		receivedMessage &&
+			currentChat?.receiverId === receivedMessage.sender &&
+			dispatch({
+				type: GET_MESSAGES_OF_CONVERSATION_SUCCESS,
+				payload: [...messages, receivedMessage],
+			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [receivedMessage, currentChat?.receiverId, dispatch]);
+
 	const handleMessageSubmit = async (e) => {
 		e.preventDefault();
 		if (newMessage) {
 			try {
+				// emit socket event
+				socket.current?.emit('sendMessage', {
+					senderId: userInfo?.roleId,
+					receiverId: currentChat?.receiverId,
+					messageText: newMessage,
+				});
+
 				const config = {
 					headers: {
 						'Content-Type': 'application/json',
@@ -104,6 +151,7 @@ const MessengerScreen = ({ history }) => {
 			setErrorValidation('Cannot send empty message');
 		}
 	};
+
 	return (
 		<>
 			{errorConversations && (
