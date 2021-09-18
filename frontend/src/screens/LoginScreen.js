@@ -34,32 +34,36 @@ const LoginScreen = ({ location, history }) => {
 
 	return (
 		<FormContainer>
-			<h1>Sign In</h1>
+			<h1 className='text-center'>Sign In</h1>
 			{error && <Message variant='danger'>{error}</Message>}
 			{loading ? (
 				<Loader />
 			) : (
 				<>
+					<hr />
 					<Form onSubmit={formSubmitHandler} className='my-4'>
 						<Form.Group>
-							<Form.Label>Email Address</Form.Label>
+							<Form.Label for='email'>Email Address</Form.Label>
 							<Form.Control
 								type='email'
+								id='email'
 								placeholder='Enter Email'
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 							></Form.Control>
 						</Form.Group>
-						<Form.Group>
-							<Form.Label>Password</Form.Label>
+						<Form.Group className='mt-5'>
+							<Form.Label for='password'>Password</Form.Label>
 							<Form.Control
 								type='password'
+								id='password'
 								placeholder='Enter Password'
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							></Form.Control>
 						</Form.Group>
-						<Button type='submit' variant='dark'>
+						<hr />
+						<Button type='submit' variant='dark' className='mt-4'>
 							Login
 						</Button>
 					</Form>
@@ -70,10 +74,20 @@ const LoginScreen = ({ location, history }) => {
 								to={
 									redirect
 										? `/register-patient?redirect=${redirect}`
-										: '/register'
+										: '/register-patient'
 								}
 							>
-								Register
+								Register as Patient
+							</Link>{' '}
+							or{' '}
+							<Link
+								to={
+									redirect
+										? `/register-doctor?redirect=${redirect}`
+										: '/register-doctor'
+								}
+							>
+								Register as Doctor
 							</Link>
 						</Col>
 					</Row>

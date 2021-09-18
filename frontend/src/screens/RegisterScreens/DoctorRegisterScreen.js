@@ -82,9 +82,10 @@ const DoctorRegisterScreen = ({ location, history }) => {
 					<Form onSubmit={formSubmitHandler} className='my-2'>
 						<hr />
 						<Form.Group>
-							<Form.Label>Name</Form.Label>
+							<Form.Label for='name'>Name</Form.Label>
 							<Form.Control
 								type='username'
+								id='name'
 								placeholder='Enter Your Name'
 								value={name}
 								onChange={(e) => setName(e.target.value)}
@@ -92,9 +93,10 @@ const DoctorRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label>Email Address</Form.Label>
+							<Form.Label for='email'>Email Address</Form.Label>
 							<Form.Control
 								type='email'
+								id='email'
 								placeholder='Enter Email'
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
@@ -102,9 +104,10 @@ const DoctorRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label>Password</Form.Label>
+							<Form.Label for='password'>Password</Form.Label>
 							<Form.Control
 								type='password'
+								id='password'
 								placeholder='Enter Password'
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
@@ -112,9 +115,10 @@ const DoctorRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label>Confirm Password</Form.Label>
+							<Form.Label for='confirmPassword'>Confirm Password</Form.Label>
 							<Form.Control
 								type='password'
+								id='confirmPassword'
 								placeholder='Confirm Password'
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
