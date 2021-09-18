@@ -50,9 +50,9 @@ const DoctorsListScreen = ({ history }) => {
 					{showLoginPrompt && (
 						<Message>
 							Only registered users can contact doctors. Either{' '}
-							<Link to='/register?redirect=doctors'>Register</Link> a new
-							account or <Link to='/login?redirect=doctors'>Login</Link> if you
-							already have one
+							<Link to='/register-patient?redirect=doctors'>Register</Link> a
+							new account or <Link to='/login?redirect=doctors'>Login</Link> if
+							you already have one
 						</Message>
 					)}{' '}
 					{error && <Message variant='danger'>{error}</Message>}

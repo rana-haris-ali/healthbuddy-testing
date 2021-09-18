@@ -1,12 +1,45 @@
 import axios from 'axios';
+import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
 import {
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_SUCCESS,
+	REGISTER_PATIENT_FAILURE,
+	REGISTER_PATIENT_REQUEST,
+	REGISTER_PATIENT_SUCCESS,
 	REQUEST_DOCTOR_CONTACT_FAILURE,
 	REQUEST_DOCTOR_CONTACT_REQUEST,
 	REQUEST_DOCTOR_CONTACT_SUCCESS,
 } from '../constants/patientConstants';
+
+const registerPatient = (patientDetails) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: REGISTER_PATIENT_REQUEST,
+		});
+
+		const { data } = await axios.post('/api/patients', patientDetails);
+
+		dispatch({
+			type: REGISTER_PATIENT_SUCCESS,
+		});
+
+		dispatch({
+			type: USER_LOGIN_SUCCESS,
+			payload: data,
+		});
+
+		localStorage.setItem('userInfo', JSON.stringify(data));
+	} catch (error) {
+		dispatch({
+			type: REGISTER_PATIENT_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
 
 // get all requests made by a patient
 const patientGetAllRequests = () => async (dispatch, getState) => {
@@ -80,4 +113,4 @@ const requestDoctorContact = (doctorId) => async (dispatch, getState) => {
 	}
 };
 
-export { requestDoctorContact, patientGetAllRequests };
+export { registerPatient, requestDoctorContact, patientGetAllRequests };

@@ -12,7 +12,23 @@ import {
 	PATIENT_REQUEST_ACCEPTANCE_REQUEST,
 	PATIENT_REQUEST_ACCEPTANCE_RESET,
 	PATIENT_REQUEST_ACCEPTANCE_SUCCESS,
+	REGISTER_DOCTOR_FAILURE,
+	REGISTER_DOCTOR_REQUEST,
+	REGISTER_DOCTOR_SUCCESS,
 } from '../constants/doctorConstants';
+
+const registerDoctorReducer = (state = {}, action) => {
+	switch (action.type) {
+		case REGISTER_DOCTOR_REQUEST:
+			return { loading: true };
+		case REGISTER_DOCTOR_SUCCESS:
+			return { loading: false, success: true };
+		case REGISTER_DOCTOR_FAILURE:
+			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
 
 const doctorsListReducer = (state = { doctors: [] }, action) => {
 	switch (action.type) {
@@ -77,6 +93,7 @@ const acceptPatientRequestReducer = (state = {}, action) => {
 };
 
 export {
+	registerDoctorReducer,
 	doctorsListReducer,
 	doctorDetailsReducer,
 	patientsListReducer,

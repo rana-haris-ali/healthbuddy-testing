@@ -3,11 +3,27 @@ import {
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_RESET,
 	PATIENT_GET_ALL_REQUESTS_SUCCESS,
+	REGISTER_PATIENT_FAILURE,
+	REGISTER_PATIENT_REQUEST,
+	REGISTER_PATIENT_SUCCESS,
 	REQUEST_DOCTOR_CONTACT_FAILURE,
 	REQUEST_DOCTOR_CONTACT_REQUEST,
 	REQUEST_DOCTOR_CONTACT_RESET,
 	REQUEST_DOCTOR_CONTACT_SUCCESS,
 } from '../constants/patientConstants';
+
+const registerPatientReducer = (state = {}, action) => {
+	switch (action.type) {
+		case REGISTER_PATIENT_REQUEST:
+			return { loading: true };
+		case REGISTER_PATIENT_SUCCESS:
+			return { loading: false, success: true };
+		case REGISTER_PATIENT_FAILURE:
+			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
 
 // reducer for getting all requests made by a patient
 const patientAllRequestsReducer = (state = { requests: [] }, action) => {
@@ -40,4 +56,8 @@ const requestDoctorContactReducer = (state = {}, action) => {
 	}
 };
 
-export { requestDoctorContactReducer, patientAllRequestsReducer };
+export {
+	registerPatientReducer,
+	requestDoctorContactReducer,
+	patientAllRequestsReducer,
+};

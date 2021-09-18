@@ -54,6 +54,18 @@ const Header = () => {
 								</Nav.Link>
 							</LinkContainer>
 
+							{/* show register links if user is not logged in */}
+							{!userInfo && (
+								<NavDropdown alignRight='true' title='Register' id='username'>
+									<LinkContainer to='/register-patient'>
+										<NavDropdown.Item>Patient</NavDropdown.Item>
+									</LinkContainer>
+									<LinkContainer to='/register-doctor'>
+										<NavDropdown.Item>Doctor</NavDropdown.Item>
+									</LinkContainer>
+								</NavDropdown>
+							)}
+
 							{/* if user is logged in, show dropdown else show login link  */}
 							{userInfo ? (
 								<NavDropdown
@@ -75,6 +87,7 @@ const Header = () => {
 									</Nav.Link>
 								</LinkContainer>
 							)}
+
 							{userInfo && userInfo.isAdmin && (
 								<NavDropdown alignRight='true' title='Admin' id='adminMenu'>
 									<LinkContainer to='/admin/userList'>

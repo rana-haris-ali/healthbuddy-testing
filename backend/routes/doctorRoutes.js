@@ -17,7 +17,7 @@ import {
 
 const router = express.Router();
 
-router.route('/').get(getAllDoctors).post(protect, registerDoctor);
+router.route('/').get(getAllDoctors).post(registerDoctor);
 
 router.route('/all-patients').get(protect, doctorAuth, getAllPatients);
 

@@ -12,7 +12,40 @@ import {
 	PATIENT_REQUEST_ACCEPTANCE_FAILURE,
 	PATIENT_REQUEST_ACCEPTANCE_REQUEST,
 	PATIENT_REQUEST_ACCEPTANCE_SUCCESS,
+	REGISTER_DOCTOR_FAILURE,
+	REGISTER_DOCTOR_REQUEST,
+	REGISTER_DOCTOR_SUCCESS,
 } from '../constants/doctorConstants';
+import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
+
+const registerDoctor = (doctorDetails) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: REGISTER_DOCTOR_REQUEST,
+		});
+
+		const { data } = await axios.post('/api/doctors', doctorDetails);
+
+		dispatch({
+			type: REGISTER_DOCTOR_SUCCESS,
+		});
+
+		dispatch({
+			type: USER_LOGIN_SUCCESS,
+			payload: data,
+		});
+
+		localStorage.setItem('userInfo', JSON.stringify(data));
+	} catch (error) {
+		dispatch({
+			type: REGISTER_DOCTOR_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
 
 const getDoctorsList = () => async (dispatch, getState) => {
 	try {
@@ -144,6 +177,7 @@ const acceptPatientRequest = (patientId) => async (dispatch, getState) => {
 };
 
 export {
+	registerDoctor,
 	getDoctorsList,
 	getSingleDoctor,
 	getPatientsList,

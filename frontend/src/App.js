@@ -8,6 +8,8 @@ import ProductScreen from './screens/pharmacy/ProductScreen';
 import CartScreen from './screens/pharmacy/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import PatientRegisterScreen from './screens/RegisterScreens/PatientRegisterScreen';
+import DoctorRegisterScreen from './screens/RegisterScreens/DoctorRegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ShippingScreen from './screens/pharmacy/ShippingScreen';
 import PaymentMethodScreen from './screens/pharmacy/PaymentMethodScreen';
@@ -53,6 +55,8 @@ const App = () => {
 					<Route path='/products/:id' component={ProductScreen} />
 					<Route path='/cart/:id?' component={CartScreen} />
 					<Route path='/login' component={LoginScreen} />
+					<Route path='/register-patient' component={PatientRegisterScreen} />
+					<Route path='/register-doctor' component={DoctorRegisterScreen} />
 					<Route path='/register' component={RegisterScreen} />
 					<Route path='/profile' component={ProfileScreen} />
 					<Route path='/messenger' component={MessengerScreen} />

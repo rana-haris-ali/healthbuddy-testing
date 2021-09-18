@@ -30,6 +30,7 @@ import {
 } from './reducers/pharmacy/orderReducers';
 
 import {
+	registerDoctorReducer,
 	doctorsListReducer,
 	doctorDetailsReducer,
 	patientsListReducer,
@@ -37,6 +38,7 @@ import {
 } from './reducers/doctorReducers';
 
 import {
+	registerPatientReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
 } from './reducers/patientReducers';
@@ -64,8 +66,10 @@ const reducers = combineReducers({
 	userDeleteAdmin: userDeleteAdminReducer,
 	userListAdmin: userListAdminReducer,
 	requestDoctorContact: requestDoctorContactReducer,
+	registerDoctor: registerDoctorReducer,
 	doctorsList: doctorsListReducer,
 	doctorDetails: doctorDetailsReducer,
+	registerPatient: registerPatientReducer,
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,
 	acceptPatientRequest: acceptPatientRequestReducer,

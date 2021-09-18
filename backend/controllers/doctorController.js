@@ -35,9 +35,10 @@ const registerDoctor = asyncHandler(async (req, res) => {
 		});
 
 		// add Doctor reference to User document
-		const updatedUser = await User.updateOne(
-			{ _id: user._id },
-			{ roleId: doctor._id }
+		const updatedUser = await User.findByIdAndUpdate(
+			user._id,
+			{ roleId: doctor._id },
+			{ new: true }
 		);
 
 		res.status(201).json({
@@ -46,6 +47,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			role: user.role,
+			roleId: updatedUser.roleId,
 			token: generateToken(user._id),
 		});
 	} catch (error) {
