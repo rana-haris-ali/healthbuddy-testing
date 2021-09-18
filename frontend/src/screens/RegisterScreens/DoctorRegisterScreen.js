@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Row,
-	Col,
-	Form,
-	Button,
-	Dropdown,
-	DropdownButton,
-} from 'react-bootstrap';
+import { Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
 
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { registerDoctor } from '../../actions/doctorActions';
 
-const DoctorRegisterScreen = ({ location, history }) => {
-	// list of degrees to be rendered for dropdown options
-	const degrees = ['MBBS', 'FCPS', 'MRPS', 'BDS'];
+// list of diseases to be rendered
+import degreesOptions from './degrees';
 
+const DoctorRegisterScreen = ({ location, history }) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -48,6 +42,11 @@ const DoctorRegisterScreen = ({ location, history }) => {
 		}
 	}, [userInfo, history, redirect]);
 
+	const handleDropDownChange = (e) => {
+		// add the selected options to selected degrees state
+		setSelectedDegrees(e.map((degree) => degree.value));
+	};
+
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
@@ -59,15 +58,6 @@ const DoctorRegisterScreen = ({ location, history }) => {
 			dispatch(
 				registerDoctor({ name, email, password, degrees: selectedDegrees })
 			);
-		}
-	};
-
-	const handleDropDownClick = (e) => {
-		setMessage('');
-		if (selectedDegrees.includes(e.target.innerHTML)) {
-			setMessage('Degree has already been selected');
-		} else {
-			setSelectedDegrees([...selectedDegrees, e.target.innerHTML]);
 		}
 	};
 
@@ -130,40 +120,24 @@ const DoctorRegisterScreen = ({ location, history }) => {
 								onChange={(e) => setConfirmPassword(e.target.value)}
 							></Form.Control>
 						</Form.Group>
-						<Row>
-							<Col md={6}>
-								<textarea
-									className='form-control'
-									value={selectedDegrees.join('\n')}
-									placeholder='Select degrees from list &#13;Selected degrees will appear here'
-									style={{
-										width: '100%',
-										resize: 'none',
-									}}
-									rows='3'
-									id='degrees'
-									readOnly
-								></textarea>
-							</Col>
-							<Col md={6}>
-								<DropdownButton
-									id='degrees-dropdown'
-									title='Select Degrees'
-									variant='light'
-								>
-									{degrees.map((degree) => (
-										<Dropdown.Item onClick={handleDropDownClick} key={degree}>
-											{degree}
-										</Dropdown.Item>
-									))}
-								</DropdownButton>
-							</Col>
-						</Row>
-						<div className='col text-center'>
-							<Button className='btn btn-md mt-4' type='submit' variant='dark'>
-								Sign Up
-							</Button>
-						</div>
+						<hr className='mb-4' />
+						<Select
+							isMulti
+							closeMenuOnSelect={false}
+							name='degrees'
+							options={degreesOptions}
+							className='basic-multi-select'
+							classNamePrefix='select'
+							placeholder='Please select your degree(s)'
+							onChange={handleDropDownChange}
+						/>
+						<Button
+							className='btn btn-md mt-5 mb-3'
+							type='submit'
+							variant='dark'
+						>
+							Sign Up
+						</Button>
 					</Form>
 					<Row className='py-3'>
 						<Col>

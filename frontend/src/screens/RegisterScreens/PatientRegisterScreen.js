@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Row,
-	Col,
-	Form,
-	Button,
-	Dropdown,
-	DropdownButton,
-} from 'react-bootstrap';
+import { Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Select from 'react-select';
 
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { registerPatient } from '../../actions/patientActions';
 
-const PatientRegisterScreen = ({ location, history }) => {
-	// list of diseases to be rendered for dropdown options
-	const diseases = [
-		'Cancer',
-		'Covid-19',
-		'Diabetes',
-		'Arthiritis',
-		'Blindness',
-		'Deafness',
-	];
+// list of diseases to be rendered
+import diseasesOptions from './diseases';
 
+const PatientRegisterScreen = ({ location, history }) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -55,6 +42,11 @@ const PatientRegisterScreen = ({ location, history }) => {
 		}
 	}, [userInfo, history, redirect]);
 
+	const handleDropDownChange = (e) => {
+		// add the selected options to selected diseases state
+		setSelectedDiseases(e.map((disease) => disease.value));
+	};
+
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
@@ -71,15 +63,6 @@ const PatientRegisterScreen = ({ location, history }) => {
 					diseases: selectedDiseases,
 				})
 			);
-		}
-	};
-
-	const handleDropDownClick = (e) => {
-		setMessage('');
-		if (selectedDiseases.includes(e.target.innerHTML)) {
-			setMessage('Disease has already been selected');
-		} else {
-			setSelectedDiseases([...selectedDiseases, e.target.innerHTML]);
 		}
 	};
 
@@ -142,40 +125,24 @@ const PatientRegisterScreen = ({ location, history }) => {
 								onChange={(e) => setConfirmPassword(e.target.value)}
 							></Form.Control>
 						</Form.Group>
-						<Row>
-							<Col md={6}>
-								<textarea
-									className='form-control'
-									value={selectedDiseases.join('\n')}
-									placeholder='Select diseases from list &#13;Selected diseases will appear here'
-									style={{
-										width: '100%',
-										resize: 'none',
-									}}
-									rows='3'
-									id='diseases'
-									readOnly
-								></textarea>
-							</Col>
-							<Col md={6}>
-								<DropdownButton
-									id='diseases-dropdown'
-									title='Select Diseases'
-									variant='light'
-								>
-									{diseases.map((disease) => (
-										<Dropdown.Item onClick={handleDropDownClick} key={disease}>
-											{disease}
-										</Dropdown.Item>
-									))}
-								</DropdownButton>
-							</Col>
-						</Row>
-						<div className='col text-center'>
-							<Button className='btn btn-md mt-4' type='submit' variant='dark'>
-								Sign Up
-							</Button>
-						</div>
+						<hr className='mb-4' />
+						<Select
+							isMulti
+							closeMenuOnSelect={false}
+							name='diseases'
+							options={diseasesOptions}
+							className='basic-multi-select'
+							classNamePrefix='select'
+							placeholder='Please select your disease(s)'
+							onChange={handleDropDownChange}
+						/>
+						<Button
+							className='btn btn-md mt-5 mb-3'
+							type='submit'
+							variant='dark'
+						>
+							Sign Up
+						</Button>
 					</Form>
 					<Row className='py-3'>
 						<Col>
