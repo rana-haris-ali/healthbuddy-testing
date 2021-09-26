@@ -41,12 +41,14 @@ import {
 	registerPatientReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
+	acceptedDoctorsReducer,
 } from './reducers/patientReducers';
 
 import {
 	conversationsListReducer,
 	chatMessagesReducer,
 	sendMessageReducer,
+	createConversationReducer,
 } from './reducers/chatReducers';
 
 const reducers = combineReducers({
@@ -72,8 +74,10 @@ const reducers = combineReducers({
 	registerPatient: registerPatientReducer,
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,
+	acceptedDoctors: acceptedDoctorsReducer,
 	acceptPatientRequest: acceptPatientRequestReducer,
 	conversationsList: conversationsListReducer,
+	createConversation: createConversationReducer,
 	chatMessages: chatMessagesReducer,
 	sendMessage: sendMessageReducer,
 	orderCreate: orderCreateReducer,

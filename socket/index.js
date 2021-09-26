@@ -31,7 +31,27 @@ io.on('connection', (socket) => {
 
 	// send and get messages
 
-	socket.on('sendMessage', ({ senderId, receiverId, messageText }) => {
+	socket.on(
+		'sendMessage',
+		({ senderId, receiverId, conversationId, messageText }) => {
+			// get user object from users array
+			const user = getUser(receiverId);
+
+			// if user exists, that means that user is online so
+			// we will emit the event to them. If user does not exist,
+			// that means he is offline so we dont have to worry about
+			// instant chat and we can simply store message in DB
+			if (user) {
+				io.to(user.socketId).emit('getMessage', {
+					senderId,
+					conversationId,
+					messageText,
+				});
+			}
+		}
+	);
+
+	socket.on('createConversation', ({ receiverId }) => {
 		// get user object from users array
 		const user = getUser(receiverId);
 
@@ -40,10 +60,10 @@ io.on('connection', (socket) => {
 		// that means he is offline so we dont have to worry about
 		// instant chat and we can simply store message in DB
 		if (user) {
-			io.to(user.socketId).emit('getMessage', {
-				senderId,
-				messageText,
-			});
+			// swap receiverId with senderId and pass to the receiver. This is because if
+			// object is passed without swap then the recipient will have his own id in receiver id
+
+			io.to(user.socketId).emit('getConversation');
 		}
 	});
 

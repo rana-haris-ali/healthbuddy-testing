@@ -48,7 +48,12 @@
 	color: white;
 }
 
-.chatMenuWrapper,
+.chatMenuWrapper {
+	padding: 10px;
+	height: 100%;
+	overflow-y: scroll;
+}
+
 .chatBoxWrapper {
 	padding: 10px;
 	height: 100%;

@@ -11,6 +11,11 @@ const doctorSchema = mongoose.Schema(
 			type: Array,
 			required: true,
 		},
+		isApproved: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,

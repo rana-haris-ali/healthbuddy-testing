@@ -10,6 +10,10 @@ import {
 	SEND_MESSAGE_FAILURE,
 	SEND_MESSAGE_REQUEST,
 	SEND_MESSAGE_SUCCESS,
+	CREATE_NEW_CONVERSATION_FAILURE,
+	CREATE_NEW_CONVERSATION_REQUEST,
+	CREATE_NEW_CONVERSATION_RESET,
+	CREATE_NEW_CONVERSATION_SUCCESS,
 } from '../constants/chatConstants';
 
 const conversationsListReducer = (state = { conversations: [] }, action) => {
@@ -55,4 +59,24 @@ const sendMessageReducer = (state = {}, action) => {
 	}
 };
 
-export { conversationsListReducer, chatMessagesReducer, sendMessageReducer };
+const createConversationReducer = (state = {}, action) => {
+	switch (action.type) {
+		case CREATE_NEW_CONVERSATION_REQUEST:
+			return { loading: true };
+		case CREATE_NEW_CONVERSATION_SUCCESS:
+			return { loading: false, success: true };
+		case CREATE_NEW_CONVERSATION_FAILURE:
+			return { loading: false, error: action.payload };
+		case CREATE_NEW_CONVERSATION_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+export {
+	conversationsListReducer,
+	chatMessagesReducer,
+	sendMessageReducer,
+	createConversationReducer,
+};

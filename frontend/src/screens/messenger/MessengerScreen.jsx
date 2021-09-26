@@ -1,6 +1,8 @@
 import './messengerScreen.css';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'react-bootstrap';
+import Select from 'react-select';
 import axios from 'axios';
 import io from 'socket.io-client';
 
@@ -12,13 +14,17 @@ import {
 	GET_ALL_CONVERSATIONS_RESET,
 	GET_MESSAGES_OF_CONVERSATION_SUCCESS,
 	GET_MESSAGES_OF_CONVERSATION_RESET,
+	CREATE_NEW_CONVERSATION_RESET,
+	GET_ALL_CONVERSATIONS_SUCCESS,
 } from '../../constants/chatConstants';
 import {
 	getAllConversationsList,
 	getMessagesOfConversation,
 } from '../../actions/chatActions';
+import { getAcceptedDoctors } from '../../actions/patientActions';
+import { GET_ACCEPTED_DOCTORS_RESET } from '../../constants/patientConstants';
 
-const MessengerScreen = ({ history }) => {
+const MessengerScreen = ({ history, match, location }) => {
 	const dispatch = useDispatch();
 
 	// scrollRef for scrolling to end of conversation
@@ -31,10 +37,16 @@ const MessengerScreen = ({ history }) => {
 	const [newMessage, setNewMessage] = useState('');
 
 	// state for received message
-	const [receivedMessage, setReceivedMessage] = useState({});
+	// const [receivedMessage] = useState({});
 
 	// errorValidation to be shown for validation and other errors etc.
 	const [errorValidation, setErrorValidation] = useState('');
+
+	// error message to be shown for server errors.
+	const [error, setError] = useState('');
+
+	// toggle new chat dropdown.
+	const [showNewChatDropDown, setShowNewChatDropDown] = useState(false);
 
 	// ref for socket
 	const socket = useRef();
@@ -51,6 +63,8 @@ const MessengerScreen = ({ history }) => {
 		(state) => state.chatMessages
 	);
 
+	const { acceptedDoctors } = useSelector((state) => state.acceptedDoctors);
+
 	useEffect(() => {
 		// dispatch reset on logout
 		if (!userInfo) {
@@ -58,7 +72,19 @@ const MessengerScreen = ({ history }) => {
 		}
 		dispatch({ type: GET_ALL_CONVERSATIONS_RESET });
 		dispatch({ type: GET_MESSAGES_OF_CONVERSATION_RESET });
+		dispatch({ type: GET_ACCEPTED_DOCTORS_RESET });
+		dispatch({ type: CREATE_NEW_CONVERSATION_RESET });
 	}, [dispatch, history, userInfo]);
+
+	// // open specific conversation if url contains a conversation id as parameter
+	// useEffect(() => {
+	// 	setCurrentChat(
+	// 		conversations?.find(
+	// 			(conversation) =>
+	// 				conversation.receiverId === location.search.split('=')[1]
+	// 		)
+	// 	);
+	// }, [conversations, location.search]);
 
 	useEffect(() => {
 		socket.current = io('ws://localhost:8900');
@@ -66,10 +92,11 @@ const MessengerScreen = ({ history }) => {
 
 	useEffect(() => {
 		socket.current?.emit('addUser', userInfo?.roleId);
-		socket.current?.on('getUsers', (users) => {
-			// console.log(users);
+		socket.current?.on('getUsers', (users) => {});
+		socket.current?.on('getConversation', () => {
+			setTimeout(() => dispatch(getAllConversationsList()), 500);
 		});
-	}, [userInfo, socket]);
+	}, [userInfo, socket, dispatch]);
 
 	// fetch all conversations list on page load
 	useEffect(() => {
@@ -91,24 +118,59 @@ const MessengerScreen = ({ history }) => {
 	// useEffect for received message
 	useEffect(() => {
 		socket.current?.on('getMessage', (data) => {
-			setReceivedMessage({
-				sender: data.senderId,
-				text: data.messageText,
-				createdAt: Date.now(),
-			});
+			setTimeout(
+				() => dispatch(getMessagesOfConversation(data.conversationId)),
+				500
+			);
+			// // console.log(data);
+			// console.log(data);
+			// setReceivedMessage({
+			// 	sender: data.senderId,
+			// 	text: data.messageText,
+			// 	createdAt: Date.now(),
+			// });
 		});
-	}, [socket]);
+	}, [socket, dispatch]);
 
 	// if message is received from currentChat sender, then update messages state
+	// useEffect(() => {
+	// 	receivedMessage &&
+	// 		currentChat?.receiverId === receivedMessage.sender &&
+	// 		dispatch({
+	// 			type: GET_MESSAGES_OF_CONVERSATION_SUCCESS,
+	// 			payload: [...messages, receivedMessage],
+	// 		});
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [receivedMessage, currentChat?.receiverId, dispatch]);
+
 	useEffect(() => {
-		receivedMessage &&
-			currentChat?.receiverId === receivedMessage.sender &&
-			dispatch({
-				type: GET_MESSAGES_OF_CONVERSATION_SUCCESS,
-				payload: [...messages, receivedMessage],
-			});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [receivedMessage, currentChat?.receiverId, dispatch]);
+		if (userInfo?.role === 'Patient') {
+			dispatch(getAcceptedDoctors());
+		}
+		// const createDoctorOptionsForSelect = async () => {
+		// 	try {
+		// 		const config = {
+		// 			headers: {
+		// 				'Content-Type': 'application/json',
+		// 				Authorization: `Bearer ${userInfo.token}`,
+		// 			},
+		// 		};
+		// 		const { data } = await axios.get(
+		// 			'/api/patients/doctors/accepted',
+		// 			config
+		// 		);
+		// 		setDoctorOptions(
+		// data.map((doctor) => {
+		// 	return { value: doctor._id, label: `Dr. ${doctor.user.name}` };
+		// })
+		// 		);
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 		setErrorValidation(error);
+		// 	}
+		// };
+		// createDoctorOptionsForSelect();
+	}, [dispatch, userInfo?.role]);
 
 	const handleMessageSubmit = async (e) => {
 		e.preventDefault();
@@ -118,6 +180,7 @@ const MessengerScreen = ({ history }) => {
 				socket.current?.emit('sendMessage', {
 					senderId: userInfo?.roleId,
 					receiverId: currentChat?.receiverId,
+					conversationId: currentChat._id,
 					messageText: newMessage,
 				});
 
@@ -144,6 +207,11 @@ const MessengerScreen = ({ history }) => {
 						? error.response.data.message
 						: error.message
 				);
+				setError(
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message
+				);
 			}
 			setNewMessage('');
 			setErrorValidation('');
@@ -152,8 +220,62 @@ const MessengerScreen = ({ history }) => {
 		}
 	};
 
+	const newConversation = async (e) => {
+		// if conversation with the doctor already exists then show error message
+		if (
+			conversations.find((conversation) => conversation.receiverId === e.value)
+		) {
+			setErrorValidation(`Conversation with ${e.label} already exists.`);
+		} else {
+			setErrorValidation('');
+
+			try {
+				const config = {
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${userInfo.token}`,
+					},
+				};
+
+				const { data: newConversation } = await axios.post(
+					`/api/chat/conversations/${e.value}`,
+					{},
+					config
+				);
+
+				// emit socket event
+				socket.current?.emit('createConversation', {
+					receiverId: e.value,
+				});
+
+				dispatch({
+					type: GET_ALL_CONVERSATIONS_SUCCESS,
+					payload: [newConversation, ...conversations],
+				});
+				setCurrentChat(newConversation);
+			} catch (error) {
+				console.log(
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message
+				);
+				setError(
+					error.response && error.response.data.message
+						? error.response.data.message
+						: error.message
+				);
+			}
+
+			// dispatch(createNewConversation(e.value));
+			// socket.current?.emit('createConversation', { receiverId: e.value });
+			// dispatch(getAllConversationsList());
+			// history.push(`/messenger?open=${e.value}`);
+		}
+	};
+
 	return (
 		<>
+			{error && <Message variant='danger'>{error}</Message>}
 			{errorConversations && (
 				<Message variant='danger'>{errorConversations}</Message>
 			)}
@@ -173,6 +295,31 @@ const MessengerScreen = ({ history }) => {
 						>
 							Conversations
 						</p>
+						{userInfo?.role === 'Patient' && (
+							<Button
+								className='btn w-100'
+								onClick={() => setShowNewChatDropDown(true)}
+							>
+								New Chat
+							</Button>
+						)}
+						{userInfo?.role === 'Patient' && showNewChatDropDown && (
+							<Select
+								closeMenuOnSelect={true}
+								name='newChat'
+								options={acceptedDoctors?.map((doctor) => {
+									return {
+										value: doctor._id,
+										label: `Dr. ${doctor.user.name}`,
+										key: doctor._id,
+									};
+								})}
+								className='basic-select'
+								classNamePrefix='select'
+								placeholder='Please select the doctor'
+								onChange={newConversation}
+							/>
+						)}
 						{loadingConversations ? (
 							<Loader />
 						) : conversations.length > 0 ? (
@@ -229,6 +376,8 @@ const MessengerScreen = ({ history }) => {
 										placeholder='Type your message...'
 										onChange={(e) => setNewMessage(e.target.value)}
 										value={newMessage}
+										style={{ resize: 'none', overflowY: 'scroll' }}
+										// maxLength='100'
 									></textarea>
 									<button
 										className='chatSubmitButton'

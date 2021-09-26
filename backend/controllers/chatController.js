@@ -72,7 +72,19 @@ const postConversation = asyncHandler(async (req, res) => {
 
 	try {
 		const savedConversation = await newConversation.save();
-		res.status(200).json(savedConversation);
+
+		let conversationObjectWithDetails = {};
+
+		conversationObjectWithDetails._id = savedConversation._id;
+
+		conversationObjectWithDetails.receiverId = savedConversation.members.find(
+			(member) => String(member) !== String(req.user.roleId)
+		);
+
+		conversationObjectWithDetails.receiverDetails = await User.findOne({
+			roleId: conversationObjectWithDetails.receiverId,
+		}).select('-_id name email role');
+		res.status(200).json(conversationObjectWithDetails);
 	} catch (error) {
 		res.status(500);
 		console.log(error);

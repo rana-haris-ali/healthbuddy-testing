@@ -1,4 +1,8 @@
 import {
+	GET_ACCEPTED_DOCTORS_FAILURE,
+	GET_ACCEPTED_DOCTORS_REQUEST,
+	GET_ACCEPTED_DOCTORS_RESET,
+	GET_ACCEPTED_DOCTORS_SUCCESS,
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_RESET,
@@ -56,8 +60,24 @@ const requestDoctorContactReducer = (state = {}, action) => {
 	}
 };
 
+const acceptedDoctorsReducer = (state = { acceptedDoctors: [] }, action) => {
+	switch (action.type) {
+		case GET_ACCEPTED_DOCTORS_REQUEST:
+			return { loading: true };
+		case GET_ACCEPTED_DOCTORS_SUCCESS:
+			return { loading: false, success: true, acceptedDoctors: action.payload };
+		case GET_ACCEPTED_DOCTORS_FAILURE:
+			return { loading: false, error: action.payload };
+		case GET_ACCEPTED_DOCTORS_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
 export {
 	registerPatientReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
+	acceptedDoctorsReducer,
 };

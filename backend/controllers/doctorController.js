@@ -121,18 +121,28 @@ const getAllPatients = asyncHandler(async (req, res) => {
 // @access PRIVATE
 const acceptPatientRequest = asyncHandler(async (req, res) => {
 	try {
-		const updatedRequest = await Request.findOneAndUpdate(
-			{ _id: req.params.id },
-			{ $set: { status: 'Accepted' } },
-			{ new: true }
-		);
+		const request = await Request.findById(req.params.id);
 
-		if (updatedRequest) {
-			res.status(200).json({ message: 'Patient request accepted' });
-		} else {
+		const patient = await Patient.findById(request?.patient);
+
+		if (!request) {
 			res.status(404);
 			throw new Error('The patient request was not found');
+		} else if (request.status === 'Accepted') {
+			res.status(401);
+			throw new Error('The patient request is already accepted');
+		} else if (patient.acceptedDoctors.includes(request.doctor)) {
+			res.status(401);
+			throw new Error('The doctor is already present in acceptedDoctors list');
 		}
+
+		request.status = 'Accepted';
+		request.save();
+
+		patient.acceptedDoctors.push(request.doctor);
+		patient.save();
+
+		res.status(200).json({ message: 'Patient request accepted' });
 	} catch (error) {
 		res.status(500);
 		console.log(error);

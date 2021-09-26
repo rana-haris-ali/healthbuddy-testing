@@ -40,8 +40,6 @@ const registerPatient = asyncHandler(async (req, res) => {
 			{ new: true }
 		);
 
-		console.log(updatedUser.roleId);
-
 		res.status(201).json({
 			_id: user._id,
 			name: user.name,
@@ -104,4 +102,67 @@ const requestDoctorContact = asyncHandler(async (req, res) => {
 	}
 });
 
-export { registerPatient, requestDoctorContact, patientGetAllRequests };
+// @desc Get all accepted requests of a patient
+//  @route GET /api/patients/requests/accepted
+// @access Private
+const patientGetAllAcceptedRequests = asyncHandler(async (req, res) => {
+	try {
+		const requests = await Request.find({
+			user: req.user._id,
+			status: 'Accepted',
+		}).populate({
+			path: 'doctor',
+			populate: { path: 'user', select: '-_id name email' },
+		});
+		res.status(200).json(requests);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
+// @desc Get accepted doctors of a patient
+//  @route GET /api/patients/doctors/accepted
+// @access Private
+const patientGetAcceptedDoctors = asyncHandler(async (req, res) => {
+	try {
+		const { acceptedDoctors } = await Patient.findById(req.user.roleId).select(
+			'acceptedDoctors -_id'
+		);
+
+		if (acceptedDoctors.length > 0) {
+			// populate acceptedDoctors with names
+			let populatedAcceptedDoctorsArray = await Promise.all(
+				acceptedDoctors.map(async (doctor) => {
+					try {
+						return await Doctor.findById(doctor)
+							.select('user')
+							.populate({ path: 'user', select: '-_id name' });
+					} catch (error) {
+						res.status(500);
+						console.log(error);
+						throw new Error(error);
+					}
+				})
+			);
+
+			res.status(200).json(populatedAcceptedDoctorsArray);
+		} else {
+			res.status(404);
+			throw new Error('There are no accepted doctors for this patient');
+		}
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
+export {
+	registerPatient,
+	requestDoctorContact,
+	patientGetAllRequests,
+	patientGetAllAcceptedRequests,
+	patientGetAcceptedDoctors,
+};

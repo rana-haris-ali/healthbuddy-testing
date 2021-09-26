@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
 import {
+	GET_ACCEPTED_DOCTORS_FAILURE,
+	GET_ACCEPTED_DOCTORS_REQUEST,
+	GET_ACCEPTED_DOCTORS_SUCCESS,
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_SUCCESS,
@@ -11,6 +14,12 @@ import {
 	REQUEST_DOCTOR_CONTACT_REQUEST,
 	REQUEST_DOCTOR_CONTACT_SUCCESS,
 } from '../constants/patientConstants';
+
+import {
+	CREATE_NEW_CONVERSATION_FAILURE,
+	CREATE_NEW_CONVERSATION_REQUEST,
+	CREATE_NEW_CONVERSATION_SUCCESS,
+} from '../constants/chatConstants';
 
 const registerPatient = (patientDetails) => async (dispatch, getState) => {
 	try {
@@ -113,4 +122,84 @@ const requestDoctorContact = (doctorId) => async (dispatch, getState) => {
 	}
 };
 
-export { registerPatient, requestDoctorContact, patientGetAllRequests };
+const getAcceptedDoctors = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: GET_ACCEPTED_DOCTORS_REQUEST,
+		});
+
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.get('/api/patients/doctors/accepted', config);
+
+		dispatch({
+			type: GET_ACCEPTED_DOCTORS_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_ACCEPTED_DOCTORS_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+const createNewConversation = (doctorId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: CREATE_NEW_CONVERSATION_REQUEST,
+		});
+
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		await axios.post(`/api/chat/conversations/${doctorId}`, {}, config);
+
+		// console.log(data);
+
+		dispatch({
+			type: CREATE_NEW_CONVERSATION_SUCCESS,
+		});
+	} catch (error) {
+		// console.log(error);
+		dispatch({
+			type: CREATE_NEW_CONVERSATION_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export {
+	registerPatient,
+	requestDoctorContact,
+	patientGetAllRequests,
+	getAcceptedDoctors,
+	createNewConversation,
+};

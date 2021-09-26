@@ -9,6 +9,8 @@ import {
 import {
 	registerPatient,
 	patientGetAllRequests,
+	patientGetAllAcceptedRequests,
+	patientGetAcceptedDoctors,
 } from '../controllers/patientController.js';
 import { acceptPatientRequest } from '../controllers/doctorController.js';
 
@@ -21,6 +23,14 @@ const router = express.Router();
 router.route('/').post(registerPatient);
 
 router.route('/requests').get(protect, patientAuth, patientGetAllRequests);
+
+router
+	.route('/requests/accepted')
+	.get(protect, patientAuth, patientGetAllAcceptedRequests);
+
+router
+	.route('/doctors/accepted')
+	.get(protect, patientAuth, patientGetAcceptedDoctors);
 
 router
 	.route('/requests/:id/approve')
