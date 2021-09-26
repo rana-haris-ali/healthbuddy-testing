@@ -43,7 +43,7 @@ const LoginScreen = ({ location, history }) => {
 					<hr />
 					<Form onSubmit={formSubmitHandler} className='my-4'>
 						<Form.Group>
-							<Form.Label for='email'>Email Address</Form.Label>
+							<Form.Label htmlFor='email'>Email Address</Form.Label>
 							<Form.Control
 								type='email'
 								id='email'
@@ -53,7 +53,7 @@ const LoginScreen = ({ location, history }) => {
 							></Form.Control>
 						</Form.Group>
 						<Form.Group className='mt-5'>
-							<Form.Label for='password'>Password</Form.Label>
+							<Form.Label htmlFor='password'>Password</Form.Label>
 							<Form.Control
 								type='password'
 								id='password'

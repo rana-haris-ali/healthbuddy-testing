@@ -87,7 +87,7 @@ const PatientRegisterScreen = ({ location, history }) => {
 					<Form onSubmit={formSubmitHandler} className='my-2'>
 						<hr />
 						<Form.Group>
-							<Form.Label for='name'>Name</Form.Label>
+							<Form.Label htmlFor='name'>Name</Form.Label>
 							<Form.Control
 								type='username'
 								id='name'
@@ -98,7 +98,7 @@ const PatientRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label for='email'>Email Address</Form.Label>
+							<Form.Label htmlFor='email'>Email Address</Form.Label>
 							<Form.Control
 								type='email'
 								id='email'
@@ -109,7 +109,7 @@ const PatientRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label for='password'>Password</Form.Label>
+							<Form.Label htmlFor='password'>Password</Form.Label>
 							<Form.Control
 								type='password'
 								id='password'
@@ -120,7 +120,9 @@ const PatientRegisterScreen = ({ location, history }) => {
 						</Form.Group>
 						<hr />
 						<Form.Group className='my-4'>
-							<Form.Label for='confirmPassword'>Confirm Password</Form.Label>
+							<Form.Label htmlFor='confirmPassword'>
+								Confirm Password
+							</Form.Label>
 							<Form.Control
 								type='password'
 								id='confirmPassword'
