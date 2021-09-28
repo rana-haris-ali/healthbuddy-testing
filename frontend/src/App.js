@@ -1,5 +1,6 @@
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Header from './components/pharmacy/Header';
 import Footer from './components/pharmacy/Footer';
@@ -21,7 +22,8 @@ import ProductListAdminScreen from './screens/admin/ProductListAdminScreen';
 import ProductCreateAdminScreen from './screens/admin/ProductCreateAdminScreen';
 import ProductEditAdminScreen from './screens/admin/ProductEditAdminScreen';
 import OrderListAdminScreen from './screens/admin/OrderListAdminScreen';
-import Dashboard from './screens/Dashboard';
+import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
+import Dashboard from './screens/Dashboard/Dashboard';
 import DoctorsListScreen from './screens/DoctorsListScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import PatientsListScreen from './screens/PatientsListScreen';
@@ -29,12 +31,19 @@ import PatientAllRequestsScreen from './screens/PatientAllRequestsScreen';
 import MessengerScreen from './screens/messenger/MessengerScreen';
 
 const App = () => {
+	const { userInfo } = useSelector((state) => state.userLogin);
+
 	return (
 		<Router>
 			<Header />
 			<main className='py-3'>
 				<Container>
-					<Route path='/' component={HomeScreen} exact />
+					<Route
+						path='/'
+						component={userInfo ? Dashboard : WelcomeScreen}
+						exact
+					/>
+					<Route path='/pharmacy-home' component={HomeScreen} exact />
 					<Route path='/page/:pageNumber' component={HomeScreen} exact />
 					<Route
 						path='/search/:keyword/page/:pageNumber'
