@@ -35,8 +35,12 @@ const upload = multer({
 });
 
 router.post('/productImage', upload.single('image'), (req, res) => {
-	console.log(`/${req.file.path}`);
-	res.send(`/${req.file.path}`);
+	try {
+		console.log(`/${req.file.path}`);
+		res.send(`/${req.file.path}`);
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 export default router;

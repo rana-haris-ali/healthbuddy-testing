@@ -77,6 +77,7 @@ const ProductCreateAdminScreen = ({ history }) => {
 			setImage(data);
 			setUploading(false);
 		} catch (error) {
+			console.log(error);
 			setUploadingError(error);
 			setUploading(false);
 		}
