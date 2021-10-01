@@ -16,6 +16,20 @@ const doctorSchema = mongoose.Schema(
 			required: true,
 			default: false,
 		},
+		address: {
+			type: String,
+			required: false,
+		},
+		coordinates: {
+			latitude: {
+				type: Number,
+				required: false,
+			},
+			longitude: {
+				type: Number,
+				required: false,
+			},
+		},
 	},
 	{
 		timestamps: true,
