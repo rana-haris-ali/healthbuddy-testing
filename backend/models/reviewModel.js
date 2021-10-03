@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
 
-//  Base user schema
-//  Will be extended by Patient and Doctor schemas
-
 export const reviewSchema = mongoose.Schema(
 	{
 		name: {
