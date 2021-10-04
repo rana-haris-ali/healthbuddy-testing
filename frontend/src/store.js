@@ -51,6 +51,8 @@ import {
 	createConversationReducer,
 } from './reducers/chatReducers';
 
+import { lungsPredictionReducer } from './reducers/predictionReducers';
+
 const reducers = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
@@ -86,6 +88,7 @@ const reducers = combineReducers({
 	orderPay: orderPayReducer,
 	orderDeliver: orderDeliverReducer,
 	getOrdersAdmin: getOrdersAdminReducer,
+	lungsPrediction: lungsPredictionReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

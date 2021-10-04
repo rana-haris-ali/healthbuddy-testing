@@ -15,6 +15,18 @@ const storage = multer.diskStorage({
 	},
 });
 
+// const storageForLungsImages = multer.diskStorage({
+// 	destination(req, file, cb) {
+// 		cb(null, 'uploads/lungs/');
+// 	},
+// 	filename(req, file, cb) {
+// 		cb(
+// 			null,
+// 			`${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+// 		);
+// 	},
+// });
+
 function checkFileType(file, cb) {
 	const filetypes = /jpg|jpeg|png/;
 	const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -36,11 +48,28 @@ const upload = multer({
 
 router.post('/productImage', upload.single('image'), (req, res) => {
 	try {
-		console.log(`/${req.file.path}`);
-		res.send(`/${req.file.path}`);
+		// replace \ with /
+		console.log(`/${req.file.path}`.split('\\').join('/'));
+		res.send(`/${req.file.path}`.split('\\').join('/'));
 	} catch (error) {
 		console.log(error);
 	}
 });
+
+// const uploadLungsImage = multer({
+// 	storageForLungsImages,
+// 	fileFilter: function (req, file, cb) {
+// 		checkFileType(file, cb);
+// 	},
+// });
+
+// router.post('/lungsImage', uploadLungsImage.single('image'), (req, res) => {
+// 	try {
+// 		console.log(`/${req.file.path}`);
+// 		res.send(`/${req.file.path}`);
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// });
 
 export default router;

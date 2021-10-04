@@ -1,0 +1,13 @@
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.red,
+.green {
+	font-size: larger;
+	font-weight: 900;
+}
