@@ -10,7 +10,7 @@ import { request } from 'express';
 //  @route POST /api/doctors
 // @access PUBLIC
 const registerDoctor = asyncHandler(async (req, res) => {
-	const { name, email, password, degrees } = req.body;
+	const { name, email, password, degrees, coordinates } = req.body;
 
 	const userExists = await User.findOne({ email });
 
@@ -32,6 +32,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
 		const doctor = await Doctor.create({
 			user: user._id,
 			degrees,
+			coordinates,
 		});
 
 		// add Doctor reference to User document

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 import newsItems from './news';
 import tipsItems from './tips';
@@ -14,10 +15,11 @@ const Dashboard = () => {
 	// 	console.log(index);
 	// 	setTimeout(newsLoop, 1000, (index + 1) % newsItems.length);
 	// };
+	const { userInfo } = useSelector((state) => state.userLogin);
 
 	return (
 		<div>
-			<h1 className='text-center mb-5'>Welcome</h1>
+			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
 			<Row>
 				<Col md={3}>
 					<h4 className='text-center  mt-3 mb-1'>News</h4>

@@ -3,6 +3,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
@@ -19,6 +20,13 @@ const DoctorRegisterScreen = ({ location, history }) => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [selectedDegrees, setSelectedDegrees] = useState([]);
 	const [message, setMessage] = useState('');
+	const [viewport, setViewport] = useState({
+		width: '100%',
+		height: 500,
+		latitude: 30.3753,
+		longitude: 69.3451,
+		zoom: 5,
+	});
 
 	const dispatch = useDispatch();
 	const {
@@ -56,7 +64,16 @@ const DoctorRegisterScreen = ({ location, history }) => {
 			setMessage("Passwords don't match");
 		} else {
 			dispatch(
-				registerDoctor({ name, email, password, degrees: selectedDegrees })
+				registerDoctor({
+					name,
+					email,
+					password,
+					degrees: selectedDegrees,
+					coordinates: {
+						latitude: viewport.latitude,
+						longitude: viewport.longitude,
+					},
+				})
 			);
 		}
 	};
@@ -137,6 +154,28 @@ const DoctorRegisterScreen = ({ location, history }) => {
 							placeholder='Please select your degree(s)'
 							onChange={handleDropDownChange}
 						/>
+						<Form.Group className='my-4'>
+							<Form.Label htmlFor='location'>Select Clinic Location</Form.Label>
+
+							<ReactMapGL
+								{...viewport}
+								onViewportChange={(viewport) => setViewport(viewport)}
+								mapboxApiAccessToken={
+									'pk.eyJ1IjoicmFuYS1oYXJpcy1hbGkiLCJhIjoiY2t1NXd3NGszMW54dTJwcWhnc3BrOXp2cSJ9.DH5z_oGb8q_B4EhgqLr1Ug'
+								}
+								mapStyle='mapbox://styles/rana-haris-ali/cku6vluo33yq917nxmcr7r6j2'
+							>
+								<Marker
+									latitude={viewport.latitude}
+									longitude={viewport.longitude}
+								>
+									<i
+										class='fas fa-map-marker-alt'
+										style={{ fontWeight: '900', fontSize: '30px' }}
+									></i>
+								</Marker>
+							</ReactMapGL>
+						</Form.Group>
 						<Button
 							className='btn btn-md mt-5 mb-3'
 							type='submit'
