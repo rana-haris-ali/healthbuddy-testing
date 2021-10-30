@@ -60,6 +60,10 @@ const Header = () => {
 								</Nav.Link>
 							</LinkContainer>
 
+							<LinkContainer to='/lungs-prediction'>
+								<Nav.Link>Prediction</Nav.Link>
+							</LinkContainer>
+
 							{/* show register links if user is not logged in */}
 							{!userInfo && (
 								<NavDropdown alignRight='true' title='Register' id='username'>

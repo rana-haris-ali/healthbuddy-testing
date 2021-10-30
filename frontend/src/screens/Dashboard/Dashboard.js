@@ -27,6 +27,7 @@ const Dashboard = () => {
 	// 	console.log(index);
 	// 	setTimeout(newsLoop, 1000, (index + 1) % newsItems.length);
 	// };
+	const { userInfo } = useSelector((state) => state.userLogin);
 
 	return (
 		<div>
