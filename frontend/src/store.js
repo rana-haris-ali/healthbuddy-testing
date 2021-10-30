@@ -51,6 +51,10 @@ import {
 	createConversationReducer,
 } from './reducers/chatReducers';
 
+import { lungsPredictionReducer } from './reducers/predictionReducers';
+
+import { dashboardDataReducer } from './reducers/dashboardReducers';
+
 const reducers = combineReducers({
 	productList: productListReducer,
 	productDetails: productDetailsReducer,
@@ -86,6 +90,8 @@ const reducers = combineReducers({
 	orderPay: orderPayReducer,
 	orderDeliver: orderDeliverReducer,
 	getOrdersAdmin: getOrdersAdminReducer,
+	lungsPrediction: lungsPredictionReducer,
+	dashboardData: dashboardDataReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

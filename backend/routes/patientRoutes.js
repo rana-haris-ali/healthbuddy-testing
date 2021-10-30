@@ -11,6 +11,7 @@ import {
 	patientGetAllRequests,
 	patientGetAllAcceptedRequests,
 	patientGetAcceptedDoctors,
+	getTotalPatientsNumber,
 } from '../controllers/patientController.js';
 import { acceptPatientRequest } from '../controllers/doctorController.js';
 
@@ -35,5 +36,8 @@ router
 router
 	.route('/requests/:id/approve')
 	.get(protect, doctorAuth, acceptPatientRequest);
+
+// get total number of patients for dashboard
+router.route('/number').get(getTotalPatientsNumber);
 
 export default router;

@@ -4,6 +4,7 @@ import {
 	getAllDoctors,
 	registerDoctor,
 	getAllPatients,
+	getTotalDoctorsNumber,
 } from '../controllers/doctorController.js';
 import { requestDoctorContact } from '../controllers/patientController.js';
 import {
@@ -21,8 +22,12 @@ router.route('/').get(getAllDoctors).post(registerDoctor);
 
 router.route('/all-patients').get(protect, doctorAuth, getAllPatients);
 
+router.route('/number').get(getTotalDoctorsNumber);
+
 router.route('/:id').get(getSingleDoctor);
 
 router.route('/:id/request').get(protect, requestDoctorContact);
+
+// get total number of doctors for dashboard
 
 export default router;

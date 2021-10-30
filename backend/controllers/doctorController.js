@@ -150,10 +150,25 @@ const acceptPatientRequest = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get total number of registered doctors (for dashboard)
+//  @route GET /api/doctors/number
+// @access Public
+const getTotalDoctorsNumber = asyncHandler(async (req, res) => {
+	try {
+		const numberOfDoctors = await Doctor.countDocuments({});
+		res.status(200).json(numberOfDoctors);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
 export {
 	getSingleDoctor,
 	getAllDoctors,
 	registerDoctor,
 	getAllPatients,
 	acceptPatientRequest,
+	getTotalDoctorsNumber,
 };

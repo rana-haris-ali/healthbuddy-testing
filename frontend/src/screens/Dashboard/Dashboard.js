@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import newsItems from './news';
 import tipsItems from './tips';
+import { getDashboardData } from '../../actions/dashboardActions';
 import './Dashboard.css';
 
 const Dashboard = () => {
+	const dispatch = useDispatch();
+
 	const [news, setNews] = useState('');
+
+	const { loading, error, dashboardData } = useSelector(
+		(state) => state.dashboardData
+	);
+
+	useEffect(() => {
+		dispatch(getDashboardData());
+	}, []);
 
 	// const newsLoop = (index) => {
 	// 	// document.getElementById('news-ticker').innerHTML = newsItems[index];
@@ -18,6 +31,18 @@ const Dashboard = () => {
 	return (
 		<div>
 			<h1 className='text-center mb-5'>Welcome</h1>
+
+			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
+
+			{dashboardData && (
+				<h1>
+					Patients: {dashboardData.totalPatients}
+					<br />
+					Doctors:{dashboardData.totalDoctors}
+				</h1>
+			)}
+			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
+
 			<Row>
 				<Col md={3}>
 					<h4 className='text-center  mt-3 mb-1'>News</h4>
