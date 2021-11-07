@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Row, Col, Form, Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Table, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +23,7 @@ const MyOrdersScreen = ({ history }) => {
 		// fetch orders on page load when orders array is empty
 		dispatch(getMyOrdersList());
 		// }
-	}, [history, dispatch]);
+	}, [history, dispatch, userInfo]);
 
 	return (
 		<>

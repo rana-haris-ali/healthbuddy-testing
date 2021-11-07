@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { USER_LOGIN_SUCCESS } from '../constants/userConstants';
 import {
 	LUNGS_PREDICTION_REQUEST,
 	LUNGS_PREDICTION_SUCCESS,

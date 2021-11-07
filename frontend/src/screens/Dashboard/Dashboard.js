@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,15 +10,11 @@ import './Dashboard.css';
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
-	const [news, setNews] = useState('');
-
-	const { loading, error, dashboardData } = useSelector(
-		(state) => state.dashboardData
-	);
+	const { dashboardData } = useSelector((state) => state.dashboardData);
 
 	useEffect(() => {
 		dispatch(getDashboardData());
-	}, []);
+	}, [dispatch]);
 
 	// const newsLoop = (index) => {
 	// 	// document.getElementById('news-ticker').innerHTML = newsItems[index];

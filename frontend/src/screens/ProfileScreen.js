@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Row, Col, Form, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -92,7 +91,7 @@ const ProfileScreen = ({ history }) => {
 		} else if (userInfo.role === 'Doctor') {
 			dispatch(getDoctorProfessionalInfo());
 		}
-	}, []);
+	}, [dispatch, history, userInfo]);
 
 	const handleDropDownChange = (e) => {
 		// add the selected options to selectedOptions state
@@ -215,15 +214,19 @@ const ProfileScreen = ({ history }) => {
 					</TabPanel>
 					<TabPanel>
 						<FormContainer>
-							{(errorGetMedicalInfo || errorUpdateMedicalInfo) && (
+							{(errorGetMedicalInfo ||
+								errorUpdateMedicalInfo ||
+								errorGetProfessionalInfo ||
+								errorUpdateProfessionalInfo) && (
 								<Message variant='danger'>
-									{errorGetMedicalInfo || errorUpdateMedicalInfo}
+									{errorGetMedicalInfo ||
+										errorUpdateMedicalInfo ||
+										errorGetProfessionalInfo ||
+										errorUpdateProfessionalInfo}
 								</Message>
 							)}
-							{successUpdateMedicalInfo && (
-								<Message variant='success'>
-									Successfully updated medical info
-								</Message>
+							{(successUpdateMedicalInfo || successUpdateProfessionalInfo) && (
+								<Message variant='success'>Successfully Updated</Message>
 							)}
 							{/* show loader for all of these loadings */}
 							{loadingGetMedicalInfo ||

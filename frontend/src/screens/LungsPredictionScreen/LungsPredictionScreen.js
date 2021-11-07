@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Image, Input, Form, Button } from 'react-bootstrap';
+import { Row, Col, Image, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
-import FormContainer from '../../components/FormContainer';
 import { lungsPrediction } from '../../actions/predictionActions';
 import { LUNGS_PREDICTION_RESET } from '../../constants/predictionConstants';
 import './LungsPredictionScreen.css';
@@ -21,7 +20,7 @@ const PredictionScreen = () => {
 	//  state to track errors that occur on image upload
 	const [uploadingError, setUploadingError] = useState('');
 
-	const { loading, success, error, response } = useSelector(
+	const { loading, error, response } = useSelector(
 		(state) => state.lungsPrediction
 	);
 
