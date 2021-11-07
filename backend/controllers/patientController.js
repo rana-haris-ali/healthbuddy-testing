@@ -159,6 +159,37 @@ const patientGetAcceptedDoctors = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get medical info of patient
+//  @route GET /api/patients/medical-info
+// @access Private
+const getMedicalInfo = asyncHandler(async (req, res) => {
+	try {
+		const medicalInfo = await Patient.findById(req.user.roleId).select(
+			'diseases -_id'
+		);
+		res.status(200).json(medicalInfo);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
+// @desc Update medical info of patient
+//  @route PUT /api/patients/medical-info
+// @access Private
+const updateMedicalInfo = asyncHandler(async (req, res) => {
+	try {
+		const updateValues = req.body;
+		await Patient.findByIdAndUpdate(req.user.roleId, updateValues);
+		res.status(200).json({ success: true });
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
 // @desc Get total number of patients registered (for dashboard)
 //  @route GET /api/patients/number
 // @access Public
@@ -179,5 +210,7 @@ export {
 	patientGetAllRequests,
 	patientGetAllAcceptedRequests,
 	patientGetAcceptedDoctors,
+	getMedicalInfo,
+	updateMedicalInfo,
 	getTotalPatientsNumber,
 };

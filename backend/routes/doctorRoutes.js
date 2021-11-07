@@ -4,6 +4,8 @@ import {
 	getAllDoctors,
 	registerDoctor,
 	getAllPatients,
+	getDoctorProfessionalInfo,
+	updateDoctorProfessionalInfo,
 	getTotalDoctorsNumber,
 } from '../controllers/doctorController.js';
 import { requestDoctorContact } from '../controllers/patientController.js';
@@ -23,6 +25,11 @@ router.route('/').get(getAllDoctors).post(registerDoctor);
 router.route('/all-patients').get(protect, doctorAuth, getAllPatients);
 
 router.route('/number').get(getTotalDoctorsNumber);
+
+router
+	.route('/professional-info')
+	.get(protect, doctorAuth, getDoctorProfessionalInfo)
+	.put(protect, doctorAuth, updateDoctorProfessionalInfo);
 
 router.route('/:id').get(getSingleDoctor);
 

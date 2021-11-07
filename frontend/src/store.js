@@ -35,6 +35,8 @@ import {
 	doctorDetailsReducer,
 	patientsListReducer,
 	acceptPatientRequestReducer,
+	getProfessionalInfoReducer,
+	updateProfessionalInfoReducer,
 } from './reducers/doctorReducers';
 
 import {
@@ -42,6 +44,8 @@ import {
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
 	acceptedDoctorsReducer,
+	getMedicalInfoReducer,
+	updateMedicalInfoReducer,
 } from './reducers/patientReducers';
 
 import {
@@ -75,10 +79,14 @@ const reducers = combineReducers({
 	registerDoctor: registerDoctorReducer,
 	doctorsList: doctorsListReducer,
 	doctorDetails: doctorDetailsReducer,
+	getProfessionalInfo: getProfessionalInfoReducer,
+	updateProfessionalInfo: updateProfessionalInfoReducer,
 	registerPatient: registerPatientReducer,
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,
 	acceptedDoctors: acceptedDoctorsReducer,
+	getMedicalInfo: getMedicalInfoReducer,
+	updateMedicalInfo: updateMedicalInfoReducer,
 	acceptPatientRequest: acceptPatientRequestReducer,
 	conversationsList: conversationsListReducer,
 	createConversation: createConversationReducer,

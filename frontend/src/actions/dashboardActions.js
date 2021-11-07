@@ -14,6 +14,9 @@ const getDashboardData = () => async (dispatch, getState) => {
 		const dashboardData = {
 			totalPatients: (await axios.get('/api/patients/number')).data,
 			totalDoctors: (await axios.get('/api/doctors/number')).data,
+			covidNumbers: (
+				await axios.get('https://disease.sh/v3/covid-19/countries/Pakistan')
+			).data,
 		};
 
 		dispatch({

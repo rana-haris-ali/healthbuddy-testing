@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 
 import newsItems from './news';
@@ -31,8 +30,6 @@ const Dashboard = () => {
 
 	return (
 		<div>
-			<h1 className='text-center mb-5'>Welcome</h1>
-
 			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
 
 			{dashboardData && (
@@ -40,9 +37,14 @@ const Dashboard = () => {
 					Patients: {dashboardData.totalPatients}
 					<br />
 					Doctors:{dashboardData.totalDoctors}
+					<br />
+					Today Cases:{dashboardData.covidNumbers.todayCases}
+					<br />
+					Today Deaths:{dashboardData.covidNumbers.todayDeaths}
+					<br />
+					Today Recovered:{dashboardData.covidNumbers.todayRecovered}
 				</h1>
 			)}
-			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
 
 			<Row>
 				<Col md={3}>

@@ -3,6 +3,10 @@ import {
 	GET_ACCEPTED_DOCTORS_REQUEST,
 	GET_ACCEPTED_DOCTORS_RESET,
 	GET_ACCEPTED_DOCTORS_SUCCESS,
+	GET_MEDICAL_INFO_FAILURE,
+	GET_MEDICAL_INFO_REQUEST,
+	GET_MEDICAL_INFO_RESET,
+	GET_MEDICAL_INFO_SUCCESS,
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_RESET,
@@ -14,6 +18,10 @@ import {
 	REQUEST_DOCTOR_CONTACT_REQUEST,
 	REQUEST_DOCTOR_CONTACT_RESET,
 	REQUEST_DOCTOR_CONTACT_SUCCESS,
+	UPDATE_MEDICAL_INFO_FAILURE,
+	UPDATE_MEDICAL_INFO_REQUEST,
+	UPDATE_MEDICAL_INFO_RESET,
+	UPDATE_MEDICAL_INFO_SUCCESS,
 } from '../constants/patientConstants';
 
 const registerPatientReducer = (state = {}, action) => {
@@ -75,9 +83,41 @@ const acceptedDoctorsReducer = (state = { acceptedDoctors: [] }, action) => {
 	}
 };
 
+const getMedicalInfoReducer = (state = {}, action) => {
+	switch (action.type) {
+		case GET_MEDICAL_INFO_REQUEST:
+			return { loading: true };
+		case GET_MEDICAL_INFO_SUCCESS:
+			return { loading: false, medicalInfo: action.payload };
+		case GET_MEDICAL_INFO_FAILURE:
+			return { loading: false, error: action.payload };
+		case GET_MEDICAL_INFO_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+const updateMedicalInfoReducer = (state = {}, action) => {
+	switch (action.type) {
+		case UPDATE_MEDICAL_INFO_REQUEST:
+			return { loading: true };
+		case UPDATE_MEDICAL_INFO_SUCCESS:
+			return { loading: false, success: true };
+		case UPDATE_MEDICAL_INFO_FAILURE:
+			return { loading: false, error: action.payload };
+		case UPDATE_MEDICAL_INFO_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
 export {
 	registerPatientReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
 	acceptedDoctorsReducer,
+	getMedicalInfoReducer,
+	updateMedicalInfoReducer,
 };

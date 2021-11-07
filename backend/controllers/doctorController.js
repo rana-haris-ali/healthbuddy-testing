@@ -151,6 +151,37 @@ const acceptPatientRequest = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Get professional info of doctor (for doctor profile screen)
+//  @route GET /api/doctors/professional-info
+// @access Public
+const getDoctorProfessionalInfo = asyncHandler(async (req, res) => {
+	try {
+		const professionalInfo = await Doctor.findById(req.user.roleId).select(
+			'degrees -_id'
+		);
+		res.status(200).json(professionalInfo);
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
+// @desc Update professional info of doctor (for profile screen)
+//  @route PUT /api/doctors/professional-info
+// @access Private
+const updateDoctorProfessionalInfo = asyncHandler(async (req, res) => {
+	try {
+		const updateValues = req.body;
+		await Doctor.findByIdAndUpdate(req.user.roleId, updateValues);
+		res.status(200).json({ success: true });
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
 // @desc Get total number of registered doctors (for dashboard)
 //  @route GET /api/doctors/number
 // @access Public
@@ -171,5 +202,7 @@ export {
 	registerDoctor,
 	getAllPatients,
 	acceptPatientRequest,
+	getDoctorProfessionalInfo,
+	updateDoctorProfessionalInfo,
 	getTotalDoctorsNumber,
 };

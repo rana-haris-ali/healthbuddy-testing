@@ -12,6 +12,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import PatientRegisterScreen from './screens/RegisterScreens/PatientRegisterScreen';
 import DoctorRegisterScreen from './screens/RegisterScreens/DoctorRegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import MyOrdersScreen from './screens/MyOrdersScreen/MyOrdersScreen';
 import ShippingScreen from './screens/pharmacy/ShippingScreen';
 import PaymentMethodScreen from './screens/pharmacy/PaymentMethodScreen';
 import PlaceOrderScreen from './screens/pharmacy/PlaceOrderScreen';
@@ -78,6 +79,7 @@ const App = () => {
 					<Route path='/shipping' component={ShippingScreen} />
 					<Route path='/payment' component={PaymentMethodScreen} />
 					<Route path='/placeorder' component={PlaceOrderScreen} />
+					<Route path='/orders' component={MyOrdersScreen} />
 					<Route path='/order/:id' component={OrderScreen} />
 					<Route path='/admin/userList' component={UserListAdminScreen} />
 					<Route path='/admin/user/:id/edit' component={UserEditAdminScreen} />
