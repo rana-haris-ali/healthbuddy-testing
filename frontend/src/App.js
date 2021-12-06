@@ -31,6 +31,7 @@ import PatientsListScreen from './screens/PatientsListScreen';
 import PatientAllRequestsScreen from './screens/PatientAllRequestsScreen';
 import MessengerScreen from './screens/messenger/MessengerScreen';
 import LungsPredictionScreen from './screens/LungsPredictionScreen/LungsPredictionScreen';
+import DiseasePredictionScreen from './screens/DiseasePredictionScreen/DiseasePredictionScreen';
 
 const App = () => {
 	const { userInfo } = useSelector((state) => state.userLogin);
@@ -56,6 +57,11 @@ const App = () => {
 					<Route
 						path='/lungs-prediction'
 						component={LungsPredictionScreen}
+						exact
+					/>
+					<Route
+						path='/disease-prediction'
+						component={DiseasePredictionScreen}
 						exact
 					/>
 					<Route path='/doctors' component={DoctorsListScreen} exact />

@@ -55,7 +55,10 @@ import {
 	createConversationReducer,
 } from './reducers/chatReducers';
 
-import { lungsPredictionReducer } from './reducers/predictionReducers';
+import {
+	lungsPredictionReducer,
+	diseasePredictionReducer,
+} from './reducers/predictionReducers';
 
 import { dashboardDataReducer } from './reducers/dashboardReducers';
 
@@ -99,6 +102,7 @@ const reducers = combineReducers({
 	orderDeliver: orderDeliverReducer,
 	getOrdersAdmin: getOrdersAdminReducer,
 	lungsPrediction: lungsPredictionReducer,
+	diseasePrediction: diseasePredictionReducer,
 	dashboardData: dashboardDataReducer,
 });
 

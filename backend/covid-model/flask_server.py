@@ -6,6 +6,7 @@ import numpy as np
 import base64
 from PIL import Image
 from io import BytesIO
+from joblib import load
 import re
 from tensorflow.keras.models import load_model
 from keras.models import Sequential, Model
@@ -15,9 +16,13 @@ from keras.utils import normalize
 from keras.layers import Concatenate
 from keras import Input
 import tensorflow as tf
+import pandas
 import math
 import json
 import argparse
+
+# import all_symptoms saved in other file
+from all_symptoms_list import all_symptoms_list
 
 
 
@@ -62,6 +67,38 @@ def predict():
 		accuracy=float(np.max(prediction, axis=1)[0])
 		label = label_dict[result]
 		return jsonify({"prediction": label, "probability": math.floor(accuracy*100)})
+
+
+@app.route('/disease-prediction', methods=['POST'])
+def disease_prediction():
+
+		model_path='O:/healthBuddy-testing/backend/covid-model/saved_disease_models/'
+		model_name='gradient_boost'
+
+		try:
+			patient_symptoms = request.json.get("patient_symptoms")
+
+			symptoms_dict={}
+			# iterate over all_symptoms list, if a symptom is present in patient_symptoms, assign 1 otherwise assign 0.
+			for symptom in all_symptoms_list:
+				if symptom in patient_symptoms:
+					symptoms_dict[symptom] = 1
+				else:
+					symptoms_dict[symptom] = 0
+				
+			# create dataframe from dictionary
+			patient_symptoms_df = pandas.DataFrame(symptoms_dict, index=[0])
+
+			# Load Trained Model
+			classifier = load(str(model_path + model_name + ".joblib"))
+
+			# get prediction
+			result = classifier.predict(patient_symptoms_df)
+			return jsonify({"result": result.tolist()})
+
+		except Exception as e:
+			print(e)
+
 
 if __name__ == '__main__':
     app.run(debug=False, port=7000)
