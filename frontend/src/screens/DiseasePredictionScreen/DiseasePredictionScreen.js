@@ -33,17 +33,6 @@ const DiseasePredictionScreen = ({ location, history }) => {
 		error: errorPrediction,
 	} = useSelector((state) => state.diseasePrediction);
 
-	// save redirect path so that user can be redirected to that path after login
-	const redirect = location.search ? location.search.split('=')[1] : '/';
-
-	useEffect(() => {
-		// check if user is already logged in
-		// if logged in then redirect
-		if (userInfo) {
-			history.push(redirect);
-		}
-	}, [userInfo, history, redirect]);
-
 	const handleTopSymptomsChange = (e) => {
 		// add the selected options to selected TopSymptoms state
 		setSelectedTopSymptoms(e.map((symptom) => symptom.value));

@@ -60,9 +60,22 @@ const Header = () => {
 								</Nav.Link>
 							</LinkContainer>
 
-							<LinkContainer to='/lungs-prediction'>
+							<NavDropdown title='Prediction' id='prediction'>
+								<LinkContainer to='/disease-prediction'>
+									<NavDropdown.Item>
+										Disease Prediction from Symptoms
+									</NavDropdown.Item>
+								</LinkContainer>
+								<LinkContainer to='/lungs-prediction'>
+									<NavDropdown.Item>
+										Lungs Irregularity Prediction
+									</NavDropdown.Item>
+								</LinkContainer>
+							</NavDropdown>
+
+							{/* <LinkContainer to='/lungs-prediction'>
 								<Nav.Link>Prediction</Nav.Link>
-							</LinkContainer>
+							</LinkContainer> */}
 
 							{/* show register links if user is not logged in */}
 							{!userInfo && (
