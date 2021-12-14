@@ -37,6 +37,8 @@ import {
 	acceptPatientRequestReducer,
 	getProfessionalInfoReducer,
 	updateProfessionalInfoReducer,
+	doctorCreateReviewReducer,
+	doctorToggleVerificationReducer,
 } from './reducers/doctorReducers';
 
 import {
@@ -84,6 +86,8 @@ const reducers = combineReducers({
 	doctorDetails: doctorDetailsReducer,
 	getProfessionalInfo: getProfessionalInfoReducer,
 	updateProfessionalInfo: updateProfessionalInfoReducer,
+	doctorCreateReview: doctorCreateReviewReducer,
+	doctorToggleVerification: doctorToggleVerificationReducer,
 	registerPatient: registerPatientReducer,
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,

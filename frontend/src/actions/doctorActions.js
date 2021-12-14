@@ -3,6 +3,12 @@ import {
 	DOCTORS_LIST_FAILURE,
 	DOCTORS_LIST_REQUEST,
 	DOCTORS_LIST_SUCCESS,
+	DOCTOR_CREATE_REVIEW_FAILURE,
+	DOCTOR_CREATE_REVIEW_REQUEST,
+	DOCTOR_CREATE_REVIEW_SUCCESS,
+	DOCTOR_TOGGLE_VERIFICATION_FAILURE,
+	DOCTOR_TOGGLE_VERIFICATION_REQUEST,
+	DOCTOR_TOGGLE_VERIFICATION_SUCCESS,
 	GET_DOCTOR_PROFESSIONAL_INFO_FAILURE,
 	GET_DOCTOR_PROFESSIONAL_INFO_REQUEST,
 	GET_DOCTOR_PROFESSIONAL_INFO_SUCCESS,
@@ -262,6 +268,86 @@ const updateDoctorProfessionalInfo =
 		}
 	};
 
+const createDoctorReview = (doctorId, review) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: DOCTOR_CREATE_REVIEW_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		await axios.post(`/api/doctors/${doctorId}/reviews`, review, config);
+
+		dispatch({
+			type: DOCTOR_CREATE_REVIEW_SUCCESS,
+		});
+	} catch (error) {
+		dispatch({
+			type: DOCTOR_CREATE_REVIEW_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+///////// ADMIN ///////
+// Toggle verification of doctor (unverify to verify, verify to unverify)
+
+const toggleDoctorVerification = (doctorId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: DOCTOR_TOGGLE_VERIFICATION_REQUEST,
+		});
+
+		// get token from state
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.put(
+			`/api/doctors/${doctorId}/toggle-verification`,
+			{},
+			config
+		);
+
+		dispatch({
+			type: DOCTOR_TOGGLE_VERIFICATION_SUCCESS,
+			payload: data.message,
+		});
+	} catch (error) {
+		dispatch({
+			type: DOCTOR_TOGGLE_VERIFICATION_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
 export {
 	registerDoctor,
 	getDoctorsList,
@@ -270,4 +356,6 @@ export {
 	acceptPatientRequest,
 	getDoctorProfessionalInfo,
 	updateDoctorProfessionalInfo,
+	createDoctorReview,
+	toggleDoctorVerification,
 };

@@ -23,6 +23,7 @@ import ProductListAdminScreen from './screens/admin/ProductListAdminScreen';
 import ProductCreateAdminScreen from './screens/admin/ProductCreateAdminScreen';
 import ProductEditAdminScreen from './screens/admin/ProductEditAdminScreen';
 import OrderListAdminScreen from './screens/admin/OrderListAdminScreen';
+import DoctorsListAdminScreen from './screens/admin/DoctorsListAdminScreen';
 import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
 import Dashboard from './screens/Dashboard/Dashboard';
 import DoctorsListScreen from './screens/DoctorsListScreen';
@@ -108,6 +109,7 @@ const App = () => {
 						path='/admin/product/:id/edit'
 						component={ProductEditAdminScreen}
 					/>
+					<Route path='/admin/doctors' component={DoctorsListAdminScreen} />
 				</Container>
 			</main>
 			<Footer />

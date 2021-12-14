@@ -3,6 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Rating from '../components/pharmacy/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getDoctorsList } from '../actions/doctorActions';
@@ -42,11 +43,11 @@ const DoctorsListScreen = ({ history }) => {
 
 	return (
 		<>
+			<h1 className='text-center mb-3'>DOCTORS</h1>
 			{loading || loadingContactRequest ? (
 				<Loader />
-			) : doctors.length > 0 ? (
+			) : doctors.length > 0 && doctors.some((doctor) => doctor.isVerified) ? (
 				<>
-					<h1>DOCTORS</h1>
 					{showLoginPrompt && (
 						<Message>
 							Only registered users can contact doctors. Either{' '}
@@ -74,40 +75,47 @@ const DoctorsListScreen = ({ history }) => {
 						<thead>
 							<tr>
 								<th>Doctor Name</th>
-								<th>ID</th>
+								<th>Rating</th>
 								<th>Email</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
 							{doctors.map((doctor) => {
-								return (
-									<tr key={doctor._id}>
-										<td>Dr. {doctor.user.name}</td>
-										<td>{doctor._id}</td>
-										<td>
-											<a href={`mailto:${doctor.user.email}`}>
-												{doctor.user.email}
-											</a>
-										</td>
-										<td>
-											{/* prevent doctors from contacting other doctors */}
-											{userInfo && userInfo.role === 'Doctor' ? null : (
+								if (doctor.isVerified) {
+									return (
+										<tr key={doctor._id}>
+											<td>Dr. {doctor.user.name}</td>
+											<td>
+												<Rating
+													value={doctor.rating}
+													text={`${doctor.numReviews} reviews`}
+												/>
+											</td>
+											<td>
+												<a href={`mailto:${doctor.user.email}`}>
+													{doctor.user.email}
+												</a>
+											</td>
+											<td>
+												{/* prevent doctors from contacting other doctors */}
+												{userInfo && userInfo.role === 'Doctor' ? null : (
+													<Button
+														className='mx-1'
+														onClick={() => requestContactHandler(doctor._id)}
+													>
+														<i className='fas fa-phone-alt'></i> Contact
+													</Button>
+												)}
 												<Button
-													className='mx-1'
-													onClick={() => requestContactHandler(doctor._id)}
+													onClick={() => history.push(`/doctors/${doctor._id}`)}
 												>
-													<i className='fas fa-phone-alt'></i> Contact
+													<i className='fas fa-info-circle'></i> Details
 												</Button>
-											)}
-											<Button
-												onClick={() => history.push(`/doctors/${doctor._id}`)}
-											>
-												<i className='fas fa-info-circle'></i> Details
-											</Button>
-										</td>
-									</tr>
-								);
+											</td>
+										</tr>
+									);
+								}
 							})}
 						</tbody>
 					</Table>

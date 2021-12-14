@@ -196,6 +196,72 @@ const getTotalDoctorsNumber = asyncHandler(async (req, res) => {
 	}
 });
 
+// / @desc Review doctor
+//  @route POST /api/doctors/:id/reviews
+// @access Private
+
+const addDoctorReview = asyncHandler(async (req, res) => {
+	const doctor = await Doctor.findById(req.params.id);
+
+	const { rating, comment } = req.body;
+
+	// find whether user has already reviewed doctor
+	if (doctor) {
+		const alreadyReviewed = doctor.reviews.find(
+			(r) => r.user.toString() === req.user._id.toString()
+		);
+
+		if (alreadyReviewed) {
+			// if user has already reviewed the doctor then throw error
+			res.status(400);
+			throw new Error('Doctor already reviewed');
+		}
+
+		const review = {
+			name: req.user.name,
+			rating: Number(rating),
+			comment,
+			user: req.user._id,
+		};
+
+		doctor.reviews.push(review);
+		doctor.numReviews = doctor.reviews.length;
+		doctor.rating =
+			doctor.reviews.reduce((acc, item) => item.rating + acc, 0) /
+			doctor.reviews.length;
+
+		await doctor.save();
+		res.status(201).json({ message: 'Review has been added' });
+	} else {
+		res.status(404);
+		throw new Error('Doctor not found');
+	}
+});
+
+// Privilige ADMIN
+// / @desc toggle doctor verification (unverify to verify, verify to unverify)
+//  @route POST /api/doctors/:id/toggle-verification
+// @access ADMIN
+
+const toggleDoctorVerification = asyncHandler(async (req, res) => {
+	const doctor = await Doctor.findById(req.params.id);
+	let message;
+	// find whether user has already reviewed doctor
+	if (doctor) {
+		if (doctor.isVerified === true) {
+			message = 'Status successfully set to UnVerified';
+		} else if (doctor.isVerified === false) {
+			message = 'Status successfully set to Verified';
+		}
+		doctor.isVerified = !doctor.isVerified;
+		await doctor.save();
+		res.status(201).json({ message });
+	} else {
+		res.status(404);
+		throw new Error('Doctor not found');
+	}
+});
+
 export {
 	getSingleDoctor,
 	getAllDoctors,
@@ -205,4 +271,6 @@ export {
 	getDoctorProfessionalInfo,
 	updateDoctorProfessionalInfo,
 	getTotalDoctorsNumber,
+	addDoctorReview,
+	toggleDoctorVerification,
 };

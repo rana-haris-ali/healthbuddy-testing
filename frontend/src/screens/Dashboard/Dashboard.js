@@ -10,6 +10,10 @@ import './Dashboard.css';
 const Dashboard = () => {
 	const dispatch = useDispatch();
 
+	const bootstrapColumnGridLarge = 4;
+	const bootstrapColumnGridMedium = 6;
+	const bootstrapColumnGridSmall = 12;
+
 	const { dashboardData } = useSelector((state) => state.dashboardData);
 
 	useEffect(() => {
@@ -29,17 +33,56 @@ const Dashboard = () => {
 			<h1 className='text-center mb-5'>Welcome, {userInfo.name}</h1>
 
 			{dashboardData && (
-				<h1>
-					Patients: {dashboardData.totalPatients}
-					<br />
-					Doctors:{dashboardData.totalDoctors}
-					<br />
-					Today Cases:{dashboardData.covidNumbers.todayCases}
-					<br />
-					Today Deaths:{dashboardData.covidNumbers.todayDeaths}
-					<br />
-					Today Recovered:{dashboardData.covidNumbers.todayRecovered}
-				</h1>
+				<Row className='custom-row'>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Patients: {dashboardData.totalPatients}</h1>
+					</Col>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Doctors:{dashboardData.totalDoctors}</h1>
+					</Col>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Today Cases:{dashboardData.covidNumbers.todayCases}</h1>
+					</Col>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Today Deaths:{dashboardData.covidNumbers.todayDeaths}</h1>
+					</Col>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Today Recovered:{dashboardData.covidNumbers.todayRecovered}</h1>
+					</Col>
+					<Col
+						className='text-center col-auto custom-column'
+						lg={bootstrapColumnGridLarge}
+						md={bootstrapColumnGridMedium}
+						sm={bootstrapColumnGridSmall}
+					>
+						<h1>Active Cases: {dashboardData.covidNumbers.active}</h1>
+					</Col>
+				</Row>
 			)}
 
 			<Row>
@@ -47,8 +90,8 @@ const Dashboard = () => {
 					<h4 className='text-center  mt-3 mb-1'>News</h4>
 					<marquee width='100%' direction='up' height='300vh' scrollAmount='10'>
 						<ul>
-							{newsItems.map((newsItem) => (
-								<li>{newsItem}</li>
+							{newsItems.map((newsItem, index) => (
+								<li key={index}>{newsItem}</li>
 							))}
 						</ul>
 					</marquee>
@@ -66,8 +109,8 @@ const Dashboard = () => {
 					<h4 className='text-center mt-3 mb-1'>Tips</h4>
 					<marquee width='100%' direction='up' height='300vh' scrollAmount='10'>
 						<ul>
-							{tipsItems.map((tipsItem) => (
-								<li>{tipsItem}</li>
+							{tipsItems.map((tipsItem, index) => (
+								<li key={index}>{tipsItem}</li>
 							))}
 						</ul>
 					</marquee>

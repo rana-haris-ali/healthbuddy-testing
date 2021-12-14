@@ -2,6 +2,14 @@ import {
 	DOCTORS_LIST_FAILURE,
 	DOCTORS_LIST_REQUEST,
 	DOCTORS_LIST_SUCCESS,
+	DOCTOR_CREATE_REVIEW_FAILURE,
+	DOCTOR_CREATE_REVIEW_REQUEST,
+	DOCTOR_CREATE_REVIEW_RESET,
+	DOCTOR_CREATE_REVIEW_SUCCESS,
+	DOCTOR_TOGGLE_VERIFICATION_FAILURE,
+	DOCTOR_TOGGLE_VERIFICATION_REQUEST,
+	DOCTOR_TOGGLE_VERIFICATION_RESET,
+	DOCTOR_TOGGLE_VERIFICATION_SUCCESS,
 	GET_DOCTOR_PROFESSIONAL_INFO_FAILURE,
 	GET_DOCTOR_PROFESSIONAL_INFO_REQUEST,
 	GET_DOCTOR_PROFESSIONAL_INFO_RESET,
@@ -132,6 +140,38 @@ const updateProfessionalInfoReducer = (state = {}, action) => {
 	}
 };
 
+const doctorCreateReviewReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DOCTOR_CREATE_REVIEW_REQUEST:
+			return { loading: true };
+		case DOCTOR_CREATE_REVIEW_SUCCESS:
+			return { loading: false, success: true };
+		case DOCTOR_CREATE_REVIEW_FAILURE:
+			return { loading: false, error: action.payload };
+		case DOCTOR_CREATE_REVIEW_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
+///////// ADMIN //////
+
+const doctorToggleVerificationReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DOCTOR_TOGGLE_VERIFICATION_REQUEST:
+			return { loading: true };
+		case DOCTOR_TOGGLE_VERIFICATION_SUCCESS:
+			return { loading: false, success: true, message: action.payload };
+		case DOCTOR_TOGGLE_VERIFICATION_FAILURE:
+			return { loading: false, error: action.payload };
+		case DOCTOR_TOGGLE_VERIFICATION_RESET:
+			return {};
+		default:
+			return state;
+	}
+};
+
 export {
 	registerDoctorReducer,
 	doctorsListReducer,
@@ -140,4 +180,6 @@ export {
 	acceptPatientRequestReducer,
 	getProfessionalInfoReducer,
 	updateProfessionalInfoReducer,
+	doctorCreateReviewReducer,
+	doctorToggleVerificationReducer,
 };

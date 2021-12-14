@@ -38,15 +38,18 @@ const Header = () => {
 								</LinkContainer>
 							)}
 							{/* show all requests of a patient */}
-							{userInfo && userInfo.role === 'Patient' && (
-								<LinkContainer to='/patients/requests'>
-									<Nav.Link>Requests</Nav.Link>
+							{userInfo &&
+								userInfo?.role === 'Patient' &&
+								userInfo?.isAdmin === false && (
+									<LinkContainer to='/patients/requests'>
+										<Nav.Link>Requests</Nav.Link>
+									</LinkContainer>
+								)}
+							{userInfo?.isAdmin === false && (
+								<LinkContainer to='/messenger'>
+									<Nav.Link>Messenger</Nav.Link>
 								</LinkContainer>
 							)}
-
-							<LinkContainer to='/messenger'>
-								<Nav.Link>Messenger</Nav.Link>
-							</LinkContainer>
 
 							<LinkContainer to='/pharmacy-home'>
 								<Nav.Link>
@@ -118,6 +121,9 @@ const Header = () => {
 								<NavDropdown alignRight='true' title='Admin' id='adminMenu'>
 									<LinkContainer to='/admin/userList'>
 										<NavDropdown.Item>Users</NavDropdown.Item>
+									</LinkContainer>
+									<LinkContainer to='/admin/doctors'>
+										<NavDropdown.Item>Doctors</NavDropdown.Item>
 									</LinkContainer>
 									<LinkContainer to='/admin/orderList'>
 										<NavDropdown.Item>Orders</NavDropdown.Item>

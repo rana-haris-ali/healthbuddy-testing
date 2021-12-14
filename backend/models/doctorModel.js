@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { reviewSchema } from './reviewModel.js';
 
 const doctorSchema = mongoose.Schema(
 	{
@@ -29,6 +30,22 @@ const doctorSchema = mongoose.Schema(
 				type: Number,
 				required: false,
 			},
+		},
+		reviews: [reviewSchema],
+		rating: {
+			type: Number,
+			required: true,
+			default: 0,
+		},
+		numReviews: {
+			type: Number,
+			required: true,
+			default: 0,
+		},
+		isVerified: {
+			type: Boolean,
+			required: true,
+			default: false,
 		},
 	},
 	{

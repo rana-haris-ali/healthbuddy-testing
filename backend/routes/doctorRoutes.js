@@ -7,6 +7,8 @@ import {
 	getDoctorProfessionalInfo,
 	updateDoctorProfessionalInfo,
 	getTotalDoctorsNumber,
+	addDoctorReview,
+	toggleDoctorVerification,
 } from '../controllers/doctorController.js';
 import { requestDoctorContact } from '../controllers/patientController.js';
 import {
@@ -24,6 +26,7 @@ router.route('/').get(getAllDoctors).post(registerDoctor);
 
 router.route('/all-patients').get(protect, doctorAuth, getAllPatients);
 
+// get total number of doctors for dashboard
 router.route('/number').get(getTotalDoctorsNumber);
 
 router
@@ -35,6 +38,9 @@ router.route('/:id').get(getSingleDoctor);
 
 router.route('/:id/request').get(protect, requestDoctorContact);
 
-// get total number of doctors for dashboard
+router.route('/:id/reviews').post(protect, patientAuth, addDoctorReview);
+router
+	.route('/:id/toggle-verification')
+	.put(protect, adminAuth, toggleDoctorVerification);
 
 export default router;

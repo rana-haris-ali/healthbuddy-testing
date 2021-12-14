@@ -54,3 +54,14 @@ li {
 	font-weight: bold;
 	color: grey;
 }
+
+.custom-row {
+	/* margin: 0px; */
+}
+
+.custom-column {
+	margin: 5px 0px;
+	background-color: rgb(235, 235, 235);
+	border-radius: 10px;
+	padding: 0;
+}
