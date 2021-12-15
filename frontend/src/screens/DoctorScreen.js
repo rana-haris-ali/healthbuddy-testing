@@ -128,15 +128,20 @@ const DoctorScreen = ({ match }) => {
 								</ListGroup.Item>
 								<ListGroup.Item className='mt-3'>
 									<p style={{ fontSize: '18px' }}>
-										<span style={{ fontWeight: '700' }}>Description:</span> I am
-										very good doc. I am very good doc. I am very good doc. I am
-										very good doc. I am very good doc. I am very good doc.
+										<span style={{ fontWeight: '700' }}>Description:</span>{' '}
+										{doctorDetails.description}
 									</p>
 								</ListGroup.Item>
 								<ListGroup.Item className='mt-3'>
 									<p style={{ fontSize: '18px' }}>
-										<span style={{ fontWeight: '700' }}>Degrees:</span> MBBS,
-										FCPS, MRCS
+										<span style={{ fontWeight: '700' }}>Degrees:</span>{' '}
+										{doctorDetails.degrees.join(', ')}
+									</p>
+								</ListGroup.Item>
+								<ListGroup.Item className='mt-3'>
+									<p style={{ fontSize: '18px' }}>
+										<span style={{ fontWeight: '700' }}>Specializations:</span>{' '}
+										{doctorDetails.specializations.join(', ')}
 									</p>
 								</ListGroup.Item>
 							</ListGroup>

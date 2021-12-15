@@ -10,7 +10,15 @@ import { request } from 'express';
 //  @route POST /api/doctors
 // @access PUBLIC
 const registerDoctor = asyncHandler(async (req, res) => {
-	const { name, email, password, degrees, coordinates } = req.body;
+	const {
+		name,
+		email,
+		password,
+		degrees,
+		description,
+		specializations,
+		coordinates,
+	} = req.body;
 
 	const userExists = await User.findOne({ email });
 
@@ -32,6 +40,8 @@ const registerDoctor = asyncHandler(async (req, res) => {
 		const doctor = await Doctor.create({
 			user: user._id,
 			degrees,
+			description,
+			specializations,
 			coordinates,
 		});
 
@@ -157,7 +167,7 @@ const acceptPatientRequest = asyncHandler(async (req, res) => {
 const getDoctorProfessionalInfo = asyncHandler(async (req, res) => {
 	try {
 		const professionalInfo = await Doctor.findById(req.user.roleId).select(
-			'degrees -_id'
+			'degrees description specializations -_id'
 		);
 		res.status(200).json(professionalInfo);
 	} catch (error) {

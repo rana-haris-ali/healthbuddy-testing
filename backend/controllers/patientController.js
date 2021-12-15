@@ -9,7 +9,8 @@ import generateToken from '../utils/generateToken.js';
 //  @route POST /api/patients
 // @access PUBLIC
 const registerPatient = asyncHandler(async (req, res) => {
-	const { name, email, password, diseases } = req.body;
+	const { name, email, password, medicalInfo, diseases, coordinates } =
+		req.body;
 
 	const userExists = await User.findOne({ email });
 
@@ -30,7 +31,9 @@ const registerPatient = asyncHandler(async (req, res) => {
 		// register Patient and add reference to User document already created
 		const patient = await Patient.create({
 			user: user._id,
+			medicalInfo,
 			diseases,
+			coordinates,
 		});
 
 		// add Patient reference to User document
@@ -49,6 +52,28 @@ const registerPatient = asyncHandler(async (req, res) => {
 			roleId: updatedUser.roleId,
 			token: generateToken(user._id),
 		});
+	} catch (error) {
+		res.status(500);
+		console.log(error);
+		throw new Error(error);
+	}
+});
+
+// @desc Get patient details by id
+//  @route GET /api/patients/:id
+// @access Private
+const getPatientById = asyncHandler(async (req, res) => {
+	try {
+		const patient = await Patient.findById(req.params.id).populate(
+			'user',
+			'name email'
+		);
+		if (patient) {
+			res.status(200).json(patient);
+		} else {
+			res.status(404);
+			throw new Error('Patient not found');
+		}
 	} catch (error) {
 		res.status(500);
 		console.log(error);
@@ -165,7 +190,7 @@ const patientGetAcceptedDoctors = asyncHandler(async (req, res) => {
 const getMedicalInfo = asyncHandler(async (req, res) => {
 	try {
 		const medicalInfo = await Patient.findById(req.user.roleId).select(
-			'diseases -_id'
+			'diseases medicalInfo -_id'
 		);
 		res.status(200).json(medicalInfo);
 	} catch (error) {
@@ -206,6 +231,7 @@ const getTotalPatientsNumber = asyncHandler(async (req, res) => {
 
 export {
 	registerPatient,
+	getPatientById,
 	requestDoctorContact,
 	patientGetAllRequests,
 	patientGetAllAcceptedRequests,

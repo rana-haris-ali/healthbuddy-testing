@@ -12,6 +12,15 @@ const doctorSchema = mongoose.Schema(
 			type: Array,
 			required: true,
 		},
+		description: {
+			type: String,
+			required: true,
+			maxLength: 100,
+		},
+		specializations: {
+			type: Array,
+			required: true,
+		},
 		isApproved: {
 			type: Boolean,
 			required: true,

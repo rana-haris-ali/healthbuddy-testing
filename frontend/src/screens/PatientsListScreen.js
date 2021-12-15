@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Table, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -49,7 +50,7 @@ const PatientsListScreen = ({ history }) => {
 					<Loader />
 				) : (
 					<Row>
-						<Col md={6}>
+						<Col md={7}>
 							<h3 className='text-center my-3'>Requests</h3>
 							{successAccept ? (
 								<Message variant='success'>
@@ -79,7 +80,11 @@ const PatientsListScreen = ({ history }) => {
 										{pendingPatientRequests.map((pendingRequest) => {
 											return (
 												<tr key={pendingRequest._id}>
-													<td>{pendingRequest.user.name}</td>
+													<td>
+														<Link to={`/patients/${pendingRequest.patient}`}>
+															{pendingRequest.user.name}
+														</Link>
+													</td>
 													<td>{pendingRequest.patient}</td>
 													<td>
 														<a href={`mailto:${pendingRequest.user.email}`}>
@@ -87,6 +92,16 @@ const PatientsListScreen = ({ history }) => {
 														</a>
 													</td>
 													<td>
+														<Button
+															className='mx-1'
+															onClick={() =>
+																history.push(
+																	`/patients/${pendingRequest.patient}`
+																)
+															}
+														>
+															<i className='fas fa-info-circle'></i> Details
+														</Button>
 														<Button
 															onClick={() =>
 																acceptRequestHandler(pendingRequest._id)
@@ -104,7 +119,7 @@ const PatientsListScreen = ({ history }) => {
 								<Message>There are no new patient requests right now</Message>
 							)}
 						</Col>
-						<Col md={6}>
+						<Col md={5}>
 							<h3 className='text-center  my-3'>Approved</h3>
 							{acceptedPatientRequests.length > 0 ? (
 								<Table
@@ -120,14 +135,17 @@ const PatientsListScreen = ({ history }) => {
 											<th>Name</th>
 											<th>ID</th>
 											<th>Email</th>
-											<th></th>
 										</tr>
 									</thead>
 									<tbody>
 										{acceptedPatientRequests.map((acceptedRequest) => {
 											return (
 												<tr key={acceptedRequest._id}>
-													<td>{acceptedRequest.user.name}</td>
+													<td>
+														<Link to={`/patients/${acceptedRequest.patient}`}>
+															{acceptedRequest.user.name}
+														</Link>
+													</td>
 													<td>{acceptedRequest.patient}</td>
 													<td>
 														<a href={`mailto:${acceptedRequest.user.email}`}>

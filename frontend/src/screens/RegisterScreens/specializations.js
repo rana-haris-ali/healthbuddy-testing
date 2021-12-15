@@ -1,0 +1,25 @@
+const specializations = [
+	{ value: 'Medicine', label: 'Medicine' },
+	{ value: 'Pediatrician', label: 'Pediatrician' },
+	{ value: 'Endocrinologist', label: 'Endocrinologist' },
+	{ value: 'Neurologist', label: 'Neurologist' },
+	{ value: 'Rheumatologist', label: 'Rheumatologist' },
+	{ value: 'Immunologist', label: 'Immunologist' },
+	{ value: 'Psychiatrist', label: 'Psychiatrist' },
+	{ value: 'Nephrologist', label: 'Nephrologist' },
+	{ value: 'Gynecologist', label: 'Gynecologist' },
+	{ value: 'Pulmonologist', label: 'Pulmonologist' },
+	{ value: 'Surgeon', label: 'Surgeon' },
+	{ value: 'Ophthalmologist', label: 'Ophthalmologist' },
+	{ value: 'Oncologist', label: 'Oncologist' },
+	{ value: 'Urologist', label: 'Urologist' },
+	{ value: 'Otolaryngologist', label: 'Otolaryngologist' },
+	{ value: 'Anesthesiologist', label: 'Anesthesiologist' },
+	{ value: 'Dermatologist', label: 'Dermatologist' },
+	{ value: 'Radiologist', label: 'Radiologist' },
+	{ value: 'Gastroenterologist', label: 'Gastroenterologist' },
+	{ value: 'Cardiologist', label: 'Cardiologist' },
+	{ value: 'Orthopedist', label: 'Orthopedist' },
+];
+
+export default specializations;

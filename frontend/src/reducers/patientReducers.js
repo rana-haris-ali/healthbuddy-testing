@@ -7,6 +7,10 @@ import {
 	GET_MEDICAL_INFO_REQUEST,
 	GET_MEDICAL_INFO_RESET,
 	GET_MEDICAL_INFO_SUCCESS,
+	GET_SINGLE_PATIENT_FAILURE,
+	GET_SINGLE_PATIENT_REQUEST,
+	GET_SINGLE_PATIENT_RESET,
+	GET_SINGLE_PATIENT_SUCCESS,
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_RESET,
@@ -32,6 +36,21 @@ const registerPatientReducer = (state = {}, action) => {
 			return { loading: false, success: true };
 		case REGISTER_PATIENT_FAILURE:
 			return { loading: false, error: action.payload };
+		default:
+			return state;
+	}
+};
+
+const patientDetailsReducer = (state = {}, action) => {
+	switch (action.type) {
+		case GET_SINGLE_PATIENT_REQUEST:
+			return { loading: true };
+		case GET_SINGLE_PATIENT_SUCCESS:
+			return { loading: false, patientDetails: action.payload };
+		case GET_SINGLE_PATIENT_FAILURE:
+			return { loading: false, error: action.payload };
+		case GET_SINGLE_PATIENT_RESET:
+			return {};
 		default:
 			return state;
 	}
@@ -115,6 +134,7 @@ const updateMedicalInfoReducer = (state = {}, action) => {
 
 export {
 	registerPatientReducer,
+	patientDetailsReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
 	acceptedDoctorsReducer,

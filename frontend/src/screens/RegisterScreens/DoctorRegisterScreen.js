@@ -12,13 +12,16 @@ import { registerDoctor } from '../../actions/doctorActions';
 
 // list of diseases to be rendered
 import degreesOptions from './degrees';
+import specializationOptions from './specializations';
 
 const DoctorRegisterScreen = ({ location, history }) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
+	const [description, setDescription] = useState('');
 	const [selectedDegrees, setSelectedDegrees] = useState([]);
+	const [selectedSpecializations, setSelectedSpecializations] = useState([]);
 	const [message, setMessage] = useState('');
 	const [viewport, setViewport] = useState({
 		width: '100%',
@@ -50,25 +53,59 @@ const DoctorRegisterScreen = ({ location, history }) => {
 		}
 	}, [userInfo, history, redirect]);
 
-	const handleDropDownChange = (e) => {
-		// add the selected options to selected degrees state
-		setSelectedDegrees(e.map((degree) => degree.value));
+	const handleDegreesChange = (e) => {
+		if (e.length > 3) {
+			alert('Maximum 3 degrees are allowed');
+		} else {
+			// add the selected options to selected degrees state
+			setSelectedDegrees(e.map((degree) => degree.value));
+		}
+	};
+
+	const handleSpecializationChange = (e) => {
+		if (e.length > 3) {
+			alert('Maximum 3 specializations are allowed');
+		} else {
+			// add the selected options to selected specializations state
+			setSelectedSpecializations(
+				e.map((specialization) => specialization.value)
+			);
+		}
+	};
+
+	const onDescriptionChange = (e) => {
+		if (e.target.value.split(' ').length > 100) {
+			setMessage('Limit reached');
+		} else {
+			setDescription(e.target.value);
+		}
 	};
 
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
-		if (name === '' || email === '' || password === '') {
+		if (name === '' || email === '' || password === '' || description === '') {
 			setMessage('Please fill all fields');
+			alert('Please fill all fields');
 		} else if (password !== confirmPassword) {
 			setMessage("Passwords don't match");
+			alert("Passwords don't match");
+		} else if (
+			selectedSpecializations.length === 0 ||
+			selectedDegrees.length === 0
+		) {
+			setMessage('Please select your degrees and specializations');
+			alert('Please select your degrees and specializations');
 		} else {
 			dispatch(
 				registerDoctor({
-					name,
+					// capitalize the name
+					name: name[0].toUpperCase() + name.substring(1),
 					email,
 					password,
 					degrees: selectedDegrees,
+					description,
+					specializations: selectedSpecializations,
 					coordinates: {
 						latitude: viewport.latitude,
 						longitude: viewport.longitude,
@@ -151,9 +188,39 @@ const DoctorRegisterScreen = ({ location, history }) => {
 							options={degreesOptions}
 							className='basic-multi-select'
 							classNamePrefix='select'
-							placeholder='Please select your degree(s)'
-							onChange={handleDropDownChange}
+							placeholder='Please select your degree(s) (Max 3 allowed)'
+							value={selectedDegrees.map((degree) => {
+								return { value: degree, label: degree };
+							})}
+							onChange={handleDegreesChange}
 						/>
+						<hr className='mb-4' />
+						<Form.Group className='my-4'>
+							<Form.Label htmlFor='description'>Description</Form.Label>
+							<Form.Control
+								as='textarea'
+								id='description'
+								placeholder='Please add a short description (100 words limit)'
+								maxLength='500'
+								value={description}
+								onChange={onDescriptionChange}
+							></Form.Control>
+						</Form.Group>
+						<hr className='mb-4' />
+						<Select
+							isMulti
+							closeMenuOnSelect={false}
+							name='specialization'
+							options={specializationOptions}
+							className='basic-multi-select'
+							classNamePrefix='select'
+							placeholder='Please select your specialization (Max 3 allowed)'
+							value={selectedSpecializations.map((specialization) => {
+								return { value: specialization, label: specialization };
+							})}
+							onChange={handleSpecializationChange}
+						/>
+						<hr className='mb-4' />
 						<Form.Group className='my-4'>
 							<Form.Label htmlFor='location'>Select Clinic Location</Form.Label>
 

@@ -7,6 +7,9 @@ import {
 	GET_MEDICAL_INFO_FAILURE,
 	GET_MEDICAL_INFO_REQUEST,
 	GET_MEDICAL_INFO_SUCCESS,
+	GET_SINGLE_PATIENT_FAILURE,
+	GET_SINGLE_PATIENT_REQUEST,
+	GET_SINGLE_PATIENT_SUCCESS,
 	PATIENT_GET_ALL_REQUESTS_FAILURE,
 	PATIENT_GET_ALL_REQUESTS_REQUEST,
 	PATIENT_GET_ALL_REQUESTS_SUCCESS,
@@ -48,6 +51,42 @@ const registerPatient = (patientDetails) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: REGISTER_PATIENT_FAILURE,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+const getSinglePatient = (patientId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: GET_SINGLE_PATIENT_REQUEST,
+		});
+
+		const {
+			userLogin: {
+				userInfo: { token },
+			},
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		const { data } = await axios.get(`/api/patients/${patientId}`, config);
+
+		dispatch({
+			type: GET_SINGLE_PATIENT_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_SINGLE_PATIENT_FAILURE,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -277,6 +316,7 @@ const createNewConversation = (doctorId) => async (dispatch, getState) => {
 
 export {
 	registerPatient,
+	getSinglePatient,
 	requestDoctorContact,
 	patientGetAllRequests,
 	getAcceptedDoctors,

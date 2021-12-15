@@ -14,6 +14,7 @@ import {
 } from '../actions/pharmacy/userActions';
 import diseasesOptions from './RegisterScreens/diseases';
 import degreeOptions from './RegisterScreens/degrees';
+import specializationOptions from './RegisterScreens/specializations';
 import { getMedicalInfo, updateMedicalInfo } from '../actions/patientActions';
 import {
 	getDoctorProfessionalInfo,
@@ -25,9 +26,14 @@ const ProfileScreen = ({ history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
+	const [medicalInfoText, setMedicalInfoText] = useState('');
+	const [doctorDescription, setDoctorDescription] = useState('');
 	const [message, setMessage] = useState('');
 
-	const [selectedOptions, setSelectedOptions] = useState(null);
+	/////////////////////
+	const [selectedDiseases, setSelectedDiseases] = useState([]);
+	const [selectedDegrees, setSelectedDegrees] = useState([]);
+	const [selectedSpecializations, setSelectedSpecializations] = useState([]);
 
 	const dispatch = useDispatch();
 	const { userInfo } = useSelector((state) => state.userLogin);
@@ -93,10 +99,13 @@ const ProfileScreen = ({ history }) => {
 		}
 	}, [dispatch, history, userInfo]);
 
-	const handleDropDownChange = (e) => {
-		// add the selected options to selectedOptions state
-		setSelectedOptions(e.map((option) => option.value));
-	};
+	useEffect(() => {
+		if (isPatient) {
+			setMedicalInfoText(medicalInfo?.medicalInfo);
+		} else if (isDoctor) {
+			setDoctorDescription(professionalInfo?.description);
+		}
+	}, [medicalInfo, professionalInfo]);
 
 	const profileFormSubmitHandler = (event) => {
 		event.preventDefault();
@@ -116,15 +125,63 @@ const ProfileScreen = ({ history }) => {
 		if (isPatient) {
 			dispatch(
 				updateMedicalInfo({
-					diseases: selectedOptions || medicalInfo?.diseases,
+					diseases: selectedDiseases,
+					medicalInfo: medicalInfoText,
 				})
 			);
 		} else if (isDoctor) {
 			dispatch(
 				updateDoctorProfessionalInfo({
-					degrees: selectedOptions || professionalInfo?.degrees,
+					degrees: selectedDegrees,
+					description: doctorDescription,
+					specializations: selectedSpecializations,
 				})
 			);
+		}
+	};
+
+	///////////////////////
+
+	const handleDegreesChange = (e) => {
+		if (e.length > 3) {
+			alert('Maximum 3 degrees are allowed');
+		} else {
+			// add the selected options to selected degrees state
+			setSelectedDegrees(e.map((degree) => degree.value));
+		}
+	};
+
+	const handleSpecializationChange = (e) => {
+		if (e.length > 3) {
+			alert('Maximum 3 specializations are allowed');
+		} else {
+			// add the selected options to selected specializations state
+			setSelectedSpecializations(
+				e.map((specialization) => specialization.value)
+			);
+		}
+	};
+
+	const handleDiseasesChange = (e) => {
+		// add the selected options to selected diseases state
+		setSelectedDiseases(e.map((disease) => disease.value));
+	};
+
+	const onMedicalInfoChange = (e) => {
+		if (e.target.value.split(' ').length > 100) {
+			setMessage('Max 100 words allowed');
+			alert('Max 100 words allowed');
+		} else {
+			setMedicalInfoText(e.target.value);
+		}
+	};
+
+	const onDescriptionChange = (e) => {
+		if (e.target.value.split(' ').length > 100) {
+			setMessage('Max 100 words allowed');
+			alert('Max 100 words allowed');
+		} else {
+			setDoctorDescription(e.target.value);
 		}
 	};
 
@@ -205,7 +262,7 @@ const ProfileScreen = ({ history }) => {
 											onChange={(e) => setConfirmPassword(e.target.value)}
 										></Form.Control>
 									</Form.Group>
-									<Button type='submit' variant='dark'>
+									<Button className='my-3' type='submit' variant='dark'>
 										Update Account Info
 									</Button>
 								</Form>
@@ -238,6 +295,7 @@ const ProfileScreen = ({ history }) => {
 								<Form onSubmit={formSubmitHandler}>
 									{isPatient ? (
 										<>
+											<Form.Label>Select your diseases</Form.Label>
 											<Select
 												isMulti
 												closeMenuOnSelect={false}
@@ -249,14 +307,26 @@ const ProfileScreen = ({ history }) => {
 													return { label: disease, value: disease };
 												})}
 												placeholder='Please select your disease(s)'
-												onChange={handleDropDownChange}
+												onChange={handleDiseasesChange}
 											/>
-											<Button type='submit' variant='dark'>
+											<Form.Group className='my-4'>
+												<Form.Label>Medical Information</Form.Label>
+												<Form.Control
+													as='textarea'
+													placeholder='Please enter your medical information (Max 100 words)'
+													maxLength='500'
+													value={medicalInfoText}
+													style={{ border: '1px groove', borderRadius: '5px' }}
+													onChange={onMedicalInfoChange}
+												></Form.Control>
+											</Form.Group>
+											<Button className='my-3' type='submit' variant='dark'>
 												Update Medical Info
 											</Button>
 										</>
 									) : isDoctor ? (
 										<>
+											<Form.Label>Select your degrees</Form.Label>
 											<Select
 												isMulti
 												closeMenuOnSelect={false}
@@ -270,9 +340,39 @@ const ProfileScreen = ({ history }) => {
 													}
 												)}
 												placeholder='Please select your degree(s)'
-												onChange={handleDropDownChange}
+												onChange={handleDegreesChange}
 											/>
-											<Button type='submit' variant='dark'>
+											<Form.Group className='my-3'>
+												<Form.Label>Description</Form.Label>
+												<Form.Control
+													as='textarea'
+													placeholder='Please enter your description (Max 100 words)'
+													maxLength='500'
+													value={doctorDescription}
+													style={{ border: '1px groove', borderRadius: '5px' }}
+													onChange={onDescriptionChange}
+												></Form.Control>
+											</Form.Group>
+											<Form.Label>Select your specialization</Form.Label>
+											<Select
+												isMulti
+												closeMenuOnSelect={false}
+												name='diseases'
+												options={specializationOptions}
+												className='basic-multi-select'
+												classNamePrefix='select'
+												defaultValue={professionalInfo?.specializations.map(
+													(specialization) => {
+														return {
+															label: specialization,
+															value: specialization,
+														};
+													}
+												)}
+												placeholder='Please select your specializations (Max 3 allowed)'
+												onChange={handleSpecializationChange}
+											/>
+											<Button className='my-3' type='submit' variant='dark'>
 												Update Professional Info
 											</Button>
 										</>

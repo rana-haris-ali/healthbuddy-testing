@@ -8,6 +8,7 @@ import {
 
 import {
 	registerPatient,
+	getPatientById,
 	patientGetAllRequests,
 	patientGetAllAcceptedRequests,
 	patientGetAcceptedDoctors,
@@ -46,5 +47,7 @@ router
 	.route('/medical-info')
 	.get(protect, patientAuth, getMedicalInfo)
 	.put(protect, patientAuth, updateMedicalInfo);
+
+router.route('/:id').get(protect, doctorAuth, getPatientById);
 
 export default router;

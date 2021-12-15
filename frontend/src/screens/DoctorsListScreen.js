@@ -75,6 +75,7 @@ const DoctorsListScreen = ({ history }) => {
 						<thead>
 							<tr>
 								<th>Doctor Name</th>
+								<th>Specialization</th>
 								<th>Rating</th>
 								<th>Email</th>
 								<th></th>
@@ -86,6 +87,9 @@ const DoctorsListScreen = ({ history }) => {
 									return (
 										<tr key={doctor._id}>
 											<td>Dr. {doctor.user.name}</td>
+											<td style={{ whiteSpace: 'pre' }}>
+												{doctor.specializations.join('\n')}
+											</td>
 											<td>
 												<Rating
 													value={doctor.rating}

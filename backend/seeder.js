@@ -102,6 +102,24 @@ const deleteMessagesAndConversations = async () => {
 	}
 };
 
+const deleteExceptProducts = async () => {
+	try {
+		await User.deleteMany();
+		await Order.deleteMany();
+		await Patient.deleteMany();
+		await Doctor.deleteMany();
+		await Request.deleteMany();
+		await Conversation.deleteMany();
+		await Message.deleteMany();
+
+		console.log('Everything except products deleted'.yellow);
+		process.exit();
+	} catch (error) {
+		console.log(`Error: ${error}`.red);
+		process.exit(1);
+	}
+};
+
 if (process.argv[2] === '-d') {
 	deleteData();
 } else if (process.argv[2] === '-aea') {
@@ -110,6 +128,8 @@ if (process.argv[2] === '-d') {
 	deleteMessagesAndConversations();
 } else if (process.argv[2] === '-m') {
 	deleteMessages();
+} else if (process.argv[2] === '-allep') {
+	deleteExceptProducts();
 } else {
 	importData();
 }

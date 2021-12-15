@@ -3,6 +3,7 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import ReactMapGL, { Marker } from 'react-map-gl';
 
 import FormContainer from '../../components/FormContainer';
 import Message from '../../components/Message';
@@ -17,8 +18,16 @@ const PatientRegisterScreen = ({ location, history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
+	const [medicalInfo, setMedicalInfo] = useState('');
 	const [selectedDiseases, setSelectedDiseases] = useState([]);
 	const [message, setMessage] = useState('');
+	const [viewport, setViewport] = useState({
+		width: '100%',
+		height: 500,
+		latitude: 30.3753,
+		longitude: 69.3451,
+		zoom: 5,
+	});
 
 	const dispatch = useDispatch();
 	const {
@@ -47,6 +56,14 @@ const PatientRegisterScreen = ({ location, history }) => {
 		setSelectedDiseases(e.map((disease) => disease.value));
 	};
 
+	const onMedicalInfoChange = (e) => {
+		if (e.target.value.split(' ').length > 100) {
+			setMessage('Limit reached');
+		} else {
+			setMedicalInfo(e.target.value);
+		}
+	};
+
 	const formSubmitHandler = (event) => {
 		event.preventDefault();
 
@@ -57,10 +74,16 @@ const PatientRegisterScreen = ({ location, history }) => {
 		} else {
 			dispatch(
 				registerPatient({
-					name,
+					// capitalize the name
+					name: name[0].toUpperCase() + name.substring(1),
 					email,
 					password,
+					medicalInfo,
 					diseases: selectedDiseases,
+					coordinates: {
+						latitude: viewport.latitude,
+						longitude: viewport.longitude,
+					},
 				})
 			);
 		}
@@ -142,6 +165,44 @@ const PatientRegisterScreen = ({ location, history }) => {
 							placeholder='Please select your disease(s)'
 							onChange={handleDropDownChange}
 						/>
+						<hr className='mb-4' />
+						<Form.Group className='my-4'>
+							<Form.Label htmlFor='medicalInfo'>Medical Information</Form.Label>
+							<Form.Control
+								as='textarea'
+								id='medicalInfo'
+								placeholder='Please add your medical information (100 words limit)'
+								maxLength='500'
+								value={medicalInfo}
+								onChange={onMedicalInfoChange}
+							></Form.Control>
+						</Form.Group>
+						<hr className='mb-4' />
+						<Form.Group className='my-4'>
+							<h4 className='mb-3'>
+								Please select your location. This location will be used for
+								shipping your medicines, getting directions to doctor etc.
+							</h4>
+
+							<ReactMapGL
+								{...viewport}
+								onViewportChange={(viewport) => setViewport(viewport)}
+								mapboxApiAccessToken={
+									'pk.eyJ1IjoicmFuYS1oYXJpcy1hbGkiLCJhIjoiY2t1NXd3NGszMW54dTJwcWhnc3BrOXp2cSJ9.DH5z_oGb8q_B4EhgqLr1Ug'
+								}
+								mapStyle='mapbox://styles/rana-haris-ali/cku6vluo33yq917nxmcr7r6j2'
+							>
+								<Marker
+									latitude={viewport.latitude}
+									longitude={viewport.longitude}
+								>
+									<i
+										class='fas fa-map-marker-alt'
+										style={{ fontWeight: '900', fontSize: '30px' }}
+									></i>
+								</Marker>
+							</ReactMapGL>
+						</Form.Group>
 						<Button
 							className='btn btn-md mt-5 mb-3'
 							type='submit'

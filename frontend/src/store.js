@@ -43,6 +43,7 @@ import {
 
 import {
 	registerPatientReducer,
+	patientDetailsReducer,
 	requestDoctorContactReducer,
 	patientAllRequestsReducer,
 	acceptedDoctorsReducer,
@@ -89,6 +90,7 @@ const reducers = combineReducers({
 	doctorCreateReview: doctorCreateReviewReducer,
 	doctorToggleVerification: doctorToggleVerificationReducer,
 	registerPatient: registerPatientReducer,
+	patientDetails: patientDetailsReducer,
 	patientsList: patientsListReducer,
 	patientAllRequests: patientAllRequestsReducer,
 	acceptedDoctors: acceptedDoctorsReducer,

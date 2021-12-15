@@ -11,8 +11,21 @@ const patientSchema = mongoose.Schema(
 			type: Array,
 			required: true,
 		},
+		medicalInfo: {
+			type: String,
+		},
 		acceptedDoctors: {
 			type: Array,
+		},
+		coordinates: {
+			latitude: {
+				type: Number,
+				required: false,
+			},
+			longitude: {
+				type: Number,
+				required: false,
+			},
 		},
 	},
 	{
